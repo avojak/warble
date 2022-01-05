@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema path="@schema-path@" id="@appid@">
+    <key name="prefer-dark-style" type="b">
+      <default>false</default>
+      <summary>If the dark Gtk stylesheet should be used</summary>
+      <description>If the dark Gtk stylesheet should be used</description>
+    </key>
+    <key name="pos-x" type="i">
+			<default>360</default>
+			<summary>The saved horizontal position of the window.</summary>
+			<description>The saved horizontal position of the window.</description>
+		</key>
+		<key name="pos-y" type="i">
+			<default>360</default>
+			<summary>The saved vertical position width of the window.</summary>
+			<description>The saved vertical position of the window.</description>
+		</key>
+  </schema>
+</schemalist>

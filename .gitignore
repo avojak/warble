@@ -1,0 +1,6 @@
+src/Application
+build/
+builddir/
+.flatpak-builder/
+
+.DS_Store

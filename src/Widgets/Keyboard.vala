@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2021 Andrew Vojak (https://avojak.com)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA
+ *
+ * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ */
+
+public class Warble.Widgets.Keyboard : Gtk.Grid {
+
+    public const char[] ROW_1_LETTERS = {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'};
+    public const char[] ROW_2_LETTERS = {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'};
+    public const char[] ROW_3_LETTERS = {'Z', 'X', 'C', 'V', 'B', 'N', 'M'};
+
+    private Gee.List<Warble.Widgets.Key> keys = new Gee.ArrayList<Warble.Widgets.Key> ();
+
+    public Keyboard () {
+        Object (
+            expand: true,
+            orientation: Gtk.Orientation.VERTICAL,
+            halign: Gtk.Align.CENTER,
+            margin: 8
+        );
+    }
+
+    construct {
+        var row_1_grid = create_row (ROW_1_LETTERS);
+        var row_2_grid = create_row (ROW_2_LETTERS);
+        var row_3_grid = create_row (ROW_3_LETTERS);
+
+        attach (row_1_grid, 0, 0);
+        attach (row_2_grid, 0, 1);
+        attach (row_3_grid, 0, 2);
+    }
+
+    private Gtk.Grid create_row (char[] letters) {
+        var row_grid = new Gtk.Grid () {
+            orientation = Gtk.Orientation.HORIZONTAL,
+            halign = Gtk.Align.CENTER,
+            hexpand = true
+        };
+        foreach (char letter in letters) {
+            Warble.Widgets.Key key = new Warble.Widgets.Key (letter);
+            keys.add (key);
+            row_grid.add (key);
+        }
+        return row_grid;
+    }
+
+}

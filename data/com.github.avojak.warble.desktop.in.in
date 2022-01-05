@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=@name@
+GenericName=TODO
+Comment=TODO
+Categories=TODO
+Exec=@binary@
+Icon=@icon@
+Terminal=false
+Type=Application
+Keywords=TODO
