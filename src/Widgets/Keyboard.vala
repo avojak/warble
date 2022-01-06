@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Andrew Vojak (https://avojak.com)
+ * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -25,7 +25,7 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
     public const char[] ROW_2_LETTERS = {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'};
     public const char[] ROW_3_LETTERS = {'Z', 'X', 'C', 'V', 'B', 'N', 'M'};
 
-    private Gee.List<Warble.Widgets.Key> keys = new Gee.ArrayList<Warble.Widgets.Key> ();
+    private Gee.Map<char, Warble.Widgets.Key> keys = new Gee.HashMap<char, Warble.Widgets.Key> ();
 
     public Keyboard () {
         Object (
@@ -54,10 +54,18 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
         };
         foreach (char letter in letters) {
             Warble.Widgets.Key key = new Warble.Widgets.Key (letter);
-            keys.add (key);
+            keys.set (letter, key);
             row_grid.add (key);
         }
         return row_grid;
+    }
+
+    public Warble.Widgets.Key.State get_key_state (char letter) {
+        return keys.get (letter).state;
+    }
+
+    public void update_key_state (char letter, Warble.Widgets.Key.State new_state) {
+        keys.get (letter).state = new_state;
     }
 
 }

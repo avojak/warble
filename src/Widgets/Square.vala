@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Andrew Vojak (https://avojak.com)
+ * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -36,7 +36,11 @@ public class Warble.Widgets.Square : Gtk.Image {
         set { this._letter = value; queue_draw (); }
     }
 
-    private State state = State.BLANK;
+    private State _state = State.BLANK;
+    public State state {
+        get { return this._state; }
+        set { this._state = value; update_icon (); }
+    }
 
     public Square () {
         Object (
@@ -68,14 +72,8 @@ public class Warble.Widgets.Square : Gtk.Image {
         ctx.show_text (letter.to_string ());
     }
 
-    public void boop () {
-        //  state = State.CLOSE;
-        gicon = new ThemedIcon (Constants.APP_ID + ".square-close");
-    }
-
-    public void update_state (Warble.Widgets.Square.State new_state) {
-        this.state = new_state;
-        switch (new_state) {
+    public void update_icon () {
+        switch (state) {
             case BLANK:
                 gicon = new ThemedIcon (Constants.APP_ID + ".square-blank");
                 break;

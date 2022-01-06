@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Andrew Vojak (https://avojak.com)
+ * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -26,6 +26,10 @@ public class Warble.MainLayout : Gtk.Grid {
 
     public unowned Warble.MainWindow window { get; construct; }
 
+    private Warble.Widgets.Dialogs.RulesDialog? rules_dialog = null;
+    private Warble.Widgets.Dialogs.VictoryDialog? victory_dialog = null;
+    private Warble.Widgets.Dialogs.DefeatDialog? defeat_dialog = null;
+
     private Warble.Widgets.HeaderBar header_bar;
     private Gtk.Overlay overlay;
     private Granite.Widgets.Toast insufficient_letters_toast;
@@ -36,7 +40,7 @@ public class Warble.MainLayout : Gtk.Grid {
         Object (
             window: window,
             width_request: 500,
-            height_request: 550
+            height_request: 600
         );
     }
 
@@ -56,6 +60,12 @@ public class Warble.MainLayout : Gtk.Grid {
         game_area.invalid_word.connect (() => {
             invalid_word_toast.send_notification ();
         });
+        game_area.game_won.connect (() => {
+            show_victory_dialog ();
+        });
+        game_area.game_lost.connect (() => {
+            show_defeat_dialog ();
+        });
 
         overlay.add_overlay (game_area);
         overlay.add_overlay (insufficient_letters_toast);
@@ -65,6 +75,19 @@ public class Warble.MainLayout : Gtk.Grid {
         attach (overlay, 0, 1);
         
         show_all ();
+
+        check_first_launch ();
+    }
+
+    private void check_first_launch () {
+        // Show the rules dialog on the first launch of the game
+        if (Warble.Application.settings.get_boolean ("first-launch")) {
+            Idle.add (() => {
+                show_rules_dialog ();
+                return false;
+            });
+            Warble.Application.settings.set_boolean ("first-launch", false);
+        }
     }
 
     public void letter_key_pressed (char letter) {
@@ -77,6 +100,47 @@ public class Warble.MainLayout : Gtk.Grid {
 
     public void return_pressed () {
         game_area.return_pressed ();
+    }
+
+    private void show_rules_dialog () {
+        if (rules_dialog == null) {
+            rules_dialog = new Warble.Widgets.Dialogs.RulesDialog (window);
+            rules_dialog.show_all ();
+            rules_dialog.destroy.connect (() => {
+                rules_dialog = null;
+            });
+        }
+        rules_dialog.present ();
+    }
+
+    private void show_victory_dialog () {
+        if (victory_dialog == null) {
+            victory_dialog = new Warble.Widgets.Dialogs.VictoryDialog (window);
+            victory_dialog.show_all ();
+            victory_dialog.play_again_button_clicked.connect (() => {
+                victory_dialog.close ();
+                game_area.new_game ();
+            });
+            victory_dialog.destroy.connect (() => {
+                victory_dialog = null;
+            });
+        }
+        victory_dialog.present ();
+    }
+
+    private void show_defeat_dialog () {
+        if (defeat_dialog == null) {
+            defeat_dialog = new Warble.Widgets.Dialogs.DefeatDialog (window);
+            defeat_dialog.show_all ();
+            defeat_dialog.play_again_button_clicked.connect (() => {
+                defeat_dialog.close ();
+                game_area.new_game ();
+            });
+            defeat_dialog.destroy.connect (() => {
+                defeat_dialog = null;
+            });
+        }
+        defeat_dialog.present ();
     }
 
 }

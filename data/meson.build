@@ -55,6 +55,48 @@ install_data(
     rename: '@0@.square-correct.svg'.format(application_id)
 )
 
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-blank.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-blank.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-blank.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-blank.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-close.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-close.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-close.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-close.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-incorrect.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-incorrect.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-incorrect.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-incorrect.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-correct.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-correct.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-correct.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-correct.svg'.format(application_id)
+)
+
+
 # Install the dictionary file
 install_data(
     'dictionary.txt',

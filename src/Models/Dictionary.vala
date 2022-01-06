@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Andrew Vojak (https://avojak.com)
+ * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -44,9 +44,6 @@ public class Warble.Models.Dictionary : GLib.Object {
         } catch (GLib.Error e) {
             critical ("Error while reading dictionary file: %s", e.message);
         }
-        for (int i = 0; i < 10; i++) {
-            debug (words_by_length.get (5).get (i));
-        }
     }
 
     // Word of the day requires computing a consistent integer value for all users
@@ -58,11 +55,24 @@ public class Warble.Models.Dictionary : GLib.Object {
         if (!words_by_length.has_key (length)) {
             critical ("No words in dictionary with length %d", length);
         }
+        int num_eligible_words = words_by_length.get (length).size;
+        debug ("%d candidate words of length %d", num_eligible_words, length);
         GLib.DateTime epoch = new GLib.DateTime.local (1970, 1, 1, 0, 0, 0);
         int days_since_epoch = (int) (date.difference (epoch) / GLib.TimeSpan.DAY);
         debug ("%d days since Unix epoch", days_since_epoch);
-        int num_eligible_words = words_by_length.get (length).size;
         return words_by_length.get (length).get (days_since_epoch % num_eligible_words);
+    }
+
+    // Retrieves a evenly distributed random word of the desired length from
+    // the dictionary. This may be preferable to 'word of the day' which can only
+    // be used, well, once per day.
+    public string get_random_word (int length) {
+        if (!words_by_length.has_key (length)) {
+            critical ("No words in dictionary with length %d", length);
+        }
+        int num_eligible_words = words_by_length.get (length).size;
+        debug ("%d candidate words of length %d", num_eligible_words, length);
+        return words_by_length.get (length).get (GLib.Random.int_range (0, num_eligible_words));
     }
 
 }

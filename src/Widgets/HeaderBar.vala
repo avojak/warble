@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Andrew Vojak (https://avojak.com)
+ * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -25,7 +25,8 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         Object (
             title: Constants.APP_NAME,
             show_close_button: true,
-            has_subtitle: false
+            has_subtitle: false,
+            decoration_layout: "close:"
         );
     }
 
