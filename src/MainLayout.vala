@@ -29,6 +29,7 @@ public class Warble.MainLayout : Gtk.Grid {
     private Warble.Widgets.Dialogs.RulesDialog? rules_dialog = null;
     private Warble.Widgets.Dialogs.VictoryDialog? victory_dialog = null;
     private Warble.Widgets.Dialogs.DefeatDialog? defeat_dialog = null;
+    private Warble.Widgets.Dialogs.NewGameConfirmationDialog? new_game_confirmation_dialog = null;
 
     private Warble.Widgets.HeaderBar header_bar;
     private Gtk.Overlay overlay;
@@ -100,6 +101,36 @@ public class Warble.MainLayout : Gtk.Grid {
 
     public void return_pressed () {
         game_area.return_pressed ();
+    }
+
+    public void show_rules () {
+        show_rules_dialog ();
+    }
+
+    public void new_game () {
+        // Don't do anything if these other dialogs are open
+        if (rules_dialog != null || victory_dialog != null || defeat_dialog != null) {
+            return;
+        }
+        // If we can safely start a new game, don't need to prompt the user
+        if (game_area.can_safely_start_new_game ()) {
+            game_area.new_game ();
+            return;
+        }
+        if (new_game_confirmation_dialog == null) {
+            new_game_confirmation_dialog = new Warble.Widgets.Dialogs.NewGameConfirmationDialog (window);
+            new_game_confirmation_dialog.show_all ();
+            new_game_confirmation_dialog.response.connect ((response_id) => {
+                if (response_id == Gtk.ResponseType.OK) {
+                    game_area.new_game ();
+                }
+                new_game_confirmation_dialog.close ();
+            });
+            new_game_confirmation_dialog.destroy.connect (() => {
+                new_game_confirmation_dialog = null;
+            });
+        }
+        new_game_confirmation_dialog.present ();
     }
 
     private void show_rules_dialog () {

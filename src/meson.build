@@ -11,12 +11,14 @@ config_header = configure_file(
 )
 
 warble_files = files(
+    join_paths('ActionManager.vala'),
     join_paths('Application.vala'),
     join_paths('ColorPalette.vala'),
     join_paths('MainWindow.vala'),
     join_paths('MainLayout.vala'),
     join_paths('Models', 'Dictionary.vala'),
     join_paths('Widgets', 'Dialogs', 'DefeatDialog.vala'),
+    join_paths('Widgets', 'Dialogs', 'NewGameConfirmationDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'RulesDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'VictoryDialog.vala'),
     join_paths('Widgets', 'Row.vala'),

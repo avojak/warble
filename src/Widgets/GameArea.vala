@@ -158,6 +158,16 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         }
     }
 
+    // Determines if a new game can be started without warning the user
+    public bool can_safely_start_new_game () {
+        // If there's no game in progress, safe to start new
+        if (!is_game_in_progress) {
+            return true;
+        }
+        // If user is still on the first row, they haven't submitted a guess yet
+        return current_row == 0;
+    }
+
     private bool validate_guess (string current_guess) {        
         // Check if there were enough letters guessed
         if (current_guess.length < num_cols) {

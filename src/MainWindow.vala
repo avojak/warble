@@ -28,6 +28,9 @@ public class Warble.MainWindow : Hdy.Window {
 
     public unowned Warble.Application app { get; construct; }
 
+    private Warble.ActionManager action_manager;
+    private Gtk.AccelGroup accel_group;
+
     private Warble.MainLayout main_layout;
 
     public MainWindow (Warble.Application application) {
@@ -41,8 +44,11 @@ public class Warble.MainWindow : Hdy.Window {
     }
 
     construct {
-        main_layout = new Warble.MainLayout (this);
+        accel_group = new Gtk.AccelGroup ();
+        add_accel_group (accel_group);
+        action_manager = new Warble.ActionManager (app, this);
 
+        main_layout = new Warble.MainLayout (this);
         add (main_layout);
 
         move (Warble.Application.settings.get_int ("pos-x"), Warble.Application.settings.get_int ("pos-y"));
@@ -67,10 +73,11 @@ public class Warble.MainWindow : Hdy.Window {
             // Do stuff before closing the application
             GLib.Process.exit (0);
         });
-
         this.delete_event.connect (before_destroy);
 
         show_app ();
+
+        set_focus (null);
     }
 
     public void show_app () {
@@ -85,11 +92,17 @@ public class Warble.MainWindow : Hdy.Window {
         return true;
     }
 
+    public void show_rules () {
+        main_layout.show_rules ();
+    }
+
+    public void new_game () {
+        main_layout.new_game ();
+    }
+
     private void update_position_settings () {
         int x, y;
-
         get_position (out x, out y);
-
         Warble.Application.settings.set_int ("pos-x", x);
         Warble.Application.settings.set_int ("pos-y", y);
     }
