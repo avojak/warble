@@ -42,7 +42,9 @@ public class Warble.Widgets.Key : Gtk.Image {
         Object (
             gicon: new ThemedIcon (Constants.APP_ID + ".key-blank"),
             pixel_size: SIZE,
-            letter: letter
+            letter: letter,
+            hexpand: false,
+            halign: Gtk.Align.CENTER
         );
     }
 
