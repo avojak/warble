@@ -40,7 +40,7 @@
         var header_grid = new Gtk.Grid () {
             margin_start = 30,
             margin_end = 30,
-            margin_bottom = 10,
+            margin_bottom = 30,
             column_spacing = 10
         };
 
@@ -64,7 +64,7 @@
         };
 
         rules_grid.attach (new Gtk.Label ("Guess the 5-letter word in 6 guesses or less!"), 0, 0);
-        rules_grid.attach (new Gtk.Label ("As you type, the squares on the board will be filled in"), 0, 1);
+        rules_grid.attach (new Gtk.Label ("As you type, the squares on the board will be filled in."), 0, 1);
 
         // Explain the keys
         var accelerator_grid = new Gtk.Grid () {
@@ -88,7 +88,7 @@
             column_spacing = 10,
             row_spacing = 8
         };
-        square_colors_grid.attach (new Gtk.Label ("If you guess a letter in its correct position, the square will turn green") {
+        square_colors_grid.attach (new Gtk.Label ("If you guess a letter in its correct position, the square will turn green.") {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
             max_width_chars = 30,
@@ -99,7 +99,7 @@
             letter = 'A',
             state = Warble.Widgets.Square.State.CORRECT
         }, 1, 0);
-        square_colors_grid.attach (new Gtk.Label ("If the letter does not appear anywhere in the answer, the square will turn dark grey") {
+        square_colors_grid.attach (new Gtk.Label ("If the letter does not appear anywhere in the answer, the square will turn dark grey.") {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
             max_width_chars = 30,
@@ -110,7 +110,7 @@
             letter = 'B',
             state = Warble.Widgets.Square.State.INCORRECT
         }, 1, 1);
-        square_colors_grid.attach (new Gtk.Label ("If the letter appears in the answer but not in the position that you have guessed, the square will turn yellow") {
+        square_colors_grid.attach (new Gtk.Label ("If the letter appears in the answer but not in the position that you have guessed, the square will turn yellow.") {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
             max_width_chars = 30,
@@ -130,7 +130,7 @@
             column_spacing = 10,
             row_spacing = 8
         };
-        key_colors_grid.attach (new Gtk.Label ("The keys on the keyboard will similarly change colors to help you keep track of which letters have been used") {
+        key_colors_grid.attach (new Gtk.Label ("The keys on the keyboard will similarly change colors to help you keep track of which letters have been used.") {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
             max_width_chars = 40,
@@ -149,7 +149,6 @@
 
         body.add (header_grid);
         body.add (rules_grid);
-        body.add (accelerator_grid);
         body.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
             margin_start = 30,
             margin_end = 30,
@@ -158,6 +157,13 @@
         });
         body.add (square_colors_grid);
         body.add (key_colors_grid);
+        body.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
+            margin_start = 30,
+            margin_end = 30,
+            margin_top = 10,
+            margin_bottom = 10
+        });
+        body.add (accelerator_grid);
 
         // Add action buttons
         var start_button = new Gtk.Button.with_label (_("Let's Get Started!"));

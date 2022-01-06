@@ -81,13 +81,13 @@ public class Warble.MainLayout : Gtk.Grid {
 
     private void check_first_launch () {
         // Show the rules dialog on the first launch of the game
-        //  if (Warble.Application.settings.get_boolean ("first-launch")) {
+        if (Warble.Application.settings.get_boolean ("first-launch")) {
             Idle.add (() => {
                 show_rules_dialog ();
                 return false;
             });
             Warble.Application.settings.set_boolean ("first-launch", false);
-        //  }
+        }
     }
 
     public void letter_key_pressed (char letter) {

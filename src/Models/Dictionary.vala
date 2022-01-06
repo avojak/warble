@@ -21,7 +21,7 @@
 
 public class Warble.Models.Dictionary : GLib.Object {
 
-    private const string DICTIONARY_FILE_NAME = "dictionary.txt";
+    private const string DICTIONARY_FILE_NAME = "words.txt";
 
     public Gee.Map<int, Gee.List<string>> words_by_length { get; construct; }
 

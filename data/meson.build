@@ -99,7 +99,7 @@ install_data(
 
 # Install the dictionary file
 install_data(
-    'dictionary.txt',
+    'words.txt',
     install_dir: join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
 )
 
