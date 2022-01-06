@@ -35,11 +35,12 @@
         var body = get_content_area ();
 
         // Create the header
-        var header_grid = new Gtk.Grid ();
-        header_grid.margin_start = 30;
-        header_grid.margin_end = 30;
-        header_grid.margin_bottom = 10;
-        header_grid.column_spacing = 10;
+        var header_grid = new Gtk.Grid () {
+            margin_start = 30,
+            margin_end = 30,
+            margin_bottom = 10,
+            column_spacing = 10
+        };
 
         var header_title = new Gtk.Label ("🤔️ How to Play");
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
@@ -49,6 +50,13 @@
         header_title.set_line_wrap (true);
 
         header_grid.attach (header_title, 0, 0);
+
+        var rules_grid = new Gtk.Grid () {
+            margin_start = 30,
+            margin_end = 30,
+            margin_bottom = 10,
+            column_spacing = 10
+        };
 
         body.add (header_grid);
 
@@ -60,6 +68,6 @@
         });
 
         add_action_widget (start_button, 1);
-    }    
+    }
 
 }
