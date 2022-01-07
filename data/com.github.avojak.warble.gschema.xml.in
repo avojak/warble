@@ -21,5 +21,55 @@
       <summary>Whether or not this is the first launch of the application</summary>
       <description>Whether or not this is the first launch of the application</description>
     </key>
+    <key name="num-games-won" type="i">
+      <default>0</default>
+      <summary>The number of games won</summary>
+      <description>The number of games won</description>
+    </key>
+    <key name="num-games-lost" type="i">
+      <default>0</default>
+      <summary>The number of games lost</summary>
+      <description>The number of games lost</description>
+    </key>
+    <key name="win-streak" type="i">
+      <default>0</default>
+      <summary>The current win streak</summary>
+      <description>The current win streak</description>
+    </key>
+    <key name="max-win-streak" type="i">
+      <default>0</default>
+      <summary>The max win streak</summary>
+      <description>The max win streak</description>
+    </key>
+    <key name="wins-in-1" type="i">
+      <default>0</default>
+      <summary>The number of games won in 1 guess</summary>
+      <description>The number of games won in 1 guess</description>
+    </key>
+    <key name="wins-in-2" type="i">
+      <default>0</default>
+      <summary>The number of games won in 2 guesses</summary>
+      <description>The number of games won in 2 guesses</description>
+    </key>
+    <key name="wins-in-3" type="i">
+      <default>0</default>
+      <summary>The number of games won in 3 guesses</summary>
+      <description>The number of games won in 3 guesses</description>
+    </key>
+    <key name="wins-in-4" type="i">
+      <default>0</default>
+      <summary>The number of games won in 4 guesses</summary>
+      <description>The number of games won in 4 guesses</description>
+    </key>
+    <key name="wins-in-5" type="i">
+      <default>0</default>
+      <summary>The number of games won in 5 guesses</summary>
+      <description>The number of games won in 5 guesses</description>
+    </key>
+    <key name="wins-in-6" type="i">
+      <default>0</default>
+      <summary>The number of games won in 6 guesses</summary>
+      <description>The number of games won in 6 guesses</description>
+    </key>
   </schema>
 </schemalist>

@@ -19,18 +19,15 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.Dialogs.DefeatDialog : Granite.Dialog {
+public class Warble.Widgets.Dialogs.GameplayStatisticsDialog : Granite.Dialog {
 
-    public string answer { get; construct; }
-
-    public DefeatDialog (Warble.MainWindow main_window, string answer) {
+    public GameplayStatisticsDialog (Warble.MainWindow main_window) {
         Object (
             deletable: false,
             resizable: false,
-            title: "Game Over",
+            title: "Gameplay Statistics",
             transient_for: main_window,
-            modal: true,
-            answer: answer
+            modal: true
         );
     }
 
@@ -44,7 +41,7 @@ public class Warble.Widgets.Dialogs.DefeatDialog : Granite.Dialog {
         header_grid.margin_bottom = 30;
         header_grid.column_spacing = 10;
 
-        var header_title = new Gtk.Label ("Game Over");
+        var header_title = new Gtk.Label ("Gameplay Statistics");
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
         header_title.halign = Gtk.Align.CENTER;
         header_title.hexpand = true;
@@ -53,40 +50,15 @@ public class Warble.Widgets.Dialogs.DefeatDialog : Granite.Dialog {
 
         header_grid.attach (header_title, 0, 0);
 
-        // Create the main body
-        var body_grid = new Gtk.Grid () {
-            halign = Gtk.Align.CENTER,
-            margin_start = 30,
-            margin_end = 30,
-            margin_bottom = 10,
-            column_spacing = 10,
-            row_spacing = 8
-        };
-
-        body_grid.attach (new Gtk.Label ("The correct answer was: <b>%s</b>".printf (answer)) {
-            use_markup = true
-        }, 0, 0);
-        body_grid.attach (new Gtk.Label ("Play again?"), 0, 1);
-
         body.add (header_grid);
-        body.add (body_grid);
+        body.add (new Warble.Widgets.GameplayStatistics ());
 
         // Add action buttons
-        var not_now_button = new Gtk.Button.with_label (_("Not Now"));
-        not_now_button.clicked.connect (() => {
+        var close_button = new Gtk.Button.with_label (_("Close"));
+        close_button.clicked.connect (() => {
             close ();
         });
-
-        var play_again_button = new Gtk.Button.with_label (_("Play Again"));
-        play_again_button.get_style_context ().add_class ("suggested-action");
-        play_again_button.clicked.connect (() => {
-            play_again_button_clicked ();
-        });
-
-        add_action_widget (not_now_button, 0);
-        add_action_widget (play_again_button, 1);
+        add_action_widget (close_button, Gtk.ResponseType.CLOSE);
     }
-    
-    public signal void play_again_button_clicked ();
 
 }

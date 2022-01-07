@@ -44,6 +44,9 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         new_game_menu_item.get_child ().destroy ();
         new_game_menu_item.add (new_game_accellabel);
 
+        var gameplay_stats_menu_item = new Gtk.ModelButton ();
+        gameplay_stats_menu_item.text = "Gameplay Statistics…";
+
         var help_accellabel = new Granite.AccelLabel.from_action_name (
             _("Help"),
             Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_HELP
@@ -71,28 +74,36 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         menu_popover_grid.width_request = 200;
         menu_popover_grid.attach (new_game_menu_item, 0, 0);
         menu_popover_grid.attach (create_menu_separator (), 0, 1);
-        menu_popover_grid.attach (help_menu_item, 0, 2);
-        menu_popover_grid.attach (create_menu_separator (), 0, 3);
-        menu_popover_grid.attach (quit_menu_item, 0, 4);
+        menu_popover_grid.attach (gameplay_stats_menu_item, 0, 2);
+        menu_popover_grid.attach (help_menu_item, 0, 3);
+        menu_popover_grid.attach (create_menu_separator (), 0, 4);
+        menu_popover_grid.attach (quit_menu_item, 0, 5);
         menu_popover_grid.show_all ();
 
         var menu_popover = new Gtk.Popover (null);
         menu_popover.add (menu_popover_grid);
 
         var menu_button = new Gtk.MenuButton ();
-        menu_button.image = new Gtk.Image.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        menu_button.image = new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
         menu_button.tooltip_text = _("Menu");
         menu_button.relief = Gtk.ReliefStyle.NONE;
         menu_button.valign = Gtk.Align.CENTER;
         menu_button.popover = menu_popover;
 
         pack_end (menu_button);
+
+        gameplay_stats_menu_item.clicked.connect (() => {
+            gameplay_statistics_menu_item_clicked ();
+        });
     }
 
-    private Gtk.Separator create_menu_separator (int margin_top = 0) {
+    private Gtk.Separator create_menu_separator () {
         var menu_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-        menu_separator.margin_top = margin_top;
+        menu_separator.margin_top = 3;
+        menu_separator.margin_bottom = 3;
         return menu_separator;
     }
+
+    public signal void gameplay_statistics_menu_item_clicked ();
 
 }

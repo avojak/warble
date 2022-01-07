@@ -20,13 +20,15 @@ warble_files = files(
     join_paths('Widgets', 'Dialogs', 'DefeatDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'NewGameConfirmationDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'RulesDialog.vala'),
+    join_paths('Widgets', 'Dialogs', 'GameplayStatisticsDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'VictoryDialog.vala'),
-    join_paths('Widgets', 'Row.vala'),
-    join_paths('Widgets', 'Square.vala'),
     join_paths('Widgets', 'GameArea.vala'),
     join_paths('Widgets', 'HeaderBar.vala'),
     join_paths('Widgets', 'Key.vala'),
-    join_paths('Widgets', 'Keyboard.vala')
+    join_paths('Widgets', 'Keyboard.vala'),
+    join_paths('Widgets', 'Row.vala'),
+    join_paths('Widgets', 'Square.vala'),
+    join_paths('Widgets', 'GameplayStatistics.vala')
 )
 
 # Create a new executable, list the files we want to compile, list the dependencies we need, and install

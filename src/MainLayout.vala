@@ -30,6 +30,7 @@ public class Warble.MainLayout : Gtk.Grid {
     private Warble.Widgets.Dialogs.VictoryDialog? victory_dialog = null;
     private Warble.Widgets.Dialogs.DefeatDialog? defeat_dialog = null;
     private Warble.Widgets.Dialogs.NewGameConfirmationDialog? new_game_confirmation_dialog = null;
+    private Warble.Widgets.Dialogs.GameplayStatisticsDialog? gameplay_statistics_dialog = null;
 
     private Warble.Widgets.HeaderBar header_bar;
     private Gtk.Overlay overlay;
@@ -41,13 +42,16 @@ public class Warble.MainLayout : Gtk.Grid {
         Object (
             window: window,
             width_request: 500,
-            height_request: 600
+            height_request: 675
         );
     }
 
     construct {
         header_bar = new Warble.Widgets.HeaderBar ();
         header_bar.get_style_context ().add_class ("default-decoration");
+        header_bar.gameplay_statistics_menu_item_clicked.connect (() => {
+            show_gameplay_statistics_dialog ();
+        });
 
         overlay = new Gtk.Overlay ();
 
@@ -64,8 +68,8 @@ public class Warble.MainLayout : Gtk.Grid {
         game_area.game_won.connect (() => {
             show_victory_dialog ();
         });
-        game_area.game_lost.connect (() => {
-            show_defeat_dialog ();
+        game_area.game_lost.connect ((answer) => {
+            show_defeat_dialog (answer);
         });
 
         overlay.add_overlay (game_area);
@@ -159,9 +163,9 @@ public class Warble.MainLayout : Gtk.Grid {
         victory_dialog.present ();
     }
 
-    private void show_defeat_dialog () {
+    private void show_defeat_dialog (string answer) {
         if (defeat_dialog == null) {
-            defeat_dialog = new Warble.Widgets.Dialogs.DefeatDialog (window);
+            defeat_dialog = new Warble.Widgets.Dialogs.DefeatDialog (window, answer);
             defeat_dialog.show_all ();
             defeat_dialog.play_again_button_clicked.connect (() => {
                 defeat_dialog.close ();
@@ -172,6 +176,17 @@ public class Warble.MainLayout : Gtk.Grid {
             });
         }
         defeat_dialog.present ();
+    }
+
+    private void show_gameplay_statistics_dialog () {
+        if (gameplay_statistics_dialog == null) {
+            gameplay_statistics_dialog = new Warble.Widgets.Dialogs.GameplayStatisticsDialog (window);
+            gameplay_statistics_dialog.show_all ();
+            gameplay_statistics_dialog.destroy.connect (() => {
+                gameplay_statistics_dialog = null;
+            });
+        }
+        gameplay_statistics_dialog.present ();
     }
 
 }

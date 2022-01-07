@@ -38,7 +38,7 @@ public class Warble.Widgets.Dialogs.VictoryDialog : Granite.Dialog {
         var header_grid = new Gtk.Grid ();
         header_grid.margin_start = 30;
         header_grid.margin_end = 30;
-        header_grid.margin_bottom = 10;
+        header_grid.margin_bottom = 30;
         header_grid.column_spacing = 10;
 
         var header_title = new Gtk.Label ("🎉️ You Win!");
@@ -50,7 +50,20 @@ public class Warble.Widgets.Dialogs.VictoryDialog : Granite.Dialog {
 
         header_grid.attach (header_title, 0, 0);
 
+        // Create the main body
+        var body_grid = new Gtk.Grid () {
+            halign = Gtk.Align.CENTER,
+            margin_start = 30,
+            margin_end = 30,
+            margin_bottom = 10,
+            column_spacing = 10,
+            row_spacing = 8
+        };
+
+        body_grid.attach (new Gtk.Label ("Play again?"), 0, 0);
+
         body.add (header_grid);
+        body.add (body_grid);
 
         // Add action buttons
         var not_now_button = new Gtk.Button.with_label (_("Not Now"));

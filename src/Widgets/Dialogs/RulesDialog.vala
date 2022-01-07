@@ -44,7 +44,7 @@
             column_spacing = 10
         };
 
-        var header_title = new Gtk.Label ("🤔️ How to Play");
+        var header_title = new Gtk.Label ("How to Play");
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
         header_title.halign = Gtk.Align.CENTER;
         header_title.hexpand = true;
@@ -71,6 +71,7 @@
             halign = Gtk.Align.CENTER,
             margin_start = 30,
             margin_end = 30,
+            margin_bottom = 30,
             column_spacing = 10,
             row_spacing = 8,
             hexpand = false

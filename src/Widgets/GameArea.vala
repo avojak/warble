@@ -26,6 +26,9 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
     private Gee.List<Gee.List<Warble.Widgets.Square>> rows;
 
+    private Gtk.Grid status_grid;
+    private Gtk.Label status_label;
+    private Gtk.Label answer_label;
     private Gtk.Grid square_grid;
     private Warble.Widgets.Keyboard keyboard;
 
@@ -70,6 +73,18 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     }
 
     private void setup_ui () {
+        status_grid = new Gtk.Grid () {
+            margin = 8,
+            halign = Gtk.Align.CENTER
+        };
+        status_label = new Gtk.Label ("");
+        status_label.get_style_context ().add_class ("h2");
+        answer_label = new Gtk.Label ("") {
+            use_markup = true
+        };
+        status_grid.attach (status_label, 0, 0);
+        status_grid.attach (answer_label, 0, 1);
+
         square_grid = new Gtk.Grid () {
             margin = 8
         };
@@ -86,11 +101,13 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
         keyboard = new Warble.Widgets.Keyboard ();
 
-        attach (square_grid, 0, 0);
-        attach (keyboard, 0, 1);
+        attach (status_grid, 0, 0);
+        attach (square_grid, 0, 1);
+        attach (keyboard, 0, 2);
     }
 
     private void dispose_ui () {
+        status_grid.dispose ();
         square_grid.dispose ();
         keyboard.dispose ();
     }
@@ -146,7 +163,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         }
         // Update the square and key states
         if (update_states (current_row, current_guess)) {
-            on_game_won ();
+            on_game_won (current_row + 1);
             return;
         }
         // Increment the row and reset the column
@@ -280,28 +297,56 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         return correct_indices.size == num_cols;
     }
 
-    private void on_game_won () {
-        on_game_over ();
-        // Call the signal
-        game_won ();
+    private void on_game_won (int num_guesses) {
+        // Stop processing input
+        is_game_in_progress = false;
+
+        // Update UI
+        status_label.set_text ("You win!");
+
+        // Update statistics
+        increment_stat ("num-games-won");
+        increment_stat ("win-streak");
+        if (get_stat ("win-streak") > get_stat ("max-win-streak")) {
+            set_stat ("max-win-streak", get_stat ("win-streak"));
+        }
+        increment_stat ("wins-in-%d".printf (num_guesses));
+
+        // Call signals
+        game_won (num_guesses);
     }
 
     private void on_game_lost () {
-        on_game_over ();
-        // Call the signal
-        game_lost ();
-    }
-
-    private void on_game_over () {
         // Stop processing input
         is_game_in_progress = false;
+
+        // Update UI
+        status_label.set_text ("Game Over");
+        answer_label.set_markup ("Answer: <b>%s</b>".printf (answer));
+
         // Update statistics
-        // TODO
+        increment_stat ("num-games-lost");
+        set_stat ("win-streak", 0);
+
+        // Call signals
+        game_lost (answer);
+    }
+
+    private int get_stat (string name) {
+        return Warble.Application.settings.get_int (name);
+    }
+
+    private void set_stat (string name, int value) {
+        Warble.Application.settings.set_int (name, value);
+    }
+
+    private void increment_stat (string name) {
+        set_stat (name, get_stat (name) + 1);
     }
 
     public signal void insufficient_letters ();
     public signal void invalid_word ();
-    public signal void game_won ();
-    public signal void game_lost ();
+    public signal void game_won (int num_guesses);
+    public signal void game_lost (string answer);
 
 }
