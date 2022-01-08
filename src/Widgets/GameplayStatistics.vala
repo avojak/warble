@@ -144,8 +144,9 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
             level_bar.add_offset_value (Gtk.LEVEL_BAR_OFFSET_FULL, 0.0);
             guess_distribution_grid.attach (level_bar, 1, i + 1, 1, 1);
 
-            var guess_count = new Gtk.Label (val > 0 ? val.to_string () : "") {
-                margin_left = 4
+            var guess_count = new Gtk.Label (val > 0 ? "<small>%s</small>".printf (val.to_string ()) : "") {
+                margin_left = 4,
+                use_markup = true
             };
             guess_distribution_grid.attach (guess_count, 2, i + 1, 1, 1);
         }

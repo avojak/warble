@@ -96,8 +96,11 @@ install_data(
     rename: '@0@.key-correct.svg'.format(application_id)
 )
 
-
-# Install the dictionary file
+# Install the dictionary and candidate words files
+install_data(
+    'dictionary.txt',
+    install_dir: join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
+)
 install_data(
     'words.txt',
     install_dir: join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())

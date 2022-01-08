@@ -52,7 +52,4 @@ $ ninja -C build com.github.avojak.warble-update-po
 
 ## Word List
 
-The `dictionary.txt` word list is a pre-shuffled version of: https://github.com/sindresorhus/word-list
-
-The `words.txt` file is sourced from: https://www-cs-faculty.stanford.edu/~knuth/sgb-words.txt, and
-made available by Peter Norvig under the MIT license (http://norvig.com/ngrams/).
+The `dictionary.txt` word list is sourced from [sindresorhus/word-list](https://github.com/sindresorhus/word-list)

@@ -37,13 +37,6 @@
         var body = get_content_area ();
 
         // Create the header
-        var header_grid = new Gtk.Grid () {
-            margin_start = 30,
-            margin_end = 30,
-            margin_bottom = 30,
-            column_spacing = 10
-        };
-
         var header_title = new Gtk.Label ("How to Play");
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
         header_title.halign = Gtk.Align.CENTER;
@@ -51,119 +44,46 @@
         header_title.margin_end = 10;
         header_title.set_line_wrap (true);
 
+        var header_grid = create_grid ();
         header_grid.attach (header_title, 0, 0);
 
         // Create the main rules body
-        var rules_grid = new Gtk.Grid () {
-            halign = Gtk.Align.CENTER,
-            margin_start = 30,
-            margin_end = 30,
-            margin_bottom = 10,
-            column_spacing = 10,
-            row_spacing = 8
-        };
-
+        var rules_grid = create_grid ();
         rules_grid.attach (new Gtk.Label ("Guess the 5-letter word in 6 guesses or less!"), 0, 0);
         rules_grid.attach (new Gtk.Label ("As you type, the squares on the board will be filled in."), 0, 1);
 
         // Explain the keys
-        var accelerator_grid = new Gtk.Grid () {
-            halign = Gtk.Align.CENTER,
-            margin_start = 30,
-            margin_end = 30,
-            margin_bottom = 30,
-            column_spacing = 10,
-            row_spacing = 8,
-            hexpand = false
-        };
-
+        var accelerator_grid = create_grid ();
         accelerator_grid.attach (new Granite.AccelLabel ("Undo a typed letter", "Delete"), 0, 2);
         accelerator_grid.attach (new Granite.AccelLabel ("Submit your guess", "Return"), 0, 3);
 
         // Explain the color changes
-        var square_colors_grid = new Gtk.Grid () {
-            halign = Gtk.Align.CENTER,
-            margin_start = 30,
-            margin_end = 30,
-            margin_bottom = 10,
-            column_spacing = 10,
-            row_spacing = 8
-        };
-        square_colors_grid.attach (new Gtk.Label ("If you guess a letter in its correct position, the square will turn green.") {
-            justify = Gtk.Justification.CENTER,
-            halign = Gtk.Align.CENTER,
-            max_width_chars = 30,
-            wrap = true,
-            wrap_mode = Pango.WrapMode.WORD
-        }, 0, 0);
-        square_colors_grid.attach (new Warble.Widgets.Square () {
-            letter = 'A',
-            state = Warble.Widgets.Square.State.CORRECT
-        }, 1, 0);
-        square_colors_grid.attach (new Gtk.Label ("If the letter does not appear anywhere in the answer, the square will turn dark grey.") {
-            justify = Gtk.Justification.CENTER,
-            halign = Gtk.Align.CENTER,
-            max_width_chars = 30,
-            wrap = true,
-            wrap_mode = Pango.WrapMode.WORD
-        }, 0, 1);
-        square_colors_grid.attach (new Warble.Widgets.Square () {
-            letter = 'B',
-            state = Warble.Widgets.Square.State.INCORRECT
-        }, 1, 1);
-        square_colors_grid.attach (new Gtk.Label ("If the letter appears in the answer but not in the position that you have guessed, the square will turn yellow.") {
-            justify = Gtk.Justification.CENTER,
-            halign = Gtk.Align.CENTER,
-            max_width_chars = 30,
-            wrap = true,
-            wrap_mode = Pango.WrapMode.WORD
-        }, 0, 2);
-        square_colors_grid.attach (new Warble.Widgets.Square () {
-            letter = 'C',
-            state = Warble.Widgets.Square.State.CLOSE
-        }, 1, 2);
+        var square_colors_grid = create_grid ();
+        square_colors_grid.attach (create_label ("If you guess a letter in its correct position, the square will turn green."), 0, 0);
+        square_colors_grid.attach (create_word_grid ("ROUTE", 0, Warble.Widgets.Square.State.CORRECT), 0, 1);
+        square_colors_grid.attach (create_label ("If the letter does not appear anywhere in the answer, the square will turn dark grey."), 0, 2);
+        square_colors_grid.attach (create_word_grid ("ALURE", 2, Warble.Widgets.Square.State.INCORRECT), 0, 3);
+        square_colors_grid.attach (create_label ("If the letter appears in the answer but not in the position that you have guessed, the square will turn yellow."), 0, 4);
+        square_colors_grid.attach (create_word_grid ("TRAIN", 4, Warble.Widgets.Square.State.CLOSE), 0, 5);
 
-        var key_colors_grid = new Gtk.Grid () {
-            halign = Gtk.Align.CENTER,
-            margin_start = 30,
-            margin_end = 30,
-            margin_bottom = 10,
-            column_spacing = 10,
-            row_spacing = 8
-        };
-        key_colors_grid.attach (new Gtk.Label ("The keys on the keyboard will similarly change colors to help you keep track of which letters have been used.") {
-            justify = Gtk.Justification.CENTER,
-            halign = Gtk.Align.CENTER,
-            max_width_chars = 40,
-            wrap = true,
-            wrap_mode = Pango.WrapMode.WORD
-        }, 0, 0, 3, 1);
-        key_colors_grid.attach (new Warble.Widgets.Key ('A') {
-            state = Warble.Widgets.Key.State.CORRECT
-        }, 0, 1, 1, 1);
-        key_colors_grid.attach (new Warble.Widgets.Key ('B') {
-            state = Warble.Widgets.Key.State.INCORRECT
-        }, 1, 1, 1, 1);
-        key_colors_grid.attach (new Warble.Widgets.Key ('C') {
-            state = Warble.Widgets.Key.State.CLOSE
-        }, 2, 1, 1, 1);
+        var key_colors_grid = create_grid ();
+        key_colors_grid.attach (create_label ("The keys on the keyboard at the bottom of the screen will similarly change colors to help you keep track of which letters have been used."), 0, 0, 3, 1);
+        //  key_colors_grid.attach (new Warble.Widgets.Key ('A') {
+        //      state = Warble.Widgets.Key.State.CORRECT
+        //  }, 0, 1, 1, 1);
+        //  key_colors_grid.attach (new Warble.Widgets.Key ('B') {
+        //      state = Warble.Widgets.Key.State.INCORRECT
+        //  }, 1, 1, 1, 1);
+        //  key_colors_grid.attach (new Warble.Widgets.Key ('C') {
+        //      state = Warble.Widgets.Key.State.CLOSE
+        //  }, 2, 1, 1, 1);
 
         body.add (header_grid);
         body.add (rules_grid);
-        body.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
-            margin_start = 30,
-            margin_end = 30,
-            margin_top = 10,
-            margin_bottom = 10
-        });
+        body.add (create_separator ());
         body.add (square_colors_grid);
         body.add (key_colors_grid);
-        body.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
-            margin_start = 30,
-            margin_end = 30,
-            margin_top = 10,
-            margin_bottom = 10
-        });
+        body.add (create_separator ());
         body.add (accelerator_grid);
 
         // Add action buttons
@@ -174,6 +94,47 @@
         });
 
         add_action_widget (start_button, 1);
+    }
+
+    private Gtk.Grid create_grid () {
+        return new Gtk.Grid () {
+            halign = Gtk.Align.CENTER,
+            margin_start = 30,
+            margin_end = 30,
+            margin_bottom = 10,
+            column_spacing = 10,
+            row_spacing = 8
+        };
+    }
+
+    private Gtk.Separator create_separator () {
+        return new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
+            margin_start = 30,
+            margin_end = 30,
+            margin_top = 10,
+            margin_bottom = 10
+        };
+    }
+
+    private Gtk.Label create_label (string text) {
+        return new Gtk.Label (text) {
+            justify = Gtk.Justification.CENTER,
+            halign = Gtk.Align.CENTER,
+            max_width_chars = 60,
+            wrap = true,
+            wrap_mode = Pango.WrapMode.WORD
+        };
+    }
+
+    private Gtk.Grid create_word_grid (string word, int index, Warble.Widgets.Square.State state) {
+        var grid = create_grid ();
+        for (int i = 0; i < word.length; i++) {
+            grid.attach (new Warble.Widgets.Square () {
+                letter = word[i],
+                state = i == index ? state : Warble.Widgets.Square.State.BLANK
+            }, i, 0);
+        }
+        return grid;
     }
 
 }

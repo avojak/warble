@@ -192,7 +192,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             return false;
         }
         // Check if the guessed word is actually a word
-        if (!Warble.Application.dictionary.words_by_length.get (num_cols).contains (current_guess)) {
+        if (!Warble.Application.dictionary.is_word_in_dictionary (current_guess)) {
             invalid_word ();
             return false;
         }
