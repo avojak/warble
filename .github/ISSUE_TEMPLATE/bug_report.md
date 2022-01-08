@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
  - OS Version: [e.g. elementary OS 5.1.7, or you can use: `uname -a && cat /etc/os-release`]
- - Iridium Version [e.g. 1.0.0]
+ - Warble Version [e.g. 1.0.0]
 
 **Additional context**
 Add any other context about the problem here.
