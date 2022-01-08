@@ -185,7 +185,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         return current_row == 0;
     }
 
-    private bool validate_guess (string current_guess) {        
+    private bool validate_guess (string current_guess) {
         // Check if there were enough letters guessed
         if (current_guess.length < num_cols) {
             insufficient_letters ();

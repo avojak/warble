@@ -78,7 +78,7 @@ public class Warble.MainLayout : Gtk.Grid {
 
         attach (header_bar, 0, 0);
         attach (overlay, 0, 1);
-        
+
         show_all ();
 
         check_first_launch ();

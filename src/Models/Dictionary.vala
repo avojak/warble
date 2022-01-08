@@ -29,7 +29,8 @@ public class Warble.Models.Dictionary : GLib.Object {
      * Game answers are selected from the subset to ensure that the answer
      * is, more likely than not, a known word to the user. However, if a 
      * user guesses a word that's not in the subset, we still want to
-     * accept the guess if it's a valid English word. Thus, the dictionary. 
+     * accept the guess if it's a valid English word. Thus, the dictionary.
+     * This should make for a better user experience.
      */
     private const string DICTIONARY_FILE_NAME = "dictionary.txt";
     private const string CANDIDATES_FILE_NAME = "words.txt";

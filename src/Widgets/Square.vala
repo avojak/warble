@@ -58,11 +58,11 @@ public class Warble.Widgets.Square : Gtk.Image {
     }
 
     private void draw_letter (Cairo.Context ctx) {
-        var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT.get_value ());
+        var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
         ctx.set_source_rgb (color.R, color.G, color.B);
 
         ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
-	    ctx.set_font_size (30);
+        ctx.set_font_size (30);
 
         Cairo.TextExtents extents;
         ctx.text_extents (letter.to_string (), out extents);

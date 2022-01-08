@@ -90,7 +90,7 @@ public class Warble.Widgets.Dialogs.DefeatDialog : Granite.Dialog {
         add_action_widget (not_now_button, 0);
         add_action_widget (play_again_button, 1);
     }
-    
+
     public signal void play_again_button_clicked ();
 
 }
