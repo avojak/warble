@@ -26,6 +26,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
     private Gee.List<Gee.List<Warble.Widgets.Square>> rows;
 
+    private Gtk.Revealer endgame_revealer;
     private Gtk.Grid status_grid;
     private Gtk.Label status_label;
     private Gtk.Label answer_label;
@@ -85,8 +86,15 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         status_grid.attach (status_label, 0, 0);
         status_grid.attach (answer_label, 0, 1);
 
+        endgame_revealer = new Gtk.Revealer () {
+            transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN,
+            expand = true
+        };
+        endgame_revealer.add (status_grid);
+
         square_grid = new Gtk.Grid () {
-            margin = 8
+            margin = 8,
+            expand = true
         };
         rows = new Gee.ArrayList<Gee.List<Warble.Widgets.Square>> ();
         for (int i = 0; i < num_rows; i++) {
@@ -101,7 +109,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
         keyboard = new Warble.Widgets.Keyboard ();
 
-        attach (status_grid, 0, 0);
+        attach (endgame_revealer, 0, 0);
         attach (square_grid, 0, 1);
         attach (keyboard, 0, 2);
     }
@@ -302,7 +310,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         is_game_in_progress = false;
 
         // Update UI
-        status_label.set_text ("You win!");
+        status_label.set_text ("🎉️ You Win!");
+        endgame_revealer.set_reveal_child (true);
 
         // Update statistics
         increment_stat ("num-games-won");
@@ -322,7 +331,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
         // Update UI
         status_label.set_text ("Game Over");
-        answer_label.set_markup ("Answer: <b>%s</b>".printf (answer));
+        answer_label.set_markup (@"Answer: <b>$answer</b>");
+        endgame_revealer.set_reveal_child (true);
 
         // Update statistics
         increment_stat ("num-games-lost");
