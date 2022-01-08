@@ -102,7 +102,6 @@
             margin_start = 30,
             margin_end = 30,
             margin_bottom = 10,
-            column_spacing = 10,
             row_spacing = 8
         };
     }

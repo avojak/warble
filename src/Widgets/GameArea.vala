@@ -60,8 +60,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     }
 
     private void initialize () {
-        // Grab the word now and hold it in case a game spans across midnight
-        //  answer = Warble.Application.dictionary.get_word_of_the_day (new GLib.DateTime.now_local (), num_cols);
         answer = Warble.Application.dictionary.get_random_word (num_cols);
         debug (answer);
 

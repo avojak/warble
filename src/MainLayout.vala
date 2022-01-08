@@ -41,8 +41,8 @@ public class Warble.MainLayout : Gtk.Grid {
     public MainLayout (Warble.MainWindow window) {
         Object (
             window: window,
-            width_request: 500,
-            height_request: 675
+            width_request: 450,
+            height_request: 625
         );
     }
 

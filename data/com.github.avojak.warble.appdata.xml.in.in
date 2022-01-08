@@ -12,12 +12,24 @@
   <provides>
     <binary>@appid@</binary>
   </provides>
-  <!-- <releases>
-    TODO
-  </releases> -->
-  <!-- <screenshots>
-    TODO
-  </screenshots> -->
+  <releases>
+    <release version="1.0.0" date="2022-01-07">
+      <description>
+        <p>Initial Release</p>
+      </description>
+    </release>
+  </releases>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-01.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-02.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-03.png</image>
+    </screenshot>
+  </screenshots>
   <developer_name>Andrew Vojak</developer_name>
   <launchable type="desktop-id">@appid@.desktop</launchable>
   <url type="homepage">https://github.com/avojak/warble</url>
