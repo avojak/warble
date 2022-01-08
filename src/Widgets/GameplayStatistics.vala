@@ -34,12 +34,13 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
 
     construct {
         // Load stats and do calculations
-        int num_games_won = get_stat ("num-games-won");
-        int num_games_lost = get_stat ("num-games-lost");
+        int num_games_won = get_int_stat ("num-games-won");
+        int num_games_lost = get_int_stat ("num-games-lost");
         int total_games = num_games_won + num_games_lost;
         int win_percent = total_games > 0 ? (int) (((double) num_games_won / (double) total_games) * 100) : 0;
-        int win_streak = get_stat ("win-streak");
-        int max_win_streak = get_stat ("max-win-streak");
+        int win_streak = get_int_stat ("win-streak");
+        int max_win_streak = get_int_stat ("max-win-streak");
+        string[] guess_distribution = get_string_stat ("guess-distribution").split ("|");
 
         var stats_grid = new Gtk.Grid () {
             orientation = Gtk.Orientation.VERTICAL,
@@ -116,43 +117,49 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
             halign = Gtk.Align.CENTER
         };
         guess_distribution_label.get_style_context ().add_class ("h3");
-        guess_distribution_grid.attach (guess_distribution_label, 0, 0, 2, 1);
+        guess_distribution_grid.attach (guess_distribution_label, 0, 0, 3, 1);
 
         int max_guesses = 0;
-        for (int i = 1; i <= 6; i++) {
-            int num_guesses = get_stat ("wins-in-%d".printf (i));
+        for (int i = 0; i < guess_distribution.length; i++) {
+            int num_guesses = int.parse (guess_distribution[i].split (":")[1]);
             if (num_guesses > max_guesses) {
                 max_guesses = num_guesses;
             }
         }
-        for (int i = 1; i <= 6; i++) {
-            var label = new Gtk.Label ("<b>%s</b>".printf (i.to_string ())) {
+        for (int i = 0; i < guess_distribution.length; i++) {
+            string key = guess_distribution[i].split (":")[0];
+            int val = int.parse (guess_distribution[i].split (":")[1]);
+
+            var label = new Gtk.Label (@"<b>$key</b>") {
                 margin_right = 4,
                 use_markup = true
             };
-            guess_distribution_grid.attach (label, 0, i, 1, 1);
+            guess_distribution_grid.attach (label, 0, i + 1, 1, 1);
 
-            int num_guesses = get_stat ("wins-in-%d".printf (i));
             var level_bar = new Gtk.LevelBar.for_interval (0, max_guesses) {
                 mode = Gtk.LevelBarMode.CONTINUOUS,
-                value = num_guesses,
+                value = val,
                 hexpand = true
             };
             level_bar.add_offset_value (Gtk.LEVEL_BAR_OFFSET_FULL, 0.0);
-            guess_distribution_grid.attach (level_bar, 1, i, 1, 1);
+            guess_distribution_grid.attach (level_bar, 1, i + 1, 1, 1);
 
-            var guess_count = new Gtk.Label (num_guesses > 0 ? num_guesses.to_string () : "") {
+            var guess_count = new Gtk.Label (val > 0 ? val.to_string () : "") {
                 margin_left = 4
             };
-            guess_distribution_grid.attach (guess_count, 2, i, 1, 1);
+            guess_distribution_grid.attach (guess_count, 2, i + 1, 1, 1);
         }
 
         attach (stats_grid, 0, 0);
         attach (guess_distribution_grid, 0, 1);
     }
 
-    private int get_stat (string name) {
+    private int get_int_stat (string name) {
         return Warble.Application.settings.get_int (name);
+    }
+
+    private string get_string_stat (string name) {
+        return Warble.Application.settings.get_string (name);
     }
 
 }

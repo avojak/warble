@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
   <schema path="@schema-path@" id="@appid@">
-    <key name="prefer-dark-style" type="b">
-      <default>false</default>
-      <summary>If the dark Gtk stylesheet should be used</summary>
-      <description>If the dark Gtk stylesheet should be used</description>
-    </key>
     <key name="pos-x" type="i">
       <default>360</default>
       <summary>The saved horizontal position of the window.</summary>
@@ -41,35 +36,10 @@
       <summary>The max win streak</summary>
       <description>The max win streak</description>
     </key>
-    <key name="wins-in-1" type="i">
-      <default>0</default>
-      <summary>The number of games won in 1 guess</summary>
-      <description>The number of games won in 1 guess</description>
-    </key>
-    <key name="wins-in-2" type="i">
-      <default>0</default>
-      <summary>The number of games won in 2 guesses</summary>
-      <description>The number of games won in 2 guesses</description>
-    </key>
-    <key name="wins-in-3" type="i">
-      <default>0</default>
-      <summary>The number of games won in 3 guesses</summary>
-      <description>The number of games won in 3 guesses</description>
-    </key>
-    <key name="wins-in-4" type="i">
-      <default>0</default>
-      <summary>The number of games won in 4 guesses</summary>
-      <description>The number of games won in 4 guesses</description>
-    </key>
-    <key name="wins-in-5" type="i">
-      <default>0</default>
-      <summary>The number of games won in 5 guesses</summary>
-      <description>The number of games won in 5 guesses</description>
-    </key>
-    <key name="wins-in-6" type="i">
-      <default>0</default>
-      <summary>The number of games won in 6 guesses</summary>
-      <description>The number of games won in 6 guesses</description>
+    <key name="guess-distribution" type="s">
+      <default>"1:0|2:0|3:0|4:0|5:0|6:0"</default>
+      <summary>The number of games won for each number of guesses</summary>
+      <description>The number of games won for each number of guesses</description>
     </key>
   </schema>
 </schemalist>

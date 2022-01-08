@@ -63,10 +63,14 @@ public class Warble.Widgets.Dialogs.DefeatDialog : Granite.Dialog {
             row_spacing = 8
         };
 
-        body_grid.attach (new Gtk.Label ("The correct answer was: <b>%s</b>".printf (answer)) {
+        body_grid.attach (new Gtk.Label (@"The correct answer was: <b>$answer</b>") {
             use_markup = true
         }, 0, 0);
-        body_grid.attach (new Gtk.Label ("Play again?"), 0, 1);
+        body_grid.attach (new Warble.Widgets.GameplayStatistics (), 0, 1);
+        body_grid.attach (new Gtk.Label ("Would you like to play again?") {
+            margin_top = 30,
+            margin_bottom = 10
+        }, 0, 2);
 
         body.add (header_grid);
         body.add (body_grid);

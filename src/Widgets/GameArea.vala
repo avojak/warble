@@ -307,10 +307,10 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         // Update statistics
         increment_stat ("num-games-won");
         increment_stat ("win-streak");
-        if (get_stat ("win-streak") > get_stat ("max-win-streak")) {
-            set_stat ("max-win-streak", get_stat ("win-streak"));
+        if (get_int_stat ("win-streak") > get_int_stat ("max-win-streak")) {
+            set_int_stat ("max-win-streak", get_int_stat ("win-streak"));
         }
-        increment_stat ("wins-in-%d".printf (num_guesses));
+        increment_guess_distribution (num_guesses);
 
         // Call signals
         game_won (num_guesses);
@@ -326,22 +326,39 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
         // Update statistics
         increment_stat ("num-games-lost");
-        set_stat ("win-streak", 0);
+        set_int_stat ("win-streak", 0);
 
         // Call signals
         game_lost (answer);
     }
 
-    private int get_stat (string name) {
+    private int get_int_stat (string name) {
         return Warble.Application.settings.get_int (name);
     }
 
-    private void set_stat (string name, int value) {
+    private void set_int_stat (string name, int value) {
         Warble.Application.settings.set_int (name, value);
     }
 
+    private string get_string_stat (string name) {
+        return Warble.Application.settings.get_string (name);
+    }
+
+    private void set_string_stat (string name, string value) {
+        Warble.Application.settings.set_string (name, value);
+    }
+
     private void increment_stat (string name) {
-        set_stat (name, get_stat (name) + 1);
+        set_int_stat (name, get_int_stat (name) + 1);
+    }
+
+    private void increment_guess_distribution (int num_guesses) {
+        var distribution = get_string_stat ("guess-distribution");
+        string[] counts = distribution.split ("|");
+        int old_count = int.parse (counts[num_guesses - 1].split (":")[1]);
+        counts[num_guesses - 1] = "%d:%d".printf (num_guesses, old_count + 1);
+        var new_distribution = string.joinv ("|", counts);
+        set_string_stat ("guess-distribution", new_distribution);
     }
 
     public signal void insufficient_letters ();
