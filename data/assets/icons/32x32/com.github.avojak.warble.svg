@@ -24,10 +24,10 @@
      inkscape:pagecheckerboard="0"
      showgrid="false"
      inkscape:zoom="27.28125"
-     inkscape:cx="6.3046964"
+     inkscape:cx="-3.4089347"
      inkscape:cy="16"
-     inkscape:window-width="3008"
-     inkscape:window-height="1631"
+     inkscape:window-width="1792"
+     inkscape:window-height="1059"
      inkscape:window-x="0"
      inkscape:window-y="30"
      inkscape:window-maximized="1"
@@ -223,26 +223,22 @@
      id="rect5505-9"
      d="M 3 25.384766 L 3 27.384766 C 3 28.279701 3.7202997 29 4.6152344 29 L 27.384766 29 C 28.279701 29 29 28.279701 29 27.384766 L 29 25.384766 C 29 26.279701 28.279701 27 27.384766 27 L 4.6152344 27 C 3.7202997 27 3 26.279701 3 25.384766 z "
      style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;enable-background:accumulate;opacity:0.1" />
-  <text
-     xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none"
-     x="8.5976562"
-     y="20.710875"
-     id="text9155-7"><tspan
-       sodipodi:role="line"
-       id="tspan9153-1"
-       x="8.5976562"
-       y="20.710875"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';fill:#ffffff;fill-opacity:1">W</tspan></text>
-  <text
-     xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;opacity:0.7;fill:#555761;fill-opacity:1;stroke:none"
-     x="8.5976562"
-     y="20.210875"
-     id="text9155"><tspan
-       sodipodi:role="line"
-       id="tspan9153"
-       x="8.5976562"
-       y="20.210875"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';fill:#555761;fill-opacity:1">W</tspan></text>
+  <g
+     aria-label="W"
+     id="text9155-7"
+     style="font-size:16px;line-height:1.25;fill:#ffffff">
+    <path
+       d="m 20.136719,20.710875 h -1.3125 l -2.304688,-7.648438 q -0.164062,-0.507812 -0.367187,-1.28125 -0.203125,-0.773437 -0.210938,-0.929687 -0.171875,1.03125 -0.546875,2.257812 l -2.234375,7.601563 h -1.3125 L 8.8085938,9.2889996 h 1.4062502 l 1.804687,7.0546874 q 0.375,1.484375 0.546875,2.6875 0.210938,-1.429687 0.625,-2.796875 l 2.046875,-6.9453124 h 1.40625 l 2.148438,7.0078124 q 0.375,1.210938 0.632812,2.734375 0.148438,-1.109375 0.5625,-2.703125 l 1.796875,-7.0390624 h 1.40625 z"
+       style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans'"
+       id="path860" />
+  </g>
+  <g
+     aria-label="W"
+     id="text9155"
+     style="font-size:16px;line-height:1.25;opacity:0.7;fill:#555761">
+    <path
+       d="m 20.136719,20.210875 h -1.3125 l -2.304688,-7.648438 q -0.164062,-0.507812 -0.367187,-1.28125 -0.203125,-0.773437 -0.210938,-0.929687 -0.171875,1.03125 -0.546875,2.257812 l -2.234375,7.601563 h -1.3125 L 8.8085938,8.7889996 h 1.4062502 l 1.804687,7.0546874 q 0.375,1.484375 0.546875,2.6875 0.210938,-1.429687 0.625,-2.796875 l 2.046875,-6.9453124 h 1.40625 l 2.148438,7.0078124 q 0.375,1.210938 0.632812,2.734375 0.148438,-1.109375 0.5625,-2.703125 l 1.796875,-7.0390624 h 1.40625 z"
+       style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans'"
+       id="path857" />
+  </g>
 </svg>
