@@ -34,6 +34,22 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         unowned Gtk.StyleContext style_context = get_style_context ();
         style_context.add_class (Gtk.STYLE_CLASS_FLAT);
 
+        var difficulty_button = new Granite.Widgets.ModeButton () {
+            margin = 12
+        };
+        difficulty_button.mode_added.connect ((index, widget) => {
+            widget.set_tooltip_markup (((Warble.Models.Difficulty) index).get_details_markup ());
+        });
+        difficulty_button.append_text (Warble.Models.Difficulty.EASY.get_display_string ());
+        difficulty_button.append_text (Warble.Models.Difficulty.NORMAL.get_display_string ());
+        difficulty_button.append_text (Warble.Models.Difficulty.HARD.get_display_string ());
+        difficulty_button.set_active ((int) Warble.Models.Difficulty.get_value_by_short_name (Warble.Application.settings.get_string ("difficulty")));
+        difficulty_button.mode_changed.connect (() => {
+            Warble.Models.Difficulty new_difficulty = (Warble.Models.Difficulty) difficulty_button.selected;
+            debug (new_difficulty.get_display_string ());
+            Warble.Application.settings.set_string ("difficulty", new_difficulty.get_short_name ());
+        });
+
         var new_game_accellabel = new Granite.AccelLabel.from_action_name (
             _("New Game"),
             Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_NEW_GAME
@@ -72,12 +88,13 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         menu_popover_grid.margin_bottom = 3;
         menu_popover_grid.orientation = Gtk.Orientation.VERTICAL;
         menu_popover_grid.width_request = 200;
-        menu_popover_grid.attach (new_game_menu_item, 0, 0);
-        menu_popover_grid.attach (create_menu_separator (), 0, 1);
-        menu_popover_grid.attach (gameplay_stats_menu_item, 0, 2);
-        menu_popover_grid.attach (help_menu_item, 0, 3);
-        menu_popover_grid.attach (create_menu_separator (), 0, 4);
-        menu_popover_grid.attach (quit_menu_item, 0, 5);
+        menu_popover_grid.attach (difficulty_button, 0, 0, 3, 1);
+        menu_popover_grid.attach (new_game_menu_item, 0, 1, 1, 1);
+        menu_popover_grid.attach (create_menu_separator (), 0, 2, 1, 1);
+        menu_popover_grid.attach (gameplay_stats_menu_item, 0, 3, 1, 1);
+        menu_popover_grid.attach (help_menu_item, 0, 4, 1, 1);
+        menu_popover_grid.attach (create_menu_separator (), 0, 5, 1, 1);
+        menu_popover_grid.attach (quit_menu_item, 0, 6, 1, 1);
         menu_popover_grid.show_all ();
 
         var menu_popover = new Gtk.Popover (null);
@@ -102,6 +119,19 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         menu_separator.margin_top = 3;
         menu_separator.margin_bottom = 3;
         return menu_separator;
+    }
+
+    private Gtk.Button create_difficulty_button (Warble.Models.Difficulty difficulty) {
+        var current_difficulty = Warble.Models.Difficulty.get_value_by_short_name (Warble.Application.settings.get_string ("difficulty"));
+        var button = new Gtk.Button.with_label (difficulty.get_display_string ());
+        button.set_tooltip_markup (difficulty.get_details_markup ());
+        button.clicked.connect (() => {
+            Warble.Application.settings.set_string ("difficulty", difficulty.get_short_name ());
+        });
+        if (difficulty == current_difficulty) {
+            button.activate ();
+        }
+        return button;
     }
 
     public signal void gameplay_statistics_menu_item_clicked ();

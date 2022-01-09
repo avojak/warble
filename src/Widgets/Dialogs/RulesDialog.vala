@@ -49,7 +49,7 @@
 
         // Create the main rules body
         var rules_grid = create_grid ();
-        rules_grid.attach (new Gtk.Label ("Guess the 5-letter word in 6 guesses or less!"), 0, 0);
+        rules_grid.attach (new Gtk.Label ("Figure out the word before your guesses run out!"), 0, 0);
         rules_grid.attach (new Gtk.Label ("As you type, the squares on the board will be filled in."), 0, 1);
 
         // Explain the keys
@@ -60,31 +60,19 @@
         // Explain the color changes
         var square_colors_grid = create_grid ();
         square_colors_grid.attach (create_label ("If you guess a letter in its correct position, the square will turn green."), 0, 0);
-        square_colors_grid.attach (create_word_grid ("ROUTE", 0, Warble.Widgets.Square.State.CORRECT), 0, 1);
-        square_colors_grid.attach (create_label ("If the letter does not appear anywhere in the answer, the square will turn dark grey."), 0, 2);
-        square_colors_grid.attach (create_word_grid ("ALURE", 2, Warble.Widgets.Square.State.INCORRECT), 0, 3);
-        square_colors_grid.attach (create_label ("If the letter appears in the answer but not in the position that you have guessed, the square will turn yellow."), 0, 4);
-        square_colors_grid.attach (create_word_grid ("TRAIN", 4, Warble.Widgets.Square.State.CLOSE), 0, 5);
+        square_colors_grid.attach (create_label ("If the letter does not appear anywhere in the answer, the square will turn dark grey."), 0, 1);
+        square_colors_grid.attach (create_label ("If the letter appears in the answer but not in the position that you have guessed, the square will turn yellow."), 0, 2);
+        square_colors_grid.attach (create_word_grid (), 0, 3);
 
         var key_colors_grid = create_grid ();
         key_colors_grid.attach (create_label ("The keys on the keyboard at the bottom of the screen will similarly change colors to help you keep track of which letters have been used."), 0, 0, 3, 1);
-        //  key_colors_grid.attach (new Warble.Widgets.Key ('A') {
-        //      state = Warble.Widgets.Key.State.CORRECT
-        //  }, 0, 1, 1, 1);
-        //  key_colors_grid.attach (new Warble.Widgets.Key ('B') {
-        //      state = Warble.Widgets.Key.State.INCORRECT
-        //  }, 1, 1, 1, 1);
-        //  key_colors_grid.attach (new Warble.Widgets.Key ('C') {
-        //      state = Warble.Widgets.Key.State.CLOSE
-        //  }, 2, 1, 1, 1);
 
         body.add (header_grid);
         body.add (rules_grid);
+        body.add (accelerator_grid);
         body.add (create_separator ());
         body.add (square_colors_grid);
         body.add (key_colors_grid);
-        body.add (create_separator ());
-        body.add (accelerator_grid);
 
         // Add action buttons
         var start_button = new Gtk.Button.with_label (_("Let's Get Started!"));
@@ -99,6 +87,7 @@
     private Gtk.Grid create_grid () {
         return new Gtk.Grid () {
             halign = Gtk.Align.CENTER,
+            hexpand = true,
             margin_start = 30,
             margin_end = 30,
             margin_bottom = 10,
@@ -119,20 +108,34 @@
         return new Gtk.Label (text) {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
-            max_width_chars = 60,
+            max_width_chars = 50,
             wrap = true,
             wrap_mode = Pango.WrapMode.WORD
         };
     }
 
-    private Gtk.Grid create_word_grid (string word, int index, Warble.Widgets.Square.State state) {
+    private Gtk.Grid create_word_grid () {
         var grid = create_grid ();
-        for (int i = 0; i < word.length; i++) {
-            grid.attach (new Warble.Widgets.Square () {
-                letter = word[i],
-                state = i == index ? state : Warble.Widgets.Square.State.BLANK
-            }, i, 0);
-        }
+        grid.attach (new Warble.Widgets.Square () {
+            letter = 'T',
+            state = Warble.Widgets.Square.State.CORRECT
+        }, 0, 0);
+        grid.attach (new Warble.Widgets.Square () {
+            letter = 'R',
+            state = Warble.Widgets.Square.State.CORRECT
+        }, 1, 0);
+        grid.attach (new Warble.Widgets.Square () {
+            letter = 'A',
+            state = Warble.Widgets.Square.State.INCORRECT
+        }, 2, 0);
+        grid.attach (new Warble.Widgets.Square () {
+            letter = 'I',
+            state = Warble.Widgets.Square.State.INCORRECT
+        }, 3, 0);
+        grid.attach (new Warble.Widgets.Square () {
+            letter = 'N',
+            state = Warble.Widgets.Square.State.CLOSE
+        }, 4, 0);
         return grid;
     }
 

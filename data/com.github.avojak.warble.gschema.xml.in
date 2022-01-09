@@ -16,6 +16,11 @@
       <summary>Whether or not this is the first launch of the application</summary>
       <description>Whether or not this is the first launch of the application</description>
     </key>
+    <key name="difficulty" type="s">
+      <default>"EASY"</default>
+      <summary>The difficulty setting</summary>
+      <description>The difficulty setting</description>
+    </key>
     <key name="num-games-won" type="i">
       <default>0</default>
       <summary>The number of games won</summary>

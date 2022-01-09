@@ -58,6 +58,8 @@ public class Warble.MainLayout : Gtk.Grid {
         insufficient_letters_toast = new Granite.Widgets.Toast (_("Not enough letters!"));
         invalid_word_toast = new Granite.Widgets.Toast (_("That's not a word!"));
 
+        var difficulty = Warble.Models.Difficulty.get_value_by_short_name (Warble.Application.settings.get_string ("difficulty"));
+        debug (difficulty.get_display_string ());
         game_area = new Warble.Widgets.GameArea (NUM_ROWS, NUM_COLS);
         game_area.insufficient_letters.connect (() => {
             insufficient_letters_toast.send_notification ();

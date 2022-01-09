@@ -26,6 +26,7 @@ echo
 echo "Resetting GSettings..."
 
 set_setting first-launch true
+set_setting difficulty "EASY"
 set_setting num-games-won 0
 set_setting num-games-lost 0
 set_setting win-streak 0
