@@ -41,11 +41,11 @@ public enum Warble.Models.Difficulty {
     public string get_details_markup () {
         switch (this) {
             case EASY:
-                return _("%s Difficulty: 5 letters, 6 guesses".printf (get_display_string ()));
+                return _("%s Difficulty: 5-letter words".printf (get_display_string ()));
             case NORMAL:
-                return _("%s Difficulty: 5 letters, 6 guesses\n<small>All green and yellow letters must be used in subsequent guesses</small>".printf (get_display_string ()));
+                return _("%s Difficulty: 5-letter words\n<small>All green and yellow letters must be used in subsequent guesses</small>".printf (get_display_string ()));
             case HARD:
-                return _("%s Difficulty: 6 letters, 7 guesses\n<small>All green and yellow letters must be used in subsequent guesses</small>".printf (get_display_string ()));
+                return _("%s Difficulty: 6-letter words\n<small>All green and yellow letters must be used in subsequent guesses</small>".printf (get_display_string ()));
             default:
                 assert_not_reached ();
         }
@@ -71,7 +71,7 @@ public enum Warble.Models.Difficulty {
             case NORMAL:
                 return 6;
             case HARD:
-                return 7;
+                return 6;
             default:
                 assert_not_reached ();
         }

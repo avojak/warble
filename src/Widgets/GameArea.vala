@@ -21,8 +21,11 @@
 
 public class Warble.Widgets.GameArea : Gtk.Grid {
 
-    public int num_rows { get; construct; }
-    public int num_cols { get; construct; }
+    public Warble.Models.Difficulty difficulty { get; set; }
+
+    private int num_rows;
+    private int num_cols;
+    private bool must_use_clues;
 
     private Gee.List<Gee.List<Warble.Widgets.Square>> rows;
 
@@ -38,14 +41,12 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     private string answer;
     private bool is_game_in_progress;
 
-    public GameArea (int num_rows, int num_cols) {
+    public GameArea () {
         Object (
             expand: true,
             orientation: Gtk.Orientation.VERTICAL,
             halign: Gtk.Align.CENTER,
-            margin: 8,
-            num_rows: num_rows,
-            num_cols: num_cols
+            margin: 8
         );
     }
 
@@ -54,14 +55,24 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     }
 
     public void new_game () {
+        if (!can_safely_start_new_game ()) {
+            record_loss ();
+        }
         dispose_ui ();
         initialize ();
         show_all ();
     }
 
     private void initialize () {
+        // Initialize the difficulty settings
+        difficulty = (Warble.Models.Difficulty) Warble.Application.settings.get_int ("difficulty");
+        debug ("Difficulty: %s", difficulty.get_display_string ());
+        num_cols = difficulty.get_num_letters ();
+        num_rows = difficulty.get_num_guesses ();
+        must_use_clues = difficulty.must_use_clues ();
+
         answer = Warble.Application.dictionary.get_random_word (num_cols);
-        debug (answer);
+        debug ("Answer: %s", answer);
 
         setup_ui ();
 
@@ -129,6 +140,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         }
         // Update the square
         rows.get (current_row).get (current_col).letter = letter;
+        rows.get (current_row).get (current_col).queue_draw ();
         // Increment the column
         current_col++;
     }
@@ -202,7 +214,65 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             invalid_word ();
             return false;
         }
+        // Check if all clues were used (depending on difficulty setting)
+        if (must_use_clues && current_row > 0) {
+            Gee.Map<char, int> close_guessed_letters = new Gee.HashMap<char, int> ();
+            Gee.List<int> correct_indices = new Gee.ArrayList<int> ();
+            for (int col_index = 0; col_index < num_cols; col_index++) {
+                var prior_square = rows.get (current_row - 1).get (col_index);
+                var current_square = rows.get (current_row).get (col_index);
+                // If letter was previously found to be correct, it must be used in the same place again
+                if (prior_square.state == Warble.Widgets.Square.State.CORRECT) {
+                    if (prior_square.letter != current_square.letter) {
+                        unused_clues ("The %s letter must be \"%s\"".printf (get_ordinal_string (col_index + 1), prior_square.letter.to_string ()));
+                        return false;
+                    } else {
+                        correct_indices.add (col_index);
+                    }
+                }
+                // If the letter was close, save it for the second pass
+                if (prior_square.state == Warble.Widgets.Square.State.CLOSE) {
+                    if (!close_guessed_letters.has_key (prior_square.letter)) {
+                        close_guessed_letters.set (prior_square.letter, 0);
+                    }
+                    close_guessed_letters.set (prior_square.letter, close_guessed_letters.get (prior_square.letter) + 1);
+                }
+            }
+            // Update close_guessed_letters to find unused clues
+            for (int col_index = 0; col_index < num_cols; col_index++) {
+                if (correct_indices.contains (col_index)) {
+                    continue;
+                }
+                var letter = rows.get (current_row).get (col_index).letter;
+                if (close_guessed_letters.has_key (letter)) {
+                    close_guessed_letters.set (letter, close_guessed_letters.get (letter) - 1);
+                }
+            }
+            foreach (var entry in close_guessed_letters.entries) {
+                if (entry.value > 0) {
+                    // entry.key must be a guessed letter
+                    unused_clues ("\"%s\" must be a guessed letter".printf (entry.key.to_string ()));
+                    return false;
+                }
+            }
+        }
         return true;
+    }
+
+    // https://stackoverflow.com/a/13627586/3300205
+    private string get_ordinal_string (int pos) {
+        var j = pos % 10;
+        var k = pos % 100;
+        if (j == 1 && k != 11) {
+            return "%dst".printf (pos);
+        }
+        if (j == 2 && k != 12) {
+            return "%dnd".printf (pos);
+        }
+        if (j == 3 && k != 13) {
+            return "%drd".printf (pos);
+        }
+        return "%dth".printf (pos);
     }
 
     private bool update_states (int current_row, string current_guess) {
@@ -333,11 +403,15 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         endgame_revealer.set_reveal_child (true);
 
         // Update statistics
-        increment_stat ("num-games-lost");
-        set_int_stat ("win-streak", 0);
+        record_loss ();
 
         // Call signals
         game_lost (answer);
+    }
+
+    public void record_loss () {
+        increment_stat ("num-games-lost");
+        set_int_stat ("win-streak", 0);
     }
 
     private int get_int_stat (string name) {
@@ -371,6 +445,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
     public signal void insufficient_letters ();
     public signal void invalid_word ();
+    public signal void unused_clues (string message);
     public signal void game_won (int num_guesses);
     public signal void game_lost (string answer);
 

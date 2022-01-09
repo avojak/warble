@@ -43,12 +43,7 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         difficulty_button.append_text (Warble.Models.Difficulty.EASY.get_display_string ());
         difficulty_button.append_text (Warble.Models.Difficulty.NORMAL.get_display_string ());
         difficulty_button.append_text (Warble.Models.Difficulty.HARD.get_display_string ());
-        difficulty_button.set_active ((int) Warble.Models.Difficulty.get_value_by_short_name (Warble.Application.settings.get_string ("difficulty")));
-        difficulty_button.mode_changed.connect (() => {
-            Warble.Models.Difficulty new_difficulty = (Warble.Models.Difficulty) difficulty_button.selected;
-            debug (new_difficulty.get_display_string ());
-            Warble.Application.settings.set_string ("difficulty", new_difficulty.get_short_name ());
-        });
+        Warble.Application.settings.bind ("difficulty", difficulty_button, "selected", GLib.SettingsBindFlags.DEFAULT);
 
         var new_game_accellabel = new Granite.AccelLabel.from_action_name (
             _("New Game"),

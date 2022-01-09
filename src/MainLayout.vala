@@ -36,6 +36,7 @@ public class Warble.MainLayout : Gtk.Grid {
     private Gtk.Overlay overlay;
     private Granite.Widgets.Toast insufficient_letters_toast;
     private Granite.Widgets.Toast invalid_word_toast;
+    private Granite.Widgets.Toast must_use_clues_toast;
     private Warble.Widgets.GameArea game_area;
 
     public MainLayout (Warble.MainWindow window) {
@@ -57,15 +58,18 @@ public class Warble.MainLayout : Gtk.Grid {
 
         insufficient_letters_toast = new Granite.Widgets.Toast (_("Not enough letters!"));
         invalid_word_toast = new Granite.Widgets.Toast (_("That's not a word!"));
+        must_use_clues_toast = new Granite.Widgets.Toast ("");
 
-        var difficulty = Warble.Models.Difficulty.get_value_by_short_name (Warble.Application.settings.get_string ("difficulty"));
-        debug (difficulty.get_display_string ());
-        game_area = new Warble.Widgets.GameArea (NUM_ROWS, NUM_COLS);
+        game_area = new Warble.Widgets.GameArea ();
         game_area.insufficient_letters.connect (() => {
             insufficient_letters_toast.send_notification ();
         });
         game_area.invalid_word.connect (() => {
             invalid_word_toast.send_notification ();
+        });
+        game_area.unused_clues.connect ((message) => {
+            must_use_clues_toast.title = message;
+            must_use_clues_toast.send_notification ();
         });
         game_area.game_won.connect (() => {
             show_victory_dialog ();
@@ -77,9 +81,39 @@ public class Warble.MainLayout : Gtk.Grid {
         overlay.add_overlay (game_area);
         overlay.add_overlay (insufficient_letters_toast);
         overlay.add_overlay (invalid_word_toast);
+        overlay.add_overlay (must_use_clues_toast);
 
         attach (header_bar, 0, 0);
         attach (overlay, 0, 1);
+
+        // When the user changes the difficulty, prompt them if in the middle of the game,
+        // because changing the difficulty starts a new game and will register as a loss
+        // if they are in the middle of a game.
+        Warble.Application.settings.changed.connect ((key) => {
+            if (key == "difficulty") {
+                var current_difficulty = (int) game_area.difficulty;
+                var new_difficulty = Warble.Application.settings.get_int ("difficulty");
+                if (current_difficulty == new_difficulty) {
+                    return;
+                }
+                if (!game_area.can_safely_start_new_game ()) {
+                    Idle.add (() => {
+                        var dialog = new Warble.Widgets.Dialogs.DifficultyChangeWarningDialog (window);
+                        int result = dialog.run ();
+                        dialog.close ();
+                        // Either start a new game, or revert the difficulty
+                        if (result == Gtk.ResponseType.OK) {
+                            game_area.new_game ();
+                        } else {
+                            Warble.Application.settings.set_int ("difficulty", current_difficulty);
+                        }
+                        return false;
+                    });
+                } else {
+                    game_area.new_game ();
+                }
+            }
+        });
 
         show_all ();
 
