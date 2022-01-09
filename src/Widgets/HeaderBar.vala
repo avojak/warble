@@ -116,19 +116,6 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         return menu_separator;
     }
 
-    private Gtk.Button create_difficulty_button (Warble.Models.Difficulty difficulty) {
-        var current_difficulty = Warble.Models.Difficulty.get_value_by_short_name (Warble.Application.settings.get_string ("difficulty"));
-        var button = new Gtk.Button.with_label (difficulty.get_display_string ());
-        button.set_tooltip_markup (difficulty.get_details_markup ());
-        button.clicked.connect (() => {
-            Warble.Application.settings.set_string ("difficulty", difficulty.get_short_name ());
-        });
-        if (difficulty == current_difficulty) {
-            button.activate ();
-        }
-        return button;
-    }
-
     public signal void gameplay_statistics_menu_item_clicked ();
 
 }
