@@ -71,14 +71,27 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         num_rows = difficulty.get_num_guesses ();
         must_use_clues = difficulty.must_use_clues ();
 
-        answer = Warble.Application.dictionary.get_random_word (num_cols);
+        if (should_restore_saved_state ()) {
+            answer = Warble.Application.settings.get_string ("answer");
+        } else {
+            answer = Warble.Application.dictionary.get_random_word (num_cols);
+        }
         debug ("Answer: %s", answer);
 
         setup_ui ();
+        if (should_restore_saved_state ()) {
+            load_squares_state ();
+            load_keyboard_state ();
+        }
 
         // Initialize game data
-        current_row = 0;
-        current_col = 0;
+        if (should_restore_saved_state ()) {
+            current_row = Warble.Application.settings.get_int ("current-row");
+            current_col = Warble.Application.settings.get_int ("current-col");
+        } else {
+            current_row = 0;
+            current_col = 0;
+        }
         is_game_in_progress = true;
     }
 
@@ -143,6 +156,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         rows.get (current_row).get (current_col).queue_draw ();
         // Increment the column
         current_col++;
+        // Update the saved state
+        write_state ();
     }
 
     public void backspace_pressed () {
@@ -158,6 +173,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         current_col--;
         // Clear the square
         rows.get (current_row).get (current_col).letter = ' ';
+        // Update the saved state
+        write_state ();
     }
 
     public void return_pressed () {
@@ -191,6 +208,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (current_row == num_rows) {
             on_game_lost ();
         }
+        // Update the saved state
+        write_state ();
     }
 
     // Determines if a new game can be started without warning the user
@@ -222,7 +241,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
                 var prior_square = rows.get (current_row - 1).get (col_index);
                 var current_square = rows.get (current_row).get (col_index);
                 // If letter was previously found to be correct, it must be used in the same place again
-                if (prior_square.state == Warble.Widgets.Square.State.CORRECT) {
+                if (prior_square.state == Warble.Models.State.CORRECT) {
                     if (prior_square.letter != current_square.letter) {
                         unused_clues ("The %s letter must be \"%s\"".printf (get_ordinal_string (col_index + 1), prior_square.letter.to_string ()));
                         return false;
@@ -231,7 +250,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
                     }
                 }
                 // If the letter was close, save it for the second pass
-                if (prior_square.state == Warble.Widgets.Square.State.CLOSE) {
+                if (prior_square.state == Warble.Models.State.CLOSE) {
                     if (!close_guessed_letters.has_key (prior_square.letter)) {
                         close_guessed_letters.set (prior_square.letter, 0);
                     }
@@ -286,7 +305,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             letter_guess_counts.set (c, letter_guess_counts.get (c) + 1);
         }
 
-        Gee.Map<int, Warble.Widgets.Square.State> new_states = new Gee.HashMap<int, Warble.Widgets.Square.State> ();
+        Gee.Map<int, Warble.Models.State> new_states = new Gee.HashMap<int, Warble.Models.State> ();
 
         // Do a first pass for correct guesses
         Gee.List<int> correct_indices = new Gee.ArrayList<int> ();
@@ -294,7 +313,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             char current_letter = current_guess[col_index];
             // Correct place?
             if (current_letter == answer[col_index]) {
-                new_states.set (col_index, Warble.Widgets.Square.State.CORRECT);
+                new_states.set (col_index, Warble.Models.State.CORRECT);
                 letter_guess_counts.set (current_letter, letter_guess_counts.get (current_letter) - 1);
                 correct_indices.add (col_index);
             }
@@ -311,13 +330,13 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             if (answer.contains (current_letter.to_string ())) {
                 // Remaining guesses?
                 if (letter_guess_counts.get (current_letter) > 0) {
-                    new_states.set (col_index, Warble.Widgets.Square.State.CLOSE);
+                    new_states.set (col_index, Warble.Models.State.CLOSE);
                     letter_guess_counts.set (current_letter, letter_guess_counts.get (current_letter) - 1);
                 } else {
-                    new_states.set (col_index, Warble.Widgets.Square.State.INCORRECT);
+                    new_states.set (col_index, Warble.Models.State.INCORRECT);
                 }
             } else {
-                new_states.set (col_index, Warble.Widgets.Square.State.INCORRECT);
+                new_states.set (col_index, Warble.Models.State.INCORRECT);
             }
         }
 
@@ -330,8 +349,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         foreach (var index in correct_indices) {
             char current_letter = current_guess[index];
             var old_state = keyboard.get_key_state (current_letter);
-            if (old_state == Warble.Widgets.Key.State.BLANK || old_state == Warble.Widgets.Key.State.CLOSE) {
-                keyboard.update_key_state (current_letter, Warble.Widgets.Key.State.CORRECT);
+            if (old_state == Warble.Models.State.BLANK || old_state == Warble.Models.State.CLOSE) {
+                keyboard.update_key_state (current_letter, Warble.Models.State.CORRECT);
             }
         }
 
@@ -344,24 +363,24 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             var old_state = keyboard.get_key_state (current_letter);
             var new_state = entry.value;
             switch (old_state) {
-                case Warble.Widgets.Key.State.BLANK:
-                    if (new_state == Warble.Widgets.Square.State.INCORRECT) {
-                        keyboard.update_key_state (current_letter, Warble.Widgets.Key.State.INCORRECT);
-                    } else if (new_state == Warble.Widgets.Square.State.CLOSE) {
-                        keyboard.update_key_state (current_letter, Warble.Widgets.Key.State.CLOSE);
-                    } else if (new_state == Warble.Widgets.Square.State.CORRECT) {
-                        keyboard.update_key_state (current_letter, Warble.Widgets.Key.State.CORRECT);
+                case Warble.Models.State.BLANK:
+                    if (new_state == Warble.Models.State.INCORRECT) {
+                        keyboard.update_key_state (current_letter, Warble.Models.State.INCORRECT);
+                    } else if (new_state == Warble.Models.State.CLOSE) {
+                        keyboard.update_key_state (current_letter, Warble.Models.State.CLOSE);
+                    } else if (new_state == Warble.Models.State.CORRECT) {
+                        keyboard.update_key_state (current_letter, Warble.Models.State.CORRECT);
                     }
                     break;
-                case Warble.Widgets.Key.State.CLOSE:
-                    if (new_state == Warble.Widgets.Square.State.CLOSE) {
-                        keyboard.update_key_state (current_letter, Warble.Widgets.Key.State.CLOSE);
-                    } else if (new_state == Warble.Widgets.Square.State.CORRECT) {
-                        keyboard.update_key_state (current_letter, Warble.Widgets.Key.State.CORRECT);
+                case Warble.Models.State.CLOSE:
+                    if (new_state == Warble.Models.State.CLOSE) {
+                        keyboard.update_key_state (current_letter, Warble.Models.State.CLOSE);
+                    } else if (new_state == Warble.Models.State.CORRECT) {
+                        keyboard.update_key_state (current_letter, Warble.Models.State.CORRECT);
                     }
                     break;
-                case Warble.Widgets.Key.State.INCORRECT:
-                case Warble.Widgets.Key.State.CORRECT:
+                case Warble.Models.State.INCORRECT:
+                case Warble.Models.State.CORRECT:
                     // Nothing to do
                     break;
                 default:
@@ -376,6 +395,9 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     private void on_game_won (int num_guesses) {
         // Stop processing input
         is_game_in_progress = false;
+
+        // Update the saved state
+        write_state ();
 
         // Update UI
         status_label.set_text ("🎉️ You Win!");
@@ -396,6 +418,9 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     private void on_game_lost () {
         // Stop processing input
         is_game_in_progress = false;
+
+        // Update the saved state
+        write_state ();
 
         // Update UI
         status_label.set_text ("Game Over");
@@ -441,6 +466,79 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         counts[num_guesses - 1] = "%d:%d".printf (num_guesses, old_count + 1);
         var new_distribution = string.joinv ("|", counts);
         set_string_stat ("guess-distribution", new_distribution);
+    }
+
+    private void write_state () {
+        if (is_game_in_progress && (current_row > 0 || current_col > 0)) {
+            Warble.Application.settings.set_boolean ("is-game-in-progress", true);
+            Warble.Application.settings.set_string ("answer", answer);
+            Warble.Application.settings.set_string ("squares-state", create_squares_state ());
+            Warble.Application.settings.set_string ("keyboard-state", create_keyboard_state ());
+            Warble.Application.settings.set_int ("current-row", current_row);
+            Warble.Application.settings.set_int ("current-col", current_col);
+        } else {
+            Warble.Application.settings.set_boolean ("is-game-in-progress", false);
+            Warble.Application.settings.set_string ("answer", "");
+            Warble.Application.settings.set_string ("squares-state", "");
+            Warble.Application.settings.set_string ("keyboard-state", "");
+            Warble.Application.settings.set_int ("current-row", 0);
+            Warble.Application.settings.set_int ("current-col", 0);
+        }
+    }
+
+    private string create_squares_state () {
+        var sb = new GLib.StringBuilder ();
+        foreach (var row in rows) {
+            foreach (var square in row) {
+                sb.append ("%s:%s,".printf (square.letter.to_string (), square.state.get_short_name ()));
+            }
+            sb.erase (sb.str.length - 1, 1); // Trim trailing comma
+            sb.append ("|");
+        }
+        sb.erase (sb.str.length - 1, 1); // Trim trailing pipe
+        return sb.str;
+    }
+
+    private string create_keyboard_state () {
+        var sb = new GLib.StringBuilder ();
+        foreach (char letter in Warble.Widgets.Keyboard.ROW_1_LETTERS) {
+            sb.append ("%s:%s,".printf (letter.to_string (), keyboard.get_key_state (letter).get_short_name ()));
+        }
+        foreach (char letter in Warble.Widgets.Keyboard.ROW_2_LETTERS) {
+            sb.append ("%s:%s,".printf (letter.to_string (), keyboard.get_key_state (letter).get_short_name ()));
+        }
+        foreach (char letter in Warble.Widgets.Keyboard.ROW_3_LETTERS) {
+            sb.append ("%s:%s,".printf (letter.to_string (), keyboard.get_key_state (letter).get_short_name ()));
+        }
+        sb.erase (sb.str.length - 1, 1); // Trim trailing comma
+        return sb.str;
+    }
+
+    private void load_squares_state () {
+        var data = Warble.Application.settings.get_string ("squares-state");
+        var row_data = data.split ("|");
+        for (int row_index = 0; row_index < row_data.length; row_index++) {
+            var col_data = row_data[row_index].split (",");
+            for (int col_index = 0; col_index < col_data.length; col_index++) {
+                char letter = col_data[col_index].split (":")[0][0];
+                var state = Warble.Models.State.get_value_by_short_name (col_data[col_index].split (":")[1]);
+                rows.get (row_index).get (col_index).letter = letter;
+                rows.get (row_index).get (col_index).state = state;
+                rows.get (row_index).get (col_index).queue_draw ();
+            }
+        }
+    }
+
+    private void load_keyboard_state () {
+        foreach (var data in Warble.Application.settings.get_string ("keyboard-state").split (",")) {
+            char letter = data.split (":")[0][0];
+            var state = Warble.Models.State.get_value_by_short_name (data.split (":")[1]);
+            keyboard.update_key_state (letter, state);
+        }
+    }
+
+    private bool should_restore_saved_state () {
+        return Warble.Application.settings.get_boolean ("is-game-in-progress");
     }
 
     public signal void insufficient_letters ();

@@ -118,23 +118,23 @@
         var grid = create_grid ();
         grid.attach (new Warble.Widgets.Square () {
             letter = 'T',
-            state = Warble.Widgets.Square.State.CORRECT
+            state = Warble.Models.State.CORRECT
         }, 0, 0);
         grid.attach (new Warble.Widgets.Square () {
             letter = 'R',
-            state = Warble.Widgets.Square.State.CORRECT
+            state = Warble.Models.State.CORRECT
         }, 1, 0);
         grid.attach (new Warble.Widgets.Square () {
             letter = 'A',
-            state = Warble.Widgets.Square.State.INCORRECT
+            state = Warble.Models.State.INCORRECT
         }, 2, 0);
         grid.attach (new Warble.Widgets.Square () {
             letter = 'I',
-            state = Warble.Widgets.Square.State.INCORRECT
+            state = Warble.Models.State.INCORRECT
         }, 3, 0);
         grid.attach (new Warble.Widgets.Square () {
             letter = 'N',
-            state = Warble.Widgets.Square.State.CLOSE
+            state = Warble.Models.State.CLOSE
         }, 4, 0);
         return grid;
     }

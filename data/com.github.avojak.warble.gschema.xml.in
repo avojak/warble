@@ -46,5 +46,35 @@
       <summary>The number of games won for each number of guesses</summary>
       <description>The number of games won for each number of guesses</description>
     </key>
+    <key name="is-game-in-progress" type="b">
+      <default>false</default>
+      <summary>Whether or not there is a game currently in progress</summary>
+      <description>Whether or not there is a game currently in progress</description>
+    </key>
+    <key name="answer" type="s">
+      <default>""</default>
+      <summary>The answer to the in-progress game</summary>
+      <description>The answer to the in-progress game</description>
+    </key>
+    <key name="squares-state" type="s">
+      <default>""</default>
+      <summary>The state of the squares for the in-progress game</summary>
+      <description>The state of the squares for the in-progress game</description>
+    </key>
+    <key name="keyboard-state" type="s">
+      <default>""</default>
+      <summary>The state of the keyboard for the in-progress game</summary>
+      <description>The state of the keyboard for the in-progress game</description>
+    </key>
+    <key name="current-row" type="i">
+      <default>0</default>
+      <summary>The current row for the in-progress game</summary>
+      <description>The current row for the in-progress game</description>
+    </key>
+    <key name="current-col" type="i">
+      <default>0</default>
+      <summary>The current column for the in-progress game</summary>
+      <description>The current column for the in-progress game</description>
+    </key>
   </schema>
 </schemalist>

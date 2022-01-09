@@ -21,19 +21,12 @@
 
 public class Warble.Widgets.Key : Gtk.Image {
 
-    public enum State {
-        BLANK,
-        CORRECT,
-        INCORRECT,
-        CLOSE
-    }
-
     private const int SIZE = 32;
 
     public char letter { get; construct; }
 
-    private State _state = State.BLANK;
-    public State state {
+    private Warble.Models.State _state = Warble.Models.State.BLANK;
+    public Warble.Models.State state {
         get { return this._state; }
         set { this._state = value; update_icon (); }
     }

@@ -21,13 +21,6 @@
 
 public class Warble.Widgets.Square : Gtk.Image {
 
-    public enum State {
-        BLANK,
-        CORRECT,
-        INCORRECT,
-        CLOSE
-    }
-
     private const int SIZE = 64;
 
     private char _letter = ' ';
@@ -36,8 +29,8 @@ public class Warble.Widgets.Square : Gtk.Image {
         set { this._letter = value; queue_draw (); }
     }
 
-    private State _state = State.BLANK;
-    public State state {
+    private Warble.Models.State _state = Warble.Models.State.BLANK;
+    public Warble.Models.State state {
         get { return this._state; }
         set { this._state = value; update_icon (); }
     }

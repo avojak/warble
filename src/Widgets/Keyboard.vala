@@ -60,11 +60,11 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
         return row_grid;
     }
 
-    public Warble.Widgets.Key.State get_key_state (char letter) {
+    public Warble.Models.State get_key_state (char letter) {
         return keys.get (letter).state;
     }
 
-    public void update_key_state (char letter, Warble.Widgets.Key.State new_state) {
+    public void update_key_state (char letter, Warble.Models.State new_state) {
         keys.get (letter).state = new_state;
     }
 
