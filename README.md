@@ -11,8 +11,8 @@
   <a href="https://appcenter.elementary.io/com.github.avojak.warble"><img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter" /></a>
 </p> -->
 
-| ![Screenshot](data/assets/screenshots/warble-screenshot-01.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-02.png) |
-|------------------------------------------------------------------|------------------------------------------------------------------|
+| ![Screenshot](data/assets/screenshots/warble-screenshot-01.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-02.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-03.png) |
+|------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|
 
 ## The word-guessing game
 
