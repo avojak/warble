@@ -7,13 +7,18 @@
   <name>@name@</name>
   <summary>The word-guessing game</summary>
   <description>
-    <p>Warble</p>
+    <p>Figure out the word before your guesses run out!</p>
+    <ul>
+      <li>Three difficulty levels</li>
+      <li>Almost 5k possible answers</li>
+      <li>Need a break? Close the game and automatically pick back up where you left off</li>
+    </ul>
   </description>
   <provides>
     <binary>@appid@</binary>
   </provides>
   <releases>
-    <release version="1.0.0" date="2022-01-07">
+    <release version="1.0.0" date="2022-01-09">
       <description>
         <p>Initial Release</p>
       </description>
