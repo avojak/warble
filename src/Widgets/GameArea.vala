@@ -54,16 +54,16 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         initialize ();
     }
 
-    public void new_game () {
+    public void new_game (bool daily = false) {
         if (!can_safely_start_new_game ()) {
             record_loss ();
         }
         dispose_ui ();
-        initialize ();
+        initialize (daily);
         show_all ();
     }
 
-    private void initialize () {
+    private void initialize (bool daily = false) {
         // Initialize the difficulty settings
         difficulty = (Warble.Models.Difficulty) Warble.Application.settings.get_int ("difficulty");
         debug ("Difficulty: %s", difficulty.get_display_string ());
@@ -74,7 +74,11 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (should_restore_saved_state ()) {
             answer = Warble.Application.settings.get_string ("answer");
         } else {
-            answer = Warble.Application.dictionary.get_random_word (num_cols);
+            if (daily) {
+                answer = Warble.Application.dictionary.get_word_of_the_day (new DateTime.now_utc(), num_cols);
+            } else {
+                answer = Warble.Application.dictionary.get_random_word (num_cols);
+            }
         }
         debug ("Answer: %s", answer);
 

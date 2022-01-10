@@ -55,6 +55,16 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         new_game_menu_item.get_child ().destroy ();
         new_game_menu_item.add (new_game_accellabel);
 
+        var daily_game_accellabel = new Granite.AccelLabel.from_action_name (
+            _("Daily Game"),
+            Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_DAILY_GAME
+        );
+
+        var daily_game_menu_item = new Gtk.ModelButton ();
+        daily_game_menu_item.action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_DAILY_GAME;
+        daily_game_menu_item.get_child ().destroy ();
+        daily_game_menu_item.add (daily_game_accellabel);
+
         var gameplay_stats_menu_item = new Gtk.ModelButton ();
         gameplay_stats_menu_item.text = "Gameplay Statistics…";
 
@@ -85,11 +95,12 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         menu_popover_grid.width_request = 200;
         menu_popover_grid.attach (difficulty_button, 0, 0, 3, 1);
         menu_popover_grid.attach (new_game_menu_item, 0, 1, 1, 1);
-        menu_popover_grid.attach (create_menu_separator (), 0, 2, 1, 1);
-        menu_popover_grid.attach (gameplay_stats_menu_item, 0, 3, 1, 1);
-        menu_popover_grid.attach (help_menu_item, 0, 4, 1, 1);
-        menu_popover_grid.attach (create_menu_separator (), 0, 5, 1, 1);
-        menu_popover_grid.attach (quit_menu_item, 0, 6, 1, 1);
+        menu_popover_grid.attach (daily_game_menu_item, 0, 2, 1, 1);
+        menu_popover_grid.attach (create_menu_separator (), 0, 3, 1, 1);
+        menu_popover_grid.attach (gameplay_stats_menu_item, 0, 4, 1, 1);
+        menu_popover_grid.attach (help_menu_item, 0, 5, 1, 1);
+        menu_popover_grid.attach (create_menu_separator (), 0, 6, 1, 1);
+        menu_popover_grid.attach (quit_menu_item, 0, 7, 1, 1);
         menu_popover_grid.show_all ();
 
         var menu_popover = new Gtk.Popover (null);

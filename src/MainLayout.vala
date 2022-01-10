@@ -147,14 +147,14 @@ public class Warble.MainLayout : Gtk.Grid {
         show_rules_dialog ();
     }
 
-    public void new_game () {
+    public void new_game (bool daily = false) {
         // Don't do anything if these other dialogs are open
         if (rules_dialog != null || victory_dialog != null || defeat_dialog != null) {
             return;
         }
         // If we can safely start a new game, don't need to prompt the user
         if (game_area.can_safely_start_new_game ()) {
-            game_area.new_game ();
+            game_area.new_game (daily);
             return;
         }
         if (new_game_confirmation_dialog == null) {
@@ -162,7 +162,7 @@ public class Warble.MainLayout : Gtk.Grid {
             new_game_confirmation_dialog.show_all ();
             new_game_confirmation_dialog.response.connect ((response_id) => {
                 if (response_id == Gtk.ResponseType.OK) {
-                    game_area.new_game ();
+                    game_area.new_game (daily);
                 }
                 new_game_confirmation_dialog.close ();
             });

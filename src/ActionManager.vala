@@ -25,11 +25,13 @@ public class Warble.ActionManager : GLib.Object {
     public const string ACTION_NEW_GAME = "action_new_game";
     public const string ACTION_HELP = "action_help";
     public const string ACTION_QUIT = "action_quit";
+    public const string ACTION_DAILY_GAME = "action_daily_game";
 
     private const GLib.ActionEntry[] ACTION_ENTRIES = {
         { ACTION_NEW_GAME, action_new_game },
         { ACTION_HELP, action_help },
-        { ACTION_QUIT, action_quit }
+        { ACTION_QUIT, action_quit },
+        { ACTION_DAILY_GAME, action_daily_game }
     };
 
     private static Gee.MultiMap<string, string> accelerators;
@@ -51,6 +53,7 @@ public class Warble.ActionManager : GLib.Object {
         accelerators.set (ACTION_NEW_GAME, "<Control>n");
         accelerators.set (ACTION_HELP, "<Control>h");
         accelerators.set (ACTION_QUIT, "<Control>q");
+        accelerators.set (ACTION_DAILY_GAME, "<Control>d");
     }
 
     construct {
@@ -79,6 +82,10 @@ public class Warble.ActionManager : GLib.Object {
 
     private void action_quit () {
         window.before_destroy ();
+    }
+
+    private void action_daily_game () {
+        window.new_game (true);
     }
 
 }

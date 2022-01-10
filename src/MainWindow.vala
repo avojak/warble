@@ -96,8 +96,8 @@ public class Warble.MainWindow : Hdy.Window {
         main_layout.show_rules ();
     }
 
-    public void new_game () {
-        main_layout.new_game ();
+    public void new_game (bool daily = false) {
+        main_layout.new_game (daily);
     }
 
     private void update_position_settings () {
