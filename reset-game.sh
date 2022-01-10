@@ -32,6 +32,12 @@ set_setting num-games-lost 0
 set_setting win-streak 0
 set_setting max-win-streak 0
 set_setting guess-distribution "1:0|2:0|3:0|4:0|5:0|6:0"
+set_setting is-game-in-progress false
+set_setting answer ""
+set_setting squares-state ""
+set_setting keyboard-state ""
+set_setting current-row 0
+set_setting current-col 0
 
 echo
 echo -e "\033[1;32mDone\033[0m"
