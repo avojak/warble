@@ -68,7 +68,7 @@
   <custom>
     <value key="x-appcenter-color-primary">#fff</value>
     <value key="x-appcenter-color-primary-text">#333</value>
-    <value key="x-appcenter-suggested-price">2</value>
+    <value key="x-appcenter-suggested-price">0</value>
     <value key="x-appcenter-stripe"></value>
   </custom>
 </component>
