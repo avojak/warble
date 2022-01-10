@@ -18,6 +18,11 @@
     <binary>@appid@</binary>
   </provides>
   <releases>
+    <release version="1.0.1" date="2022-01-09">
+      <description>
+        <p>Set Stripe key and monetization</p>
+      </description>
+    </release>
     <release version="1.0.0" date="2022-01-09">
       <description>
         <p>Initial Release</p>
@@ -73,7 +78,7 @@
   <custom>
     <value key="x-appcenter-color-primary">#fff</value>
     <value key="x-appcenter-color-primary-text">#333</value>
-    <value key="x-appcenter-suggested-price">0</value>
-    <value key="x-appcenter-stripe"></value>
+    <value key="x-appcenter-suggested-price">1</value>
+    <value key="x-appcenter-stripe">pk_live_51GeuzCC9Tk2ZlXfTH9I5SxBe2erSseFugr18KbfprFI6pWxcQGe3vdfqTc2T5TCR1WxWQpzIX3AUq5NtLMUeQoJw00CavY8JuW</value>
   </custom>
 </component>
