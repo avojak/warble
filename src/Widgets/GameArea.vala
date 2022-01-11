@@ -54,8 +54,11 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         initialize ();
     }
 
-    public void new_game () {
-        if (!can_safely_start_new_game ()) {
+    public void new_game (bool should_record_loss = false) {
+        // Current game is no longer in progress
+        Warble.Application.settings.set_boolean ("is-game-in-progress", false);
+        // Record a loss if we're interrupting a current game
+        if (should_record_loss) {
             record_loss ();
         }
         dispose_ui ();

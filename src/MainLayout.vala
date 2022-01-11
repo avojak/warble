@@ -103,7 +103,7 @@ public class Warble.MainLayout : Gtk.Grid {
                         dialog.close ();
                         // Either start a new game, or revert the difficulty
                         if (result == Gtk.ResponseType.OK) {
-                            game_area.new_game ();
+                            game_area.new_game (true);
                         } else {
                             Warble.Application.settings.set_int ("difficulty", current_difficulty);
                         }
@@ -162,7 +162,7 @@ public class Warble.MainLayout : Gtk.Grid {
             new_game_confirmation_dialog.show_all ();
             new_game_confirmation_dialog.response.connect ((response_id) => {
                 if (response_id == Gtk.ResponseType.OK) {
-                    game_area.new_game ();
+                    game_area.new_game (true);
                 }
                 new_game_confirmation_dialog.close ();
             });
