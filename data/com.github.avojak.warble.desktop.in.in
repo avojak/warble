@@ -7,4 +7,4 @@ Exec=@binary@
 Icon=@icon@
 Terminal=false
 Type=Application
-Keywords=Game;Word;Puzzle;
+Keywords=Game;Word;Puzzle;wordle;
