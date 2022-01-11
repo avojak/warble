@@ -19,9 +19,48 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.Key : Gtk.Image {
+public class Warble.Widgets.Key : Gtk.EventBox {
 
-    private const int SIZE = 32;
+    private class KeyImage : Gtk.Image {
+
+        private const int SIZE = 32;
+
+        public char letter { get; construct; }
+
+        public KeyImage (char letter) {
+            Object (
+                gicon: new ThemedIcon (Constants.APP_ID + ".key-blank"),
+                pixel_size: SIZE,
+                letter: letter,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            );
+        }
+
+        protected override bool draw (Cairo.Context ctx) {
+            base.draw (ctx);
+            ctx.save ();
+            draw_letter (ctx);
+            ctx.restore ();
+            return false;
+        }
+    
+        private void draw_letter (Cairo.Context ctx) {
+            var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
+            ctx.set_source_rgb (color.R, color.G, color.B);
+    
+            ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
+            ctx.set_font_size (15);
+    
+            Cairo.TextExtents extents;
+            ctx.text_extents (letter.to_string (), out extents);
+            double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
+            double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing);
+            ctx.move_to (x, y);
+            ctx.show_text (letter.to_string ());
+        }
+
+    }
 
     public char letter { get; construct; }
 
@@ -31,56 +70,47 @@ public class Warble.Widgets.Key : Gtk.Image {
         set { this._state = value; update_icon (); }
     }
 
+    private Warble.Widgets.Key.KeyImage key;
+
     public Key (char letter) {
         Object (
-            gicon: new ThemedIcon (Constants.APP_ID + ".key-blank"),
-            pixel_size: SIZE,
-            letter: letter,
-            hexpand: false,
-            halign: Gtk.Align.CENTER
+            letter: letter
         );
     }
 
-    protected override bool draw (Cairo.Context ctx) {
-        base.draw (ctx);
-        ctx.save ();
-        draw_letter (ctx);
-        ctx.restore ();
-        return false;
-    }
+    construct {
+        key = new Warble.Widgets.Key.KeyImage (letter);
+        this.child = key;
 
-    private void draw_letter (Cairo.Context ctx) {
-        var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
-        ctx.set_source_rgb (color.R, color.G, color.B);
-
-        ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
-        ctx.set_font_size (15);
-
-        Cairo.TextExtents extents;
-        ctx.text_extents (letter.to_string (), out extents);
-        double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
-        double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing);
-        ctx.move_to (x, y);
-        ctx.show_text (letter.to_string ());
+        // I *think* this will work for touchscreens, but I don't have a device to test on :(
+        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.TOUCH_MASK);
+        this.button_press_event.connect (() => {
+            clicked (letter);
+        });
+        this.touch_event.connect (() => {
+            clicked (letter);
+        });
     }
 
     private void update_icon () {
         switch (state) {
             case BLANK:
-                gicon = new ThemedIcon (Constants.APP_ID + ".key-blank");
+                key.gicon = new ThemedIcon (Constants.APP_ID + ".key-blank");
                 break;
             case INCORRECT:
-                gicon = new ThemedIcon (Constants.APP_ID + ".key-incorrect");
+                key.gicon = new ThemedIcon (Constants.APP_ID + ".key-incorrect");
                 break;
             case CLOSE:
-                gicon = new ThemedIcon (Constants.APP_ID + ".key-close");
+                key.gicon = new ThemedIcon (Constants.APP_ID + ".key-close");
                 break;
             case CORRECT:
-                gicon = new ThemedIcon (Constants.APP_ID + ".key-correct");
+                key.gicon = new ThemedIcon (Constants.APP_ID + ".key-correct");
                 break;
             default:
                 assert_not_reached ();
         }
     }
+
+    public signal void clicked (char letter);
 
 }

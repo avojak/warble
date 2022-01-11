@@ -54,6 +54,9 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
         };
         foreach (char letter in letters) {
             Warble.Widgets.Key key = new Warble.Widgets.Key (letter);
+            key.clicked.connect ((letter) => {
+                on_key_clicked (letter);
+            });
             keys.set (letter, key);
             row_grid.add (key);
         }
@@ -67,5 +70,7 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
     public void update_key_state (char letter, Warble.Models.State new_state) {
         keys.get (letter).state = new_state;
     }
+
+    public signal void on_key_clicked (char letter);
 
 }
