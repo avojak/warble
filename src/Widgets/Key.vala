@@ -26,12 +26,14 @@ public class Warble.Widgets.Key : Gtk.EventBox {
         private const int SIZE = 32;
 
         public char letter { get; construct; }
+        public int y_offset { get; set; }
 
         public KeyImage (char letter) {
             Object (
                 gicon: new ThemedIcon (Constants.APP_ID + ".key-blank"),
                 pixel_size: SIZE,
                 letter: letter,
+                y_offset: 0,
                 expand: false,
                 halign: Gtk.Align.CENTER
             );
@@ -55,7 +57,7 @@ public class Warble.Widgets.Key : Gtk.EventBox {
             Cairo.TextExtents extents;
             ctx.text_extents (letter.to_string (), out extents);
             double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
-            double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing);
+            double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing) + y_offset;
             ctx.move_to (x, y);
             ctx.show_text (letter.to_string ());
         }
@@ -71,6 +73,7 @@ public class Warble.Widgets.Key : Gtk.EventBox {
     }
 
     private Warble.Widgets.Key.KeyImage key;
+    private bool is_pressed = false;
 
     public Key (char letter) {
         Object (
@@ -83,9 +86,17 @@ public class Warble.Widgets.Key : Gtk.EventBox {
         this.child = key;
 
         // I *think* this will work for touchscreens, but I don't have a device to test on :(
-        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.TOUCH_MASK);
+        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.TOUCH_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
         this.button_press_event.connect (() => {
+            is_pressed = true;
+            key.y_offset = 2;
+            update_icon ();
             clicked (letter);
+        });
+        this.button_release_event.connect (() => {
+            is_pressed = false;
+            key.y_offset = 0;
+            update_icon ();
         });
         this.touch_event.connect (() => {
             clicked (letter);
@@ -95,16 +106,16 @@ public class Warble.Widgets.Key : Gtk.EventBox {
     private void update_icon () {
         switch (state) {
             case BLANK:
-                key.gicon = new ThemedIcon (Constants.APP_ID + ".key-blank");
+                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-blank" : ".key-blank"));
                 break;
             case INCORRECT:
-                key.gicon = new ThemedIcon (Constants.APP_ID + ".key-incorrect");
+                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-incorrect" : ".key-incorrect"));
                 break;
             case CLOSE:
-                key.gicon = new ThemedIcon (Constants.APP_ID + ".key-close");
+                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-close" : ".key-close"));
                 break;
             case CORRECT:
-                key.gicon = new ThemedIcon (Constants.APP_ID + ".key-correct");
+                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-correct" : ".key-correct"));
                 break;
             default:
                 assert_not_reached ();

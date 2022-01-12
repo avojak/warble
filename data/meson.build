@@ -66,6 +66,16 @@ install_data(
     rename: '@0@.key-blank.svg'.format(application_id)
 )
 install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-blank.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-pressed-blank.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-blank.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-pressed-blank.svg'.format(application_id)
+)
+install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-close.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
     rename: '@0@.key-close.svg'.format(application_id)
@@ -74,6 +84,16 @@ install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-close.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
     rename: '@0@.key-close.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-close.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-pressed-close.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-close.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-pressed-close.svg'.format(application_id)
 )
 install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-incorrect.svg'),
@@ -86,6 +106,16 @@ install_data(
     rename: '@0@.key-incorrect.svg'.format(application_id)
 )
 install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-incorrect.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-pressed-incorrect.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-incorrect.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-pressed-incorrect.svg'.format(application_id)
+)
+install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-correct.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
     rename: '@0@.key-correct.svg'.format(application_id)
@@ -94,6 +124,16 @@ install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-correct.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
     rename: '@0@.key-correct.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-correct.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-pressed-correct.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-correct.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-pressed-correct.svg'.format(application_id)
 )
 
 # Install the dictionary and candidate words files
