@@ -1,0 +1,45 @@
+name: warble
+base: core20
+adopt-info: warble
+grade: stable
+confinement: strict
+compression: lzo
+
+layout:
+  /usr/share/com.github.avojak.warble:
+    bind: $SNAP/usr/share/com.github.avojak.warble
+
+slots:
+  # for GtkApplication registration
+  transporter:
+    interface: dbus
+    bus: session
+    name: com.github.avojak.warble
+
+parts:
+  granite:
+    source: https://github.com/elementary/granite.git
+    source-tag: 6.2.0
+    meson-parameters: [ --prefix=/usr ]
+    plugin: meson
+
+  warble:
+    after: [ granite ]
+    source: .
+    plugin: meson
+    meson-parameters: [ --prefix=/usr ]
+    parse-info: [usr/share/metainfo/com.github.avojak.warble.appdata.xml]
+    override-pull: |
+      snapcraftctl pull
+      sed -i.bak -e 's|Icon=@icon@|Icon=${SNAP}/meta/gui/warble.svg|g' data/com.github.avojak.warble.desktop.in.in
+    override-build: |
+      snapcraftctl build
+      mkdir -p $SNAPCRAFT_PART_INSTALL/meta/gui/
+      cp $SNAPCRAFT_PART_SRC/data/assets/icons/128x128/com.github.avojak.warble.svg $SNAPCRAFT_PART_INSTALL/meta/gui/warble.svg
+
+apps:
+  warble:
+    extensions: [gnome-3-38]
+    desktop: usr/share/applications/com.github.avojak.warble.desktop
+    command: usr/bin/com.github.avojak.warble
+    common-id: com.github.avojak.warble
