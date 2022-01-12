@@ -18,6 +18,19 @@
     <binary>@appid@</binary>
   </provides>
   <releases>
+    <release version="1.1.0" date="2022-01-11">
+      <description>
+        <p>1.1.0 Release</p>
+        <ul>
+          <li>Fix issue where a new game couldn't not be started before making a guess (#7)</li>
+          <li>Enable mouse clicks and touchscreen taps to the onscreen keyboard (#1)</li>
+          <li>Update elementary platform runtime to 6.1 (#4)</li>
+          <li>Remove unnecessary network sandbox hole (#5)</li>
+          <li>Remove extraneous OARS metadata (#6)</li>
+          <li>Include "wordle" as a keyword for the desktop file (By cassidyjames)</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.1" date="2022-01-09">
       <description>
         <p>Set Stripe key and monetization</p>
