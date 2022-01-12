@@ -23,6 +23,8 @@ Figure out the word before your guesses run out!
 - Almost 5k possible answers
 - Need a break? Close the game and automatically pick back up where you left off
 
+![Tweet](data/assets/BCD631EA-53B9-483E-9C75-CB00C1E33C52.jpeg)
+
 Warble is inspired by (and not affiliated with) the recently popular online game Wordle (which itself is reminiscent of the late 80's game show Lingo). 
 
 ## Install from Source
