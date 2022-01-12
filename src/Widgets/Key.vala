@@ -46,14 +46,14 @@ public class Warble.Widgets.Key : Gtk.EventBox {
             ctx.restore ();
             return false;
         }
-    
+
         private void draw_letter (Cairo.Context ctx) {
             var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
             ctx.set_source_rgb (color.R, color.G, color.B);
-    
+
             ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
             ctx.set_font_size (15);
-    
+
             Cairo.TextExtents extents;
             ctx.text_extents (letter.to_string (), out extents);
             double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
@@ -99,6 +99,8 @@ public class Warble.Widgets.Key : Gtk.EventBox {
             update_icon ();
         });
         this.touch_event.connect (() => {
+            // TODO: Need a way to do this for touchscreens. Not sure how to do this with a single event and
+            //       without a device to test touch events on.
             clicked (letter);
         });
     }
