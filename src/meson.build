@@ -28,6 +28,7 @@ warble_files = files(
     join_paths('Widgets', 'GameArea.vala'),
     join_paths('Widgets', 'HeaderBar.vala'),
     join_paths('Widgets', 'Key.vala'),
+    join_paths('Widgets', 'ControlKey.vala'),
     join_paths('Widgets', 'Keyboard.vala'),
     join_paths('Widgets', 'Row.vala'),
     join_paths('Widgets', 'Square.vala'),

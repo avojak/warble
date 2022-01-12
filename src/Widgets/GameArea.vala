@@ -133,6 +133,9 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         }
 
         keyboard = new Warble.Widgets.Keyboard ();
+        keyboard.key_clicked.connect (letter_key_pressed);
+        keyboard.return_key_clicked.connect (return_pressed);
+        keyboard.backspace_key_clicked.connect (backspace_pressed);
 
         attach (endgame_revealer, 0, 0);
         attach (square_grid, 0, 1);

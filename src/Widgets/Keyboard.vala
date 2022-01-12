@@ -39,23 +39,41 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
     construct {
         var row_1_grid = create_row (ROW_1_LETTERS);
         var row_2_grid = create_row (ROW_2_LETTERS);
-        var row_3_grid = create_row (ROW_3_LETTERS);
+        var row_3_grid = create_row (ROW_3_LETTERS, true);
 
         attach (row_1_grid, 0, 0);
         attach (row_2_grid, 0, 1);
         attach (row_3_grid, 0, 2);
     }
 
-    private Gtk.Grid create_row (char[] letters) {
+    private Gtk.Grid create_row (char[] letters, bool include_control_keys = false) {
         var row_grid = new Gtk.Grid () {
             orientation = Gtk.Orientation.HORIZONTAL,
             halign = Gtk.Align.CENTER,
+            valign = Gtk.Align.END,
             hexpand = true
         };
+        if (include_control_keys) {
+            Warble.Widgets.ControlKey return_key = new Warble.Widgets.ControlKey ("Enter");
+            return_key.clicked.connect (() => {
+                return_key_clicked ();
+            });
+            row_grid.add (return_key);
+        }
         foreach (char letter in letters) {
             Warble.Widgets.Key key = new Warble.Widgets.Key (letter);
+            key.clicked.connect ((letter) => {
+                key_clicked (letter);
+            });
             keys.set (letter, key);
             row_grid.add (key);
+        }
+        if (include_control_keys) {
+            Warble.Widgets.ControlKey backspace_key = new Warble.Widgets.ControlKey ("⌫");
+            backspace_key.clicked.connect (() => {
+                backspace_key_clicked ();
+            });
+            row_grid.add (backspace_key);
         }
         return row_grid;
     }
@@ -67,5 +85,9 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
     public void update_key_state (char letter, Warble.Models.State new_state) {
         keys.get (letter).state = new_state;
     }
+
+    public signal void key_clicked (char letter);
+    public signal void return_key_clicked ();
+    public signal void backspace_key_clicked ();
 
 }
