@@ -18,6 +18,13 @@
 
 Warble is a native Linux word-guessing game built in Vala and Gtk for [elementary OS](https://elementary.io).
 
+Figure out the word before your guesses run out!
+- Three difficulty levels
+- Almost 5k possible answers
+- Need a break? Close the game and automatically pick back up where you left off
+
+Warble is inspired by (and not affiliated with) the recently popular online game Wordle (which itself is reminiscent of the late 80's game show Lingo). 
+
 ## Install from Source
 
 You can install Warble by compiling from source. Here's the list of
