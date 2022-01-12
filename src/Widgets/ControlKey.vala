@@ -19,20 +19,20 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.Key : Gtk.EventBox {
+public class Warble.Widgets.ControlKey : Gtk.EventBox {
 
     private class KeyImage : Gtk.Image {
 
-        private const int SIZE = 32;
+        private const int WIDTH = 48;
+        private const int HEIGHT = 32;
 
-        public char letter { get; construct; }
+        public string text { get; construct; }
         public int y_offset { get; set; }
 
-        public KeyImage (char letter) {
+        public KeyImage (string text) {
             Object (
-                gicon: new ThemedIcon (Constants.APP_ID + ".key-blank"),
-                pixel_size: SIZE,
-                letter: letter,
+                gicon: new ThemedIcon (Constants.APP_ID + ".control-key"),
+                text: text,
                 y_offset: 0,
                 expand: false,
                 halign: Gtk.Align.CENTER
@@ -42,47 +42,41 @@ public class Warble.Widgets.Key : Gtk.EventBox {
         protected override bool draw (Cairo.Context ctx) {
             base.draw (ctx);
             ctx.save ();
-            draw_letter (ctx);
+            draw_text (ctx);
             ctx.restore ();
             return false;
         }
 
-        private void draw_letter (Cairo.Context ctx) {
+        private void draw_text (Cairo.Context ctx) {
             var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
             ctx.set_source_rgb (color.R, color.G, color.B);
 
             ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
-            ctx.set_font_size (15);
+            ctx.set_font_size (13);
 
             Cairo.TextExtents extents;
-            ctx.text_extents (letter.to_string (), out extents);
-            double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
-            double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing) + y_offset;
+            ctx.text_extents (text.to_string (), out extents);
+            double x = (WIDTH / 2) - (extents.width / 2 + extents.x_bearing);
+            double y = (HEIGHT / 2) - (extents.height / 2 + extents.y_bearing) + y_offset;
             ctx.move_to (x, y);
-            ctx.show_text (letter.to_string ());
+            ctx.show_text (text.to_string ());
         }
 
     }
 
-    public char letter { get; construct; }
+    public string text { get; construct; }
 
-    private Warble.Models.State _state = Warble.Models.State.BLANK;
-    public Warble.Models.State state {
-        get { return this._state; }
-        set { this._state = value; update_icon (); }
-    }
-
-    private Warble.Widgets.Key.KeyImage key;
+    private Warble.Widgets.ControlKey.KeyImage key;
     private bool is_pressed = false;
 
-    public Key (char letter) {
+    public ControlKey (string text) {
         Object (
-            letter: letter
+            text: text
         );
     }
 
     construct {
-        key = new Warble.Widgets.Key.KeyImage (letter);
+        key = new Warble.Widgets.ControlKey.KeyImage (text);
         this.child = key;
 
         // I *think* this will work for touchscreens, but I don't have a device to test on :(
@@ -95,7 +89,7 @@ public class Warble.Widgets.Key : Gtk.EventBox {
             is_pressed = true;
             key.y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
             update_icon ();
-            clicked (letter);
+            clicked ();
         });
         this.button_release_event.connect (() => {
             is_pressed = false;
@@ -105,29 +99,14 @@ public class Warble.Widgets.Key : Gtk.EventBox {
         this.touch_event.connect (() => {
             // TODO: Need a way to do this for touchscreens. Not sure how to do this with a single event and
             //       without a device to test touch events on.
-            clicked (letter);
+            clicked ();
         });
     }
 
     private void update_icon () {
-        switch (state) {
-            case BLANK:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-blank" : ".key-blank"));
-                break;
-            case INCORRECT:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-incorrect" : ".key-incorrect"));
-                break;
-            case CLOSE:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-close" : ".key-close"));
-                break;
-            case CORRECT:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-correct" : ".key-correct"));
-                break;
-            default:
-                assert_not_reached ();
-        }
+        key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".control-key-pressed" : ".control-key"));
     }
 
-    public signal void clicked (char letter);
+    public signal void clicked ();
 
 }

@@ -136,6 +136,27 @@ install_data(
     rename: '@0@.key-pressed-correct.svg'.format(application_id)
 )
 
+install_data(
+    join_paths('assets', 'icons', '48x48', meson.project_name() + '.control-key.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '48x48', 'status'),
+    rename: '@0@.control-key.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '48x48', meson.project_name() + '.control-key.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '48x48@2', 'status'),
+    rename: '@0@.control-key.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '48x48', meson.project_name() + '.control-key-pressed.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '48x48', 'status'),
+    rename: '@0@.control-key-pressed.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '48x48', meson.project_name() + '.control-key-pressed.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '48x48@2', 'status'),
+    rename: '@0@.control-key-pressed.svg'.format(application_id)
+)
+
 # Install the dictionary and candidate words files
 install_data(
     'dictionary.txt',
