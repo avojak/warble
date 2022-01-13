@@ -7,9 +7,9 @@
   <img src="data/assets/warble.svg" alt="Icon" />
 </p>
 <h1 align="center">Warble</h1>
-<!-- <p align="center">
+<p align="center">
   <a href="https://appcenter.elementary.io/com.github.avojak.warble"><img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter" /></a>
-</p> -->
+</p>
 
 | ![Screenshot](data/assets/screenshots/warble-screenshot-01.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-02.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-03.png) |
 |------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|
