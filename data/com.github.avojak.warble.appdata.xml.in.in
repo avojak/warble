@@ -18,6 +18,14 @@
     <binary>@appid@</binary>
   </provides>
   <releases>
+    <release version="1.1.1" date="2022-01-12">
+      <description>
+        <p>1.1.1 Release</p>
+        <ul>
+          <li>Fix issue where answers were potentially non-guessable words (#11)</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.0" date="2022-01-11">
       <description>
         <p>1.1.0 Release</p>
