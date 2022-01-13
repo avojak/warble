@@ -17309,6 +17309,7 @@ ballpoint
 ballpoints
 ballroom
 ballrooms
+balls
 ballsier
 ballsiest
 ballsiness
@@ -74180,6 +74181,7 @@ elvan
 elvanite
 elvanites
 elvans
+elven
 elver
 elvers
 elves

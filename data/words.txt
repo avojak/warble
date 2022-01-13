@@ -194,11 +194,9 @@ askew
 aspen
 aspic
 assay
-asses
 asset
 aster
 astir
-asura
 atlas
 atman
 atoll
@@ -395,7 +393,6 @@ birch
 birds
 birth
 bison
-bitch
 biter
 bites
 bitsy
@@ -470,7 +467,6 @@ bombe
 bombs
 bonds
 boned
-boner
 bones
 boney
 bongo
@@ -478,8 +474,6 @@ bongs
 bonks
 bonny
 bonus
-boobs
-booby
 booed
 books
 booms
@@ -492,7 +486,6 @@ boots
 booty
 booze
 boozy
-boppy
 borax
 bored
 borer
@@ -614,7 +607,6 @@ bused
 buses
 bushy
 busts
-busty
 butch
 butte
 butts
@@ -758,7 +750,6 @@ chime
 chimp
 china
 chine
-ching
 chino
 chins
 chips
@@ -851,7 +842,6 @@ coats
 cobia
 cobra
 cocci
-cocks
 cocky
 cocoa
 codas
@@ -1112,7 +1102,6 @@ detox
 deuce
 devil
 dewar
-dhikr
 dhows
 dials
 diary
@@ -1137,7 +1126,6 @@ dines
 dingo
 dings
 dingy
-dinks
 dinky
 dinos
 diode
@@ -1195,7 +1183,6 @@ dopey
 dorks
 dorky
 dorms
-dosas
 dosed
 doses
 doted
@@ -1338,7 +1325,6 @@ eider
 eidos
 eight
 eject
-ejido
 eland
 elbow
 elder
@@ -1445,7 +1431,6 @@ falls
 famed
 fancy
 fangs
-fanny
 farce
 fared
 fares
@@ -1472,8 +1457,6 @@ fazes
 fears
 feast
 feats
-fecal
-feces
 feeds
 feels
 feign
@@ -1943,7 +1926,6 @@ peaks
 pearl
 pedal
 peers
-penis
 penny
 perks
 pests
@@ -2264,7 +2246,6 @@ stuck
 study
 stuff
 style
-sucks
 sugar
 suite
 suits
@@ -2679,7 +2660,6 @@ amours
 ampere
 ampler
 ampule
-amtrak
 amulet
 amused
 amuses
@@ -2720,7 +2700,6 @@ antics
 antler
 antral
 antrum
-anuses
 anvils
 anyhow
 anyone
@@ -3107,7 +3086,6 @@ biller
 billet
 billon
 billow
-bimbos
 binary
 binder
 binged
@@ -3128,7 +3106,6 @@ bishop
 bisons
 bisque
 bistro
-bitchy
 biters
 biting
 bitmap
@@ -3166,12 +3143,10 @@ blithe
 blobby
 blocks
 blocky
-bloggy
 blokes
 blonde
 blonds
 bloods
-bloody
 blooms
 blotch
 blouse
@@ -3218,7 +3193,6 @@ bombed
 bomber
 bonbon
 bonded
-boners
 bongos
 bonier
 bonito
@@ -3382,7 +3356,6 @@ buffed
 buffer
 buffet
 bugged
-bugger
 bugler
 bugles
 builds
@@ -4764,7 +4737,6 @@ styles
 submit
 subtle
 subway
-sucked
 sudden
 suffer
 sugars
@@ -5219,7 +5191,6 @@ element
 enables
 enemies
 engines
-English
 enhance
 enjoyed
 entered
@@ -5674,7 +5645,6 @@ visible
 visited
 vitamin
 vaccine
-vaginal
 vampire
 variant
 varsity
