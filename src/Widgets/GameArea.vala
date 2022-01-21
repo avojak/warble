@@ -40,6 +40,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     private int current_col;
     private string answer;
     private bool is_game_in_progress;
+    private uint? guess_timer_id = null;
 
     public GameArea () {
         Object (
@@ -164,6 +165,10 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         current_col++;
         // Update the saved state
         write_state ();
+        // Check if row is full
+        if (current_col == num_cols && Warble.Application.settings.get_boolean ("should-prompt-to-submit")) {
+            start_guess_timer ();
+        }
     }
 
     public void backspace_pressed () {
@@ -175,6 +180,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (current_col == 0) {
             return;
         }
+        // Cancel the timer (if present)
+        stop_guess_timer ();
         // Decrement the column
         current_col--;
         // Clear the square
@@ -192,6 +199,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (current_row >= num_rows) {
             return;
         }
+        // Cancel the timer (if present)
+        stop_guess_timer (true);
         // Get the current guess
         GLib.StringBuilder sb = new GLib.StringBuilder ();
         foreach (var square in rows.get (current_row)) {
@@ -216,6 +225,29 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         }
         // Update the saved state
         write_state ();
+    }
+
+    private void start_guess_timer () {
+        if (guess_timer_id != null) {
+            return;
+        }
+        guess_timer_id = GLib.Timeout.add (5000, () => {
+            Warble.Application.settings.set_boolean ("should-prompt-to-submit", false);
+            prompt_submit_guess ();
+            guess_timer_id = null;
+            return false;
+        });
+    }
+
+    private void stop_guess_timer (bool should_disable_prompt = false) {
+        if (guess_timer_id != null) {
+            GLib.Source.remove (guess_timer_id);
+            guess_timer_id = null;
+        }
+        // If the user pressed Enter, no need to prompt again
+        if (should_disable_prompt) {
+            Warble.Application.settings.set_boolean ("should-prompt-to-submit", false);
+        }
     }
 
     // Determines if a new game can be started without warning the user
@@ -552,5 +584,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     public signal void unused_clues (string message);
     public signal void game_won (int num_guesses);
     public signal void game_lost (string answer);
+    public signal void prompt_submit_guess ();
 
 }
