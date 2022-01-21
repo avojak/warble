@@ -81,5 +81,10 @@
       <summary>Whether or not the user should be prompted to press the Enter key to submit their guess</summary>
       <description>Whether or not the user should be prompted to press the Enter key to submit their guess</description>
     </key>
+    <key name="high-contrast-mode" type="b">
+      <default>false</default>
+      <summary>Whether or not high contrast mode is enabled</summary>
+      <description>Whether or not high contrast mode is enabled</description>
+    </key>
   </schema>
 </schemalist>

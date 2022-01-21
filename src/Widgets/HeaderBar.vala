@@ -58,6 +58,8 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         var gameplay_stats_menu_item = new Gtk.ModelButton ();
         gameplay_stats_menu_item.text = "Gameplay Statistics…";
 
+        var high_contrast_button = new Granite.SwitchModelButton ("High Contrast Mode");
+
         var help_accellabel = new Granite.AccelLabel.from_action_name (
             _("Help"),
             Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_HELP
@@ -87,9 +89,10 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         menu_popover_grid.attach (new_game_menu_item, 0, 1, 1, 1);
         menu_popover_grid.attach (create_menu_separator (), 0, 2, 1, 1);
         menu_popover_grid.attach (gameplay_stats_menu_item, 0, 3, 1, 1);
-        menu_popover_grid.attach (help_menu_item, 0, 4, 1, 1);
-        menu_popover_grid.attach (create_menu_separator (), 0, 5, 1, 1);
-        menu_popover_grid.attach (quit_menu_item, 0, 6, 1, 1);
+        menu_popover_grid.attach (high_contrast_button, 0, 4, 1, 1);
+        menu_popover_grid.attach (help_menu_item, 0, 5, 1, 1);
+        menu_popover_grid.attach (create_menu_separator (), 0, 6, 1, 1);
+        menu_popover_grid.attach (quit_menu_item, 0, 7, 1, 1);
         menu_popover_grid.show_all ();
 
         var menu_popover = new Gtk.Popover (null);
@@ -107,6 +110,13 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         gameplay_stats_menu_item.clicked.connect (() => {
             gameplay_statistics_menu_item_clicked ();
         });
+
+        Warble.Application.settings.bind (
+            "high-contrast-mode",
+            high_contrast_button,
+            "active",
+            SettingsBindFlags.DEFAULT
+        );
     }
 
     private Gtk.Separator create_menu_separator () {

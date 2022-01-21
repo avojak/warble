@@ -35,6 +35,16 @@ install_data(
     rename: '@0@.square-close.svg'.format(application_id)
 )
 install_data(
+    join_paths('assets', 'icons', '64x64', meson.project_name() + '.square-close-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '64x64', 'status'),
+    rename: '@0@.square-close-high-contrast.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '64x64', meson.project_name() + '.square-close-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '64x64@2', 'status'),
+    rename: '@0@.square-close-high-contrast.svg'.format(application_id)
+)
+install_data(
     join_paths('assets', 'icons', '64x64', meson.project_name() + '.square-incorrect.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '64x64', 'status'),
     rename: '@0@.square-incorrect.svg'.format(application_id)
@@ -53,6 +63,16 @@ install_data(
     join_paths('assets', 'icons', '64x64', meson.project_name() + '.square-correct.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '64x64@2', 'status'),
     rename: '@0@.square-correct.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '64x64', meson.project_name() + '.square-correct-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '64x64', 'status'),
+    rename: '@0@.square-correct-high-contrast.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '64x64', meson.project_name() + '.square-correct-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '64x64@2', 'status'),
+    rename: '@0@.square-correct-high-contrast.svg'.format(application_id)
 )
 
 install_data(
@@ -86,6 +106,16 @@ install_data(
     rename: '@0@.key-close.svg'.format(application_id)
 )
 install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-close-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-close-high-contrast.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-close-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-close-high-contrast.svg'.format(application_id)
+)
+install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-close.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
     rename: '@0@.key-pressed-close.svg'.format(application_id)
@@ -94,6 +124,16 @@ install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-close.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
     rename: '@0@.key-pressed-close.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-close-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-pressed-close-high-contrast.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-close-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-pressed-close-high-contrast.svg'.format(application_id)
 )
 install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-incorrect.svg'),
@@ -126,6 +166,16 @@ install_data(
     rename: '@0@.key-correct.svg'.format(application_id)
 )
 install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-correct-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-correct-high-contrast.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-correct-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-correct-high-contrast.svg'.format(application_id)
+)
+install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-correct.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
     rename: '@0@.key-pressed-correct.svg'.format(application_id)
@@ -134,6 +184,16 @@ install_data(
     join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-correct.svg'),
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
     rename: '@0@.key-pressed-correct.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-correct-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32', 'status'),
+    rename: '@0@.key-pressed-correct-high-contrast.svg'.format(application_id)
+)
+install_data(
+    join_paths('assets', 'icons', '32x32', meson.project_name() + '.key-pressed-correct-high-contrast.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', '32x32@2', 'status'),
+    rename: '@0@.key-pressed-correct-high-contrast.svg'.format(application_id)
 )
 
 install_data(
