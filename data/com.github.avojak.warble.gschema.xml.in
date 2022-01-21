@@ -76,5 +76,10 @@
       <summary>The current column for the in-progress game</summary>
       <description>The current column for the in-progress game</description>
     </key>
+    <key name="should-prompt-to-submit" type="b">
+      <default>true</default>
+      <summary>Whether or not the user should be prompted to press the Enter key to submit their guess</summary>
+      <description>Whether or not the user should be prompted to press the Enter key to submit their guess</description>
+    </key>
   </schema>
 </schemalist>

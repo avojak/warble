@@ -37,6 +37,7 @@ public class Warble.MainLayout : Gtk.Grid {
     private Granite.Widgets.Toast insufficient_letters_toast;
     private Granite.Widgets.Toast invalid_word_toast;
     private Granite.Widgets.Toast must_use_clues_toast;
+    private Granite.Widgets.Toast submit_guess_toast;
     private Warble.Widgets.GameArea game_area;
 
     public MainLayout (Warble.MainWindow window) {
@@ -59,6 +60,7 @@ public class Warble.MainLayout : Gtk.Grid {
         insufficient_letters_toast = new Granite.Widgets.Toast (_("Not enough letters!"));
         invalid_word_toast = new Granite.Widgets.Toast (_("That's not a word!"));
         must_use_clues_toast = new Granite.Widgets.Toast ("");
+        submit_guess_toast = new Granite.Widgets.Toast ("Press \"Enter\" to submit your guess!");
 
         game_area = new Warble.Widgets.GameArea ();
         game_area.insufficient_letters.connect (() => {
@@ -77,11 +79,15 @@ public class Warble.MainLayout : Gtk.Grid {
         game_area.game_lost.connect ((answer) => {
             show_defeat_dialog (answer);
         });
+        game_area.prompt_submit_guess.connect (() => {
+            submit_guess_toast.send_notification ();
+        });
 
         overlay.add_overlay (game_area);
         overlay.add_overlay (insufficient_letters_toast);
         overlay.add_overlay (invalid_word_toast);
         overlay.add_overlay (must_use_clues_toast);
+        overlay.add_overlay (submit_guess_toast);
 
         attach (header_bar, 0, 0);
         attach (overlay, 0, 1);
