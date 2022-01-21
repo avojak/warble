@@ -39,10 +39,6 @@ public class Warble.Widgets.ControlKey : Gtk.EventBox {
             );
         }
 
-        construct {
-            get_style_context ().add_class ("wiggle");
-        }
-
         protected override bool draw (Cairo.Context ctx) {
             base.draw (ctx);
             ctx.save ();
