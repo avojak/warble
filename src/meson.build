@@ -25,12 +25,14 @@ warble_files = files(
     join_paths('Widgets', 'Dialogs', 'GameplayStatisticsDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'RulesDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'VictoryDialog.vala'),
+    join_paths('Widgets', 'Dialogs', 'WelcomeDialog.vala'),
     join_paths('Widgets', 'GameArea.vala'),
     join_paths('Widgets', 'HeaderBar.vala'),
     join_paths('Widgets', 'Key.vala'),
     join_paths('Widgets', 'ControlKey.vala'),
     join_paths('Widgets', 'Keyboard.vala'),
     join_paths('Widgets', 'Row.vala'),
+    join_paths('Widgets', 'Rules.vala'),
     join_paths('Widgets', 'Square.vala'),
     join_paths('Widgets', 'GameplayStatistics.vala')
 )

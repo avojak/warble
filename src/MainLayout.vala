@@ -26,6 +26,7 @@ public class Warble.MainLayout : Gtk.Grid {
 
     public unowned Warble.MainWindow window { get; construct; }
 
+    private Warble.Widgets.Dialogs.WelcomeDialog? welcome_dialog = null;
     private Warble.Widgets.Dialogs.RulesDialog? rules_dialog = null;
     private Warble.Widgets.Dialogs.VictoryDialog? victory_dialog = null;
     private Warble.Widgets.Dialogs.DefeatDialog? defeat_dialog = null;
@@ -130,7 +131,7 @@ public class Warble.MainLayout : Gtk.Grid {
         // Show the rules dialog on the first launch of the game
         if (Warble.Application.settings.get_boolean ("first-launch")) {
             Idle.add (() => {
-                show_rules_dialog ();
+                show_welcome_dialog ();
                 return false;
             });
             Warble.Application.settings.set_boolean ("first-launch", false);
@@ -177,6 +178,17 @@ public class Warble.MainLayout : Gtk.Grid {
             });
         }
         new_game_confirmation_dialog.present ();
+    }
+
+    private void show_welcome_dialog () {
+        if (welcome_dialog == null) {
+            welcome_dialog = new Warble.Widgets.Dialogs.WelcomeDialog (window);
+            welcome_dialog.show_all ();
+            welcome_dialog.destroy.connect (() => {
+                welcome_dialog = null;
+            });
+        }
+        welcome_dialog.present ();
     }
 
     private void show_rules_dialog () {
