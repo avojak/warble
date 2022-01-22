@@ -29,7 +29,8 @@ Warble is inspired by (and not affiliated with) the recently popular online game
 
 ## Install with Flatpak
 
-Even if you are not on elementary OS, you can install Warble from the elementary Flatpak repository
+Even if you are not on elementary OS, you can install Warble from the elementary Flatpak repository:
+
 ```
 flatpak install https://flatpak.elementary.io/repo/appstream/com.github.avojak.warble.flatpakref
 ```

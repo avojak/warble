@@ -18,6 +18,16 @@
     <binary>@appid@</binary>
   </provides>
   <releases>
+    <release version="1.2.0" date="2022-01-22">
+      <description>
+        <p>1.2.0 Release</p>
+        <ul>
+          <li>Suggest pressing "Enter" for first-time users (#2)</li>
+          <li>Force elementary OS stylesheet on other platforms (#15)</li>
+          <li>Add high-contrast mode (#17)</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.1" date="2022-01-12">
       <description>
         <p>1.1.1 Release</p>
