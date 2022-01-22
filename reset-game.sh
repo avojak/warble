@@ -39,6 +39,7 @@ set_setting keyboard-state ""
 set_setting current-row 0
 set_setting current-col 0
 set_setting should-prompt-to-submit true
+set_setting high-contrast-mode false
 
 echo
 echo -e "\033[1;32mDone\033[0m"

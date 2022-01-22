@@ -107,9 +107,16 @@ public class Warble.Widgets.Key : Gtk.EventBox {
             //       without a device to test touch events on.
             clicked (letter);
         });
+
+        Warble.Application.settings.changed.connect ((key) => {
+            if (key == "high-contrast-mode") {
+                update_icon ();
+            }
+        });
     }
 
     private void update_icon () {
+        bool high_contrast_mode = Warble.Application.settings.get_boolean ("high-contrast-mode");
         switch (state) {
             case BLANK:
                 key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-blank" : ".key-blank"));
@@ -118,10 +125,10 @@ public class Warble.Widgets.Key : Gtk.EventBox {
                 key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-incorrect" : ".key-incorrect"));
                 break;
             case CLOSE:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-close" : ".key-close"));
+                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-close" : ".key-close") + (high_contrast_mode ? "-high-contrast" : ""));
                 break;
             case CORRECT:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-correct" : ".key-correct"));
+                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-correct" : ".key-correct") + (high_contrast_mode ? "-high-contrast" : ""));
                 break;
             default:
                 assert_not_reached ();

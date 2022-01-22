@@ -19,13 +19,13 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.Dialogs.RulesDialog : Granite.Dialog {
+public class Warble.Widgets.Dialogs.WelcomeDialog : Granite.Dialog {
 
-    public RulesDialog (Warble.MainWindow main_window) {
+    public WelcomeDialog (Warble.MainWindow main_window) {
         Object (
             deletable: false,
             resizable: false,
-            title: "How to Play Warble",
+            title: "Welcome to Warble!",
             transient_for: main_window,
             modal: true,
             width_request: 300,
@@ -37,7 +37,7 @@ public class Warble.Widgets.Dialogs.RulesDialog : Granite.Dialog {
         var body = get_content_area ();
 
         // Create the header
-        var header_title = new Gtk.Label ("How to Play");
+        var header_title = new Gtk.Label ("Welcome to Warble!");
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
         header_title.halign = Gtk.Align.CENTER;
         header_title.hexpand = true;
@@ -47,16 +47,33 @@ public class Warble.Widgets.Dialogs.RulesDialog : Granite.Dialog {
         var header_grid = create_grid ();
         header_grid.attach (header_title, 0, 0);
 
+        var high_contrast_button = new Gtk.Switch ();
+
+        var high_contrast_grid = create_grid ();
+        high_contrast_grid.margin_bottom = 20;
+        high_contrast_grid.margin_top = 20;
+        high_contrast_grid.attach (new Gtk.Label ("High Contrast Mode"), 0, 0);
+        high_contrast_grid.attach (high_contrast_button, 1, 0);
+
         body.add (header_grid);
         body.add (new Warble.Widgets.Rules ());
+        body.add (high_contrast_grid);
 
         // Add action buttons
-        var start_button = new Gtk.Button.with_label (_("Close"));
+        var start_button = new Gtk.Button.with_label (_("Let's Get Started!"));
+        start_button.get_style_context ().add_class ("suggested-action");
         start_button.clicked.connect (() => {
             close ();
         });
 
         add_action_widget (start_button, 1);
+
+        Warble.Application.settings.bind (
+            "high-contrast-mode",
+            high_contrast_button,
+            "active",
+            SettingsBindFlags.DEFAULT
+        );
     }
 
     private Gtk.Grid create_grid () {

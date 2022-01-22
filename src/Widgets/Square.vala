@@ -42,6 +42,14 @@ public class Warble.Widgets.Square : Gtk.Image {
         );
     }
 
+    construct {
+        Warble.Application.settings.changed.connect ((key) => {
+            if (key == "high-contrast-mode") {
+                update_icon ();
+            }
+        });
+    }
+
     protected override bool draw (Cairo.Context ctx) {
         base.draw (ctx);
         ctx.save ();
@@ -66,6 +74,7 @@ public class Warble.Widgets.Square : Gtk.Image {
     }
 
     public void update_icon () {
+        bool high_contrast_mode = Warble.Application.settings.get_boolean ("high-contrast-mode");
         switch (state) {
             case BLANK:
                 gicon = new ThemedIcon (Constants.APP_ID + ".square-blank");
@@ -74,10 +83,10 @@ public class Warble.Widgets.Square : Gtk.Image {
                 gicon = new ThemedIcon (Constants.APP_ID + ".square-incorrect");
                 break;
             case CLOSE:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-close");
+                gicon = new ThemedIcon (Constants.APP_ID + ".square-close" + (high_contrast_mode ? "-high-contrast" : ""));
                 break;
             case CORRECT:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-correct");
+                gicon = new ThemedIcon (Constants.APP_ID + ".square-correct" + (high_contrast_mode ? "-high-contrast" : ""));
                 break;
             default:
                 assert_not_reached ();
