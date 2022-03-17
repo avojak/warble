@@ -7,11 +7,11 @@ strict subset of the dictionary of acceptable words (dictionary.txt).
 This script should be run any time a change is made to either file.
 """
 
-with open('data/words.txt') as words:
+with open('../data/words.txt') as words:
     possible_answers = words.readlines()
     possible_answers = [line.rstrip() for line in possible_answers]
 
-with open('data/dictionary.txt') as dictionary:
+with open('../data/dictionary.txt') as dictionary:
     dictionary_words = dictionary.readlines()
     dictionary_words = [line.rstrip() for line in dictionary_words]
 

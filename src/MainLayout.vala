@@ -236,11 +236,31 @@ public class Warble.MainLayout : Gtk.Grid {
         if (gameplay_statistics_dialog == null) {
             gameplay_statistics_dialog = new Warble.Widgets.Dialogs.GameplayStatisticsDialog (window);
             gameplay_statistics_dialog.show_all ();
+            gameplay_statistics_dialog.reset_button_clicked.connect (() => {
+                gameplay_statistics_dialog.close ();
+                Idle.add (() => {
+                    show_reset_gameplay_statistics_warning_dialog ();
+                    return false;
+                });
+            });
             gameplay_statistics_dialog.destroy.connect (() => {
                 gameplay_statistics_dialog = null;
             });
         }
         gameplay_statistics_dialog.present ();
+    }
+
+    private void show_reset_gameplay_statistics_warning_dialog () {
+        var dialog = new Warble.Widgets.Dialogs.ResetGameplayStatisticsWarningDialog (window);
+        int result = dialog.run ();
+        dialog.close ();
+        if (result == Gtk.ResponseType.OK) {
+            game_area.reset_gameplay_statistics ();
+        }
+        Idle.add (() => {
+            show_gameplay_statistics_dialog ();
+            return false;
+        });
     }
 
 }

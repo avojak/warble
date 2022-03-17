@@ -524,6 +524,14 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         }
     }
 
+    public void reset_gameplay_statistics () {
+        set_int_stat ("num-games-won", 0);
+        set_int_stat ("num-games-lost", 0);
+        set_int_stat ("win-streak", 0);
+        set_int_stat ("max-win-streak", 0);
+        set_string_stat ("guess-distribution", "1:0|2:0|3:0|4:0|5:0|6:0");
+    }
+
     private string create_squares_state () {
         var sb = new GLib.StringBuilder ();
         foreach (var row in rows) {
