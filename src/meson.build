@@ -23,6 +23,7 @@ warble_files = files(
     join_paths('Widgets', 'Dialogs', 'DifficultyChangeWarningDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'NewGameConfirmationDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'GameplayStatisticsDialog.vala'),
+    join_paths('Widgets', 'Dialogs', 'ResetGameplayStatisticsWarningDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'RulesDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'VictoryDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'WelcomeDialog.vala'),
