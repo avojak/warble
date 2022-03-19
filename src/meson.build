@@ -43,7 +43,7 @@ executable(
     application_id,
     warble_files,
     config_header,
-    # css_gresource,
+    css_gresource,
     dependencies: [
         dependency('gtk+-3.0', version: '>= 3.6.4'),
         dependency('gee-0.8', version: '>= 0.8.5'),
