@@ -24,7 +24,7 @@ public class Warble.Application : Gtk.Application {
     public static GLib.Settings settings;
     public static Warble.Models.Dictionary dictionary;
 
-    private GLib.List<Warble.MainWindow> windows;
+    private Warble.MainWindow? main_window;
 
     public Application () {
         Object (
@@ -41,27 +41,20 @@ public class Warble.Application : Gtk.Application {
     construct {
         settings = new GLib.Settings (Constants.APP_ID);
         dictionary = new Warble.Models.Dictionary ();
-        windows = new GLib.List<Warble.MainWindow> ();
 
         startup.connect ((handler) => {
             Hdy.init ();
         });
     }
 
-    public override void window_added (Gtk.Window window) {
-        windows.append (window as Warble.MainWindow);
-        base.window_added (window);
-    }
-
-    public override void window_removed (Gtk.Window window) {
-        windows.remove (window as Warble.MainWindow);
-        base.window_removed (window);
-    }
-
-    private Warble.MainWindow add_new_window () {
-        var window = new Warble.MainWindow (this);
-        this.add_window (window);
-        return window;
+    private void add_new_window () {
+        if (main_window == null) {
+            main_window = new Warble.MainWindow (this);
+            main_window.destroy.connect (() => {
+                main_window = null;
+            });
+            add_window (main_window);
+        }
     }
 
     protected override void activate () {
