@@ -66,6 +66,8 @@ public class Warble.Widgets.ControlKey : Gtk.EventBox {
 
     }
 
+    private static Gtk.CssProvider provider;
+
     public string? text { get; construct; }
     public string? icon_name { get; construct; }
 
@@ -87,6 +89,11 @@ public class Warble.Widgets.ControlKey : Gtk.EventBox {
         );
     }
 
+    static construct {
+        provider = new Gtk.CssProvider ();
+        provider.load_from_resource ("com/github/avojak/warble/ControlKeyOverlayIcon.css");
+    }
+
     construct {
         var overlay = new Gtk.Overlay ();
         key = new Warble.Widgets.ControlKey.KeyImage (text);
@@ -95,6 +102,9 @@ public class Warble.Widgets.ControlKey : Gtk.EventBox {
             overlay_icon = new Gtk.Image () {
                 gicon = new GLib.ThemedIcon (icon_name)
             };
+            unowned Gtk.StyleContext style_context = overlay_icon.get_style_context ();
+            style_context.add_class ("control-key-overlay-icon");
+            style_context.add_provider (provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
             overlay.add_overlay (overlay_icon);
         }
         this.child = overlay;

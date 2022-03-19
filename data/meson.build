@@ -278,7 +278,7 @@ i18n.merge_file(
 )
 
 # Use GResource
-# css_gresource = gnome.compile_resources(
-#     'gresource_css',
-#     meson.project_name() + '.gresource.xml'
-# )
+css_gresource = gnome.compile_resources(
+    'gresource_css',
+    meson.project_name() + '.gresource.xml'
+)
