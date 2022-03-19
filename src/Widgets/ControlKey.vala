@@ -26,10 +26,10 @@ public class Warble.Widgets.ControlKey : Gtk.EventBox {
         private const int WIDTH = 48;
         private const int HEIGHT = 32;
 
-        public string text { get; construct; }
+        public string? text { get; construct; }
         public int y_offset { get; set; }
 
-        public KeyImage (string text) {
+        public KeyImage (string? text) {
             Object (
                 gicon: new ThemedIcon (Constants.APP_ID + ".control-key"),
                 text: text,
@@ -42,7 +42,9 @@ public class Warble.Widgets.ControlKey : Gtk.EventBox {
         protected override bool draw (Cairo.Context ctx) {
             base.draw (ctx);
             ctx.save ();
-            draw_text (ctx);
+            if (text != null) {
+                draw_text (ctx);
+            }
             ctx.restore ();
             return false;
         }
@@ -64,20 +66,38 @@ public class Warble.Widgets.ControlKey : Gtk.EventBox {
 
     }
 
-    public string text { get; construct; }
+    public string? text { get; construct; }
+    public string? icon_name { get; construct; }
 
     private Warble.Widgets.ControlKey.KeyImage key;
+    private Gtk.Image? overlay_icon;
     private bool is_pressed = false;
 
-    public ControlKey (string text) {
+    public ControlKey.with_text (string text) {
         Object (
-            text: text
+            text: text,
+            icon_name: null
+        );
+    }
+
+    public ControlKey.with_icon (string icon_name) {
+        Object (
+            text: null,
+            icon_name: icon_name
         );
     }
 
     construct {
+        var overlay = new Gtk.Overlay ();
         key = new Warble.Widgets.ControlKey.KeyImage (text);
-        this.child = key;
+        overlay.add (key);
+        if (icon_name != null) {
+            overlay_icon = new Gtk.Image () {
+                gicon = new GLib.ThemedIcon (icon_name)
+            };
+            overlay.add_overlay (overlay_icon);
+        }
+        this.child = overlay;
 
         // I *think* this will work for touchscreens, but I don't have a device to test on :(
         add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.TOUCH_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
@@ -88,12 +108,18 @@ public class Warble.Widgets.ControlKey : Gtk.EventBox {
             }
             is_pressed = true;
             key.y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
+            if (overlay_icon != null) {
+                overlay_icon.margin_top = 2;
+            }
             update_icon ();
             clicked ();
         });
         this.button_release_event.connect (() => {
             is_pressed = false;
             key.y_offset = 0;
+            if (overlay_icon != null) {
+                overlay_icon.margin_top = 0;
+            }
             update_icon ();
         });
         this.touch_event.connect (() => {

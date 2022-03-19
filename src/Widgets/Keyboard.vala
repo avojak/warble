@@ -54,7 +54,7 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
             hexpand = true
         };
         if (include_control_keys) {
-            Warble.Widgets.ControlKey return_key = new Warble.Widgets.ControlKey ("Enter");
+            Warble.Widgets.ControlKey return_key = new Warble.Widgets.ControlKey.with_text ("Enter");
             return_key.clicked.connect (() => {
                 return_key_clicked ();
             });
@@ -69,7 +69,7 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
             row_grid.add (key);
         }
         if (include_control_keys) {
-            Warble.Widgets.ControlKey backspace_key = new Warble.Widgets.ControlKey ("⌫");
+            Warble.Widgets.ControlKey backspace_key = new Warble.Widgets.ControlKey.with_icon ("edit-clear-symbolic");
             backspace_key.clicked.connect (() => {
                 backspace_key_clicked ();
             });
