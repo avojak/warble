@@ -35,6 +35,7 @@ public class Warble.MainWindow : Hdy.Window {
 
     public MainWindow (Warble.Application application) {
         Object (
+            title: Constants.APP_NAME,
             application: application,
             app: application,
             border_width: 0,
