@@ -1,5 +1,5 @@
 # Project name and programming language
-project('com.github.avojak.warble', 'vala', 'c', version: '1.3.0')
+project('com.github.avojak.warble', 'vala', 'c', version: '1.3.1')
 
 i18n = import('i18n')
 gnome = import('gnome')
