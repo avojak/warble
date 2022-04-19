@@ -9,6 +9,7 @@
 <h1 align="center">Warble</h1>
 <p align="center">
   <a href="https://appcenter.elementary.io/com.github.avojak.warble"><img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter" /></a>
+  <a href='https://flathub.org/apps/details/com.github.avojak.warble'><img width='155' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 </p>
 
 | ![Screenshot](data/assets/screenshots/warble-screenshot-01.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-02.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-03.png) |
@@ -23,16 +24,16 @@ Figure out the word before your guesses run out!
 - Almost 5k possible answers
 - Need a break? Close the game and automatically pick back up where you left off
 
-![Tweet](data/assets/BCD631EA-53B9-483E-9C75-CB00C1E33C52.jpeg)
+<p align="center"><img src="./data/assets/BCD631EA-53B9-483E-9C75-CB00C1E33C52.jpeg" width="500"></p>
 
 Warble is inspired by (and not affiliated with) the recently popular online game Wordle (which itself is reminiscent of the late 80's game show Lingo). 
 
 ## Install with Flatpak
 
-Even if you are not on elementary OS, you can install Warble from the elementary Flatpak repository:
+If you are not on elementary OS, you can install Warble from Flathub:
 
-```
-flatpak install https://flatpak.elementary.io/repo/appstream/com.github.avojak.warble.flatpakref
+```bash
+$ flatpak install flathub com.github.avojak.warble
 ```
 
 ## Install from Source
