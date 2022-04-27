@@ -28,7 +28,7 @@ Figure out the word before your guesses run out!
 
 Warble is inspired by (and not affiliated with) the recently popular online game Wordle (which itself is reminiscent of the late 80's game show Lingo). 
 
-## Install with Flatpak
+## Installation
 
 If you are not on elementary OS, you can install Warble from Flathub:
 
@@ -36,33 +36,21 @@ If you are not on elementary OS, you can install Warble from Flathub:
 $ flatpak install flathub com.github.avojak.warble
 ```
 
+### Community Packages
+
+The officially supported method of installing Warble is via the flatpak, however there are several other packages maintained by the community for support on other platforms:
+
+| Source | Channel/Branch | Version |
+| ------ | ------ | ------- |
+| Snapcraft | `latest/stable` | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/stable"></img></a> |
+| | `latest/edge` | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/edge"></img></a> |
+| Fedora | `rawhide` | <img src="https://img.shields.io/fedora/v/warble/rawhide"></img> |
+|  | `f35` | <img src="https://img.shields.io/fedora/v/warble/f35"></img> |
+|  | `f36` | <img src="https://img.shields.io/fedora/v/warble/f36"></img> |
+
 ## Install from Source
 
-You can install Warble by compiling from source. Here's the list of
-dependencies required:
-
-- `granite (>= 0.6.0)`
-- `debhelper (>= 10.5.1)`
-- `gettext`
-- `libgtk-3-dev (>= 3.10)`
-- `libgee-0.8-dev`
-- `meson`
-- `valac (>= 0.28.0)`
-- `libhandy-1-dev (>=1.0.0)`
-
-An `install-dev-dependencies.sh` script is available to help developers get up and running.
-
-## Building and Running
-
-```bash
-$ meson build --prefix=/usr
-$ sudo ninja -C build install
-$ com.github.avojak.warble
-```
-
-### Build with Flatpak
-
-To test the Flatpak build with Flatpak Builder:
+You can install Warble by compiling from source using `flatpak-builder`:
 
 ```bash
 $ flatpak-builder build com.github.avojak.warble.yml --user --install --force-clean
