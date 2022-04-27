@@ -45,8 +45,8 @@ The officially supported method of installing Warble is via the flatpak, however
 | Snapcraft | `latest/stable` | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/stable"></img></a> |
 | | `latest/edge` | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/edge"></img></a> |
 | Fedora | `rawhide` | <img src="https://img.shields.io/fedora/v/warble/rawhide"></img> |
-|  | `f35` | <img src="https://img.shields.io/fedora/v/warble/f35"></img> |
-|  | `f36` | <img src="https://img.shields.io/fedora/v/warble/f36"></img> |
+|  | `f35` | <a href="https://packages.fedoraproject.org/pkgs/warble/warble/"><img src="https://img.shields.io/fedora/v/warble/f35"></img></a> |
+|  | `f36` | <a href="https://packages.fedoraproject.org/pkgs/warble/warble/"><img src="https://img.shields.io/fedora/v/warble/f36"></img></a> |
 
 ## Install from Source
 
