@@ -40,13 +40,13 @@ $ flatpak install flathub com.github.avojak.warble
 
 The officially supported method of installing Warble is via the flatpak, however there are several other packages maintained by the community for support on other platforms:
 
-| Source | Channel/Branch | Architecture | Version |
-| ------ | -------------- | ------------ | ------- |
-| Snapcraft | `stable` | <img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/architecture/warble"></img> | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/stable"></img></a> |
-| | `edge` | <img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/architecture/warble"></img> | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/edge"></img></a> |
-| Fedora | `rawhide` | <img src="https://img.shields.io/badge/architecture-aarch64%20%7C%20i686%20%7C%20ppc64le%20%7C%20s390x%20%7C%20x86__64-blue"></img> | <a href="https://packages.fedoraproject.org/pkgs/warble/warble/"><img src="https://img.shields.io/fedora/v/warble/rawhide"></img></a> |
-|  | `f35` | <img src="https://img.shields.io/badge/architecture-aarch64%20%7C%20armv7hl%20%7C%20i686%20%7C%20ppc64le%20%7C%20s390x%20%7C%20x86__64-blue"></img> | <a href="https://packages.fedoraproject.org/pkgs/warble/warble/"><img src="https://img.shields.io/fedora/v/warble/f35"></img></a> |
-|  | `f36` | <img src="https://img.shields.io/badge/architecture-aarch64%20%7C%20armv7hl%20%7C%20i686%20%7C%20ppc64le%20%7C%20s390x%20%7C%20x86__64-blue"></img> | <a href="https://packages.fedoraproject.org/pkgs/warble/warble/"><img src="https://img.shields.io/fedora/v/warble/f36"></img></a> |
+| Source | Channel/Branch | Version |
+| ------ | -------------- | ------- |
+| Snapcraft | `stable` | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/stable"></img></a> |
+| | `edge` | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/edge"></img></a> |
+| Fedora | `rawhide` | <a href="https://src.fedoraproject.org/rpms/warble/"><img src="https://img.shields.io/fedora/v/warble/rawhide"></img></a> |
+|  | `f36` | <a href="https://src.fedoraproject.org/rpms/warble/"><img src="https://img.shields.io/fedora/v/warble/f36"></img></a> |
+|  | `f35` | <a href="https://src.fedoraproject.org/rpms/warble/"><img src="https://img.shields.io/fedora/v/warble/f35"></img></a> |
 
 ## Install from Source
 
