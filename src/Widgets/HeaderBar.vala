@@ -26,7 +26,11 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
             title: Constants.APP_NAME,
             show_close_button: true,
             has_subtitle: false,
-            decoration_layout: "close:" // Disable the maximize/restore button
+            // TODO: Revisit this when updating to GTK4 and removing libhandy.
+            // This shouldn't be necessary if using non-libhandy widgets and setting the header bar directly on
+            // the application window. But for now, this will have the effect of respecting the system positioning
+            // of the close button, while still hiding the maximize/restore button.
+            decoration_layout: Gtk.Settings.get_default ().gtk_decoration_layout.replace ("maximize", "").replace ("minimize", "")
         );
     }
 

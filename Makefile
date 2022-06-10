@@ -30,7 +30,7 @@ all: translations flatpak
 
 .PHONY: flatpak-init
 flatpak-init:
-	flatpak remote-add --if-not-exists --system $(ELEMENTARY_FLATPAK_REMOTE_NAME) $(ELEMENTARY_FLATPAK_REMOTE_URL)
+	flatpak remote-add --if-not-exists --user $(ELEMENTARY_FLATPAK_REMOTE_NAME) $(ELEMENTARY_FLATPAK_REMOTE_URL)
 	flatpak install -y --user $(ELEMENTARY_FLATPAK_REMOTE_NAME) io.elementary.Platform//$(ELEMENTARY_PLATFORM_VERSION) 
 	flatpak install -y --user $(ELEMENTARY_FLATPAK_REMOTE_NAME) io.elementary.Sdk//$(ELEMENTARY_PLATFORM_VERSION)
 
@@ -43,7 +43,7 @@ flatpak:
 
 .PHONY: flathub-init
 flathub-init:
-	flatpak remote-add --if-not-exists --system $(FLATHUB_FLATPAK_REMOTE_NAME) $(FLATHUB_FLATPAK_REMOTE_URL)
+	flatpak remote-add --if-not-exists --user $(FLATHUB_FLATPAK_REMOTE_NAME) $(FLATHUB_FLATPAK_REMOTE_URL)
 	flatpak install -y --user $(FLATHUB_FLATPAK_REMOTE_NAME) org.gnome.Platform//$(FLATHUB_PLATFORM_VERSION)
 	flatpak install -y --user $(FLATHUB_FLATPAK_REMOTE_NAME) org.gnome.Sdk//$(FLATHUB_PLATFORM_VERSION)
 
