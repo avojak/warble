@@ -18,6 +18,15 @@
     <binary>@appid@</binary>
   </provides>
   <releases>
+    <release version="1.5.0" date="2022-06-16">
+      <description>
+        <p>1.5.0 Release</p>
+        <ul>
+          <li>Respect the system gtk_decoration_layout preference (#36)</li>
+          <li>Fix inability to deselect the menu button (#34)</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.4.0" date="2022-06-04">
       <description>
         <p>1.4.0 Release</p>
