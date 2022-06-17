@@ -64,7 +64,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         }
         dispose_ui ();
         initialize ();
-        show_all ();
     }
 
     private void initialize () {

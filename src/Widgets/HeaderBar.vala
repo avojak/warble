@@ -19,7 +19,7 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
+public class Warble.Widgets.HeaderBar : Gtk.HeaderBar {
 
     public HeaderBar () {
         Object (
@@ -97,7 +97,6 @@ public class Warble.Widgets.HeaderBar : Hdy.HeaderBar {
         menu_popover_grid.attach (help_menu_item, 0, 5, 1, 1);
         menu_popover_grid.attach (create_menu_separator (), 0, 6, 1, 1);
         menu_popover_grid.attach (quit_menu_item, 0, 7, 1, 1);
-        menu_popover_grid.show_all ();
 
         var menu_popover = new Gtk.Popover (null);
         menu_popover.add (menu_popover_grid);

@@ -41,8 +41,6 @@ public class Warble.Widgets.Dialogs.ResetGameplayStatisticsWarningDialog : Grani
         style_context.add_class ("destructive-action");
 
         set_default_response (Gtk.ResponseType.CANCEL);
-
-        custom_bin.show_all ();
     }
 
 }

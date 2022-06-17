@@ -45,11 +45,10 @@ executable(
     config_header,
     css_gresource,
     dependencies: [
-        dependency('gtk+-3.0', version: '>= 3.6.4'),
-        dependency('gee-0.8', version: '>= 0.8.5'),
-        dependency('glib-2.0', version: '>= 2.30.0'),
-        dependency('granite', version: '>= 0.6.0'),
-        dependency('libhandy-1', version: '>=1.0.0')
+        dependency('gtk4', version: '>= 4.6.3'),
+        dependency('gee-0.8', version: '>= 0.20.5'),
+        dependency('glib-2.0', version: '>= 2.72.1'),
+        dependency('granite-7', version: '>= 7.0.0')
     ],
     vala_args: vala_args,
     install: true

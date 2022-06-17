@@ -39,8 +39,6 @@ public class Warble.Widgets.Dialogs.DifficultyChangeWarningDialog : Granite.Mess
         var remove_button = add_button (_("Yes, Start New Game"), Gtk.ResponseType.OK);
         unowned Gtk.StyleContext style_context = remove_button.get_style_context ();
         style_context.add_class ("destructive-action");
-
-        custom_bin.show_all ();
     }
 
 }

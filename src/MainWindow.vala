@@ -19,7 +19,7 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.MainWindow : Hdy.Window {
+public class Warble.MainWindow : Gtk.ApplicationWindow {
 
     private static Gee.List<char> alphabet = new Gee.ArrayList<char>.wrap ({
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -29,7 +29,8 @@ public class Warble.MainWindow : Hdy.Window {
     public unowned Warble.Application app { get; construct; }
 
     private Warble.ActionManager action_manager;
-    private Gtk.AccelGroup accel_group;
+    //  private Gtk.AccelGroup accel_group;
+    private Gtk.ShortcutController shortcut_controller;
 
     private Warble.MainLayout main_layout;
 
@@ -45,8 +46,12 @@ public class Warble.MainWindow : Hdy.Window {
     }
 
     construct {
-        accel_group = new Gtk.AccelGroup ();
-        add_accel_group (accel_group);
+        //  accel_group = new Gtk.AccelGroup ();
+        //  add_accel_group (accel_group);
+        shortcut_controller = new Gtk.ShortcutController () {
+            scope = Gtk.ShortcutScope.GLOBAL
+        };
+        add_controller (shortcut_controller);
         action_manager = new Warble.ActionManager (app, this);
 
         main_layout = new Warble.MainLayout (this);
@@ -87,7 +92,6 @@ public class Warble.MainWindow : Hdy.Window {
     }
 
     public void show_app () {
-        show_all ();
         show ();
         present ();
     }

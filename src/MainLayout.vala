@@ -35,10 +35,10 @@ public class Warble.MainLayout : Gtk.Grid {
 
     private Warble.Widgets.HeaderBar header_bar;
     private Gtk.Overlay overlay;
-    private Granite.Widgets.Toast insufficient_letters_toast;
-    private Granite.Widgets.Toast invalid_word_toast;
-    private Granite.Widgets.Toast must_use_clues_toast;
-    private Granite.Widgets.Toast submit_guess_toast;
+    private Granite.Toast insufficient_letters_toast;
+    private Granite.Toast invalid_word_toast;
+    private Granite.Toast must_use_clues_toast;
+    private Granite.Toast submit_guess_toast;
     private Warble.Widgets.GameArea game_area;
 
     public MainLayout (Warble.MainWindow window) {
@@ -58,10 +58,10 @@ public class Warble.MainLayout : Gtk.Grid {
 
         overlay = new Gtk.Overlay ();
 
-        insufficient_letters_toast = new Granite.Widgets.Toast (_("Not enough letters!"));
-        invalid_word_toast = new Granite.Widgets.Toast (_("That's not a word!"));
-        must_use_clues_toast = new Granite.Widgets.Toast ("");
-        submit_guess_toast = new Granite.Widgets.Toast ("Press \"Enter\" to submit your guess!");
+        insufficient_letters_toast = new Granite.Toast (_("Not enough letters!"));
+        invalid_word_toast = new Granite.Toast (_("That's not a word!"));
+        must_use_clues_toast = new Granite.Toast ("");
+        submit_guess_toast = new Granite.Toast ("Press \"Enter\" to submit your guess!");
 
         game_area = new Warble.Widgets.GameArea ();
         game_area.insufficient_letters.connect (() => {
@@ -122,8 +122,6 @@ public class Warble.MainLayout : Gtk.Grid {
             }
         });
 
-        show_all ();
-
         check_first_launch ();
     }
 
@@ -166,7 +164,6 @@ public class Warble.MainLayout : Gtk.Grid {
         }
         if (new_game_confirmation_dialog == null) {
             new_game_confirmation_dialog = new Warble.Widgets.Dialogs.NewGameConfirmationDialog (window);
-            new_game_confirmation_dialog.show_all ();
             new_game_confirmation_dialog.response.connect ((response_id) => {
                 if (response_id == Gtk.ResponseType.OK) {
                     game_area.new_game (true);
@@ -183,7 +180,6 @@ public class Warble.MainLayout : Gtk.Grid {
     private void show_welcome_dialog () {
         if (welcome_dialog == null) {
             welcome_dialog = new Warble.Widgets.Dialogs.WelcomeDialog (window);
-            welcome_dialog.show_all ();
             welcome_dialog.destroy.connect (() => {
                 welcome_dialog = null;
             });
@@ -194,7 +190,6 @@ public class Warble.MainLayout : Gtk.Grid {
     private void show_rules_dialog () {
         if (rules_dialog == null) {
             rules_dialog = new Warble.Widgets.Dialogs.RulesDialog (window);
-            rules_dialog.show_all ();
             rules_dialog.destroy.connect (() => {
                 rules_dialog = null;
             });
@@ -205,7 +200,6 @@ public class Warble.MainLayout : Gtk.Grid {
     private void show_victory_dialog () {
         if (victory_dialog == null) {
             victory_dialog = new Warble.Widgets.Dialogs.VictoryDialog (window);
-            victory_dialog.show_all ();
             victory_dialog.play_again_button_clicked.connect (() => {
                 victory_dialog.close ();
                 game_area.new_game ();
@@ -220,7 +214,6 @@ public class Warble.MainLayout : Gtk.Grid {
     private void show_defeat_dialog (string answer) {
         if (defeat_dialog == null) {
             defeat_dialog = new Warble.Widgets.Dialogs.DefeatDialog (window, answer);
-            defeat_dialog.show_all ();
             defeat_dialog.play_again_button_clicked.connect (() => {
                 defeat_dialog.close ();
                 game_area.new_game ();
@@ -235,7 +228,6 @@ public class Warble.MainLayout : Gtk.Grid {
     private void show_gameplay_statistics_dialog () {
         if (gameplay_statistics_dialog == null) {
             gameplay_statistics_dialog = new Warble.Widgets.Dialogs.GameplayStatisticsDialog (window);
-            gameplay_statistics_dialog.show_all ();
             gameplay_statistics_dialog.reset_button_clicked.connect (() => {
                 gameplay_statistics_dialog.close ();
                 Idle.add (() => {

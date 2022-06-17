@@ -37,27 +37,29 @@ public class Warble.Widgets.Dialogs.WelcomeDialog : Granite.Dialog {
         var body = get_content_area ();
 
         // Create the header
-        var header_title = new Gtk.Label ("Welcome to Warble!");
+        var header_title = new Gtk.Label ("Welcome to Warble!") {
+            halign = Gtk.Align.CENTER,
+            hexpand = true,
+            margin_end = 10,
+            wrap = true
+        };
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
-        header_title.halign = Gtk.Align.CENTER;
-        header_title.hexpand = true;
-        header_title.margin_end = 10;
-        header_title.set_line_wrap (true);
 
         var header_grid = create_grid ();
         header_grid.attach (header_title, 0, 0);
 
         var high_contrast_button = new Gtk.Switch ();
 
-        var high_contrast_grid = create_grid ();
-        high_contrast_grid.margin_bottom = 20;
-        high_contrast_grid.margin_top = 20;
+        var high_contrast_grid = create_grid () {
+            margin_bottom = 20,
+            margin_top = 20
+        };
         high_contrast_grid.attach (new Gtk.Label ("High Contrast Mode"), 0, 0);
         high_contrast_grid.attach (high_contrast_button, 1, 0);
 
-        body.add (header_grid);
-        body.add (new Warble.Widgets.Rules ());
-        body.add (high_contrast_grid);
+        body.append (header_grid);
+        body.append (new Warble.Widgets.Rules ());
+        body.append (high_contrast_grid);
 
         // Add action buttons
         var start_button = new Gtk.Button.with_label (_("Let's Get Started!"));

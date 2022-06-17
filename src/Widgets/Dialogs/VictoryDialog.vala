@@ -35,24 +35,26 @@ public class Warble.Widgets.Dialogs.VictoryDialog : Granite.Dialog {
         var body = get_content_area ();
 
         // Create the header
-        var header_grid = new Gtk.Grid ();
-        header_grid.margin_start = 30;
-        header_grid.margin_end = 30;
-        header_grid.margin_bottom = 30;
-        header_grid.column_spacing = 10;
+        var header_grid = new Gtk.Grid () {
+            margin_start = 30,
+            margin_end = 30,
+            margin_bottom = 30,
+            column_spacing = 10
+        };
 
-        var header_title = new Gtk.Label ("🎉️ You Win!");
+        var header_title = new Gtk.Label ("🎉️ You Win!") {
+            halign = Gtk.Align.CENTER,
+            hexpand = true,
+            margin_end = 10,
+            wrap = true
+        };
         header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
-        header_title.halign = Gtk.Align.CENTER;
-        header_title.hexpand = true;
-        header_title.margin_end = 10;
-        header_title.set_line_wrap (true);
 
         header_grid.attach (header_title, 0, 0);
 
-        body.add (header_grid);
-        body.add (new Warble.Widgets.GameplayStatistics ());
-        body.add (new Gtk.Label ("Would you like to play again?") {
+        body.append (header_grid);
+        body.append (new Warble.Widgets.GameplayStatistics ());
+        body.append (new Gtk.Label ("Would you like to play again?") {
             margin_top = 30,
             margin_bottom = 10
         });

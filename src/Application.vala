@@ -41,10 +41,6 @@ public class Warble.Application : Gtk.Application {
     construct {
         settings = new GLib.Settings (Constants.APP_ID);
         dictionary = new Warble.Models.Dictionary ();
-
-        startup.connect ((handler) => {
-            Hdy.init ();
-        });
     }
 
     private void add_new_window () {

@@ -19,7 +19,7 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.Key : Gtk.EventBox {
+public class Warble.Widgets.Key : Gtk.Box {
 
     private class KeyImage : Gtk.Image {
 
