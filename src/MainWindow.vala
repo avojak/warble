@@ -55,16 +55,21 @@ public class Warble.MainWindow : Hdy.Window {
         move (Warble.Application.settings.get_int ("pos-x"), Warble.Application.settings.get_int ("pos-y"));
 
         this.key_press_event.connect ((event_key) => {
+            if (event_key.keyval == Gdk.Key.Escape) {
+                set_focus (null);
+            }
             if (event_key.keyval == Gdk.Key.Return) {
                 main_layout.return_pressed ();
                 return false;
             }
             if (event_key.keyval == Gdk.Key.BackSpace) {
+                set_focus (null);
                 main_layout.backspace_pressed ();
                 return false;
             }
             char letter = event_key.str.up ()[0];
             if (alphabet.contains (letter)) {
+                set_focus (null);
                 main_layout.letter_key_pressed (letter);
                 return false;
             }
