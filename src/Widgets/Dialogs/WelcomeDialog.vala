@@ -50,10 +50,9 @@ public class Warble.Widgets.Dialogs.WelcomeDialog : Granite.Dialog {
 
         var high_contrast_button = new Gtk.Switch ();
 
-        var high_contrast_grid = create_grid () {
-            margin_bottom = 20,
-            margin_top = 20
-        };
+        var high_contrast_grid = create_grid ();
+        high_contrast_grid.margin_bottom = 20;
+        high_contrast_grid.margin_top = 20;
         high_contrast_grid.attach (new Gtk.Label ("High Contrast Mode"), 0, 0);
         high_contrast_grid.attach (high_contrast_button, 1, 0);
 

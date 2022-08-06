@@ -78,7 +78,7 @@ public class Warble.ActionManager : GLib.Object {
     }
 
     private void action_quit () {
-        window.before_destroy ();
+        window.destroy ();
     }
 
 }

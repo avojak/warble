@@ -21,26 +21,41 @@
 
 public class Warble.Widgets.Key : Gtk.Box {
 
-    private class KeyImage : Gtk.Image {
+    private class KeyImage : Gtk.Box {
 
         private const int SIZE = 32;
 
         public char letter { get; construct; }
         public int y_offset { get; set; }
+        public Gtk.Image image;
 
         public KeyImage (char letter) {
             Object (
-                gicon: new ThemedIcon (Constants.APP_ID + ".key-blank"),
-                pixel_size: SIZE,
                 letter: letter,
-                y_offset: 0,
-                expand: false,
-                halign: Gtk.Align.CENTER
+                y_offset: 0
             );
         }
 
-        protected override bool draw (Cairo.Context ctx) {
-            base.draw (ctx);
+        construct {
+            image = new Gtk.Image () {
+                gicon = new ThemedIcon (Constants.APP_ID + ".key-blank"),
+                pixel_size = SIZE,
+                vexpand = false,
+                hexpand = false,
+                halign = Gtk.Align.CENTER
+            };
+            append (image);
+        }
+
+        public override void snapshot (Gtk.Snapshot snapshot) {
+            Graphene.Rect bounds;
+            this.compute_bounds (this, out bounds);
+            Cairo.Context ctx = snapshot.append_cairo (bounds);
+            draw (ctx);
+        }
+
+        protected bool draw (Cairo.Context ctx) {
+            //  base.draw (ctx);
             ctx.save ();
             draw_letter (ctx);
             ctx.restore ();
@@ -48,8 +63,11 @@ public class Warble.Widgets.Key : Gtk.Box {
         }
 
         private void draw_letter (Cairo.Context ctx) {
-            var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
-            ctx.set_source_rgb (color.R, color.G, color.B);
+            //  var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
+            //  ctx.set_source_rgb (color.R, color.G, color.B);
+            var color = Gdk.RGBA ();
+            color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+            ctx.set_source_rgb (color.red, color.green, color.blue);
 
             ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
             ctx.set_font_size (15);
@@ -83,30 +101,35 @@ public class Warble.Widgets.Key : Gtk.Box {
 
     construct {
         key = new Warble.Widgets.Key.KeyImage (letter);
-        this.child = key;
+        append (key);
 
         // I *think* this will work for touchscreens, but I don't have a device to test on :(
-        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.TOUCH_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
-        this.button_press_event.connect ((event) => {
-            // Don't respond to double or triple-clicks!
-            if (event.type != Gdk.EventType.BUTTON_PRESS) {
-                return false;
-            }
-            is_pressed = true;
-            key.y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
-            update_icon ();
-            clicked (letter);
-        });
-        this.button_release_event.connect (() => {
-            is_pressed = false;
-            key.y_offset = 0;
-            update_icon ();
-        });
-        this.touch_event.connect (() => {
-            // TODO: Need a way to do this for touchscreens. Not sure how to do this with a single event and
-            //       without a device to test touch events on.
-            clicked (letter);
-        });
+        //  add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.TOUCH_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
+        //  this.button_press_event.connect ((event) => {
+        //      // Don't respond to double or triple-clicks!
+        //      if (event.type != Gdk.EventType.BUTTON_PRESS) {
+        //          return false;
+        //      }
+        //      is_pressed = true;
+        //      key.y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
+        //      update_icon ();
+        //      clicked (letter);
+        //  });
+        //  this.button_release_event.connect (() => {
+        //      is_pressed = false;
+        //      key.y_offset = 0;
+        //      update_icon ();
+        //  });
+        //  this.touch_event.connect (() => {
+        //      // TODO: Need a way to do this for touchscreens. Not sure how to do this with a single event and
+        //      //       without a device to test touch events on.
+        //      clicked (letter);
+        //  });
+
+        var gesture_event_controller = new Gtk.GestureClick ();
+        gesture_event_controller.pressed.connect (on_press_event);
+        gesture_event_controller.released.connect (on_release_event);
+        this.add_controller (gesture_event_controller);
 
         Warble.Application.settings.changed.connect ((key) => {
             if (key == "high-contrast-mode") {
@@ -115,20 +138,39 @@ public class Warble.Widgets.Key : Gtk.Box {
         });
     }
 
+    private void on_press_event (int n_press, double x, double y) {
+        if (n_press != 1) {
+            return;
+        }
+        is_pressed = true;
+        key.y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
+        update_icon ();
+        clicked (letter);
+    }
+
+    private void on_release_event (int n_press, double x, double y) {
+        if (n_press != 1) {
+            return;
+        }
+        is_pressed = false;
+        key.y_offset = 0;
+        update_icon ();
+    }
+
     private void update_icon () {
         bool high_contrast_mode = Warble.Application.settings.get_boolean ("high-contrast-mode");
         switch (state) {
             case BLANK:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-blank" : ".key-blank"));
+                key.image.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-blank" : ".key-blank"));
                 break;
             case INCORRECT:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-incorrect" : ".key-incorrect"));
+                key.image.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-incorrect" : ".key-incorrect"));
                 break;
             case CLOSE:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-close" : ".key-close") + (high_contrast_mode ? "-high-contrast" : ""));
+                key.image.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-close" : ".key-close") + (high_contrast_mode ? "-high-contrast" : ""));
                 break;
             case CORRECT:
-                key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-correct" : ".key-correct") + (high_contrast_mode ? "-high-contrast" : ""));
+                key.image.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-correct" : ".key-correct") + (high_contrast_mode ? "-high-contrast" : ""));
                 break;
             default:
                 assert_not_reached ();

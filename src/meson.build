@@ -28,7 +28,7 @@ warble_files = files(
     join_paths('Widgets', 'Dialogs', 'VictoryDialog.vala'),
     join_paths('Widgets', 'Dialogs', 'WelcomeDialog.vala'),
     join_paths('Widgets', 'GameArea.vala'),
-    join_paths('Widgets', 'HeaderBar.vala'),
+    # join_paths('Widgets', 'HeaderBar.vala'),
     join_paths('Widgets', 'Key.vala'),
     join_paths('Widgets', 'ControlKey.vala'),
     join_paths('Widgets', 'Keyboard.vala'),
@@ -48,7 +48,8 @@ executable(
         dependency('gtk4', version: '>= 4.6.3'),
         dependency('gee-0.8', version: '>= 0.20.5'),
         dependency('glib-2.0', version: '>= 2.72.1'),
-        dependency('granite-7', version: '>= 7.0.0')
+        dependency('granite-7', version: '>= 7.0.0'),
+        dependency('libadwaita-1', version: '>= 1.1.0')
     ],
     vala_args: vala_args,
     install: true

@@ -62,7 +62,7 @@ public class Warble.Widgets.Dialogs.GameplayStatisticsDialog : Granite.Dialog {
         });
         var reset_button = new Gtk.Button.with_label (_("Reset…"));
         reset_button.set_tooltip_text (_("Reset Gameplay Statistics"));
-        reset_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
+        reset_button.get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
         reset_button.clicked.connect (() => {
             reset_button_clicked ();
         });

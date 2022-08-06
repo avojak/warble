@@ -19,12 +19,7 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.MainWindow : Gtk.ApplicationWindow {
-
-    private static Gee.List<char> alphabet = new Gee.ArrayList<char>.wrap ({
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-    });
+public class Warble.MainWindow : Adw.ApplicationWindow {
 
     public unowned Warble.Application app { get; construct; }
 
@@ -39,9 +34,8 @@ public class Warble.MainWindow : Gtk.ApplicationWindow {
             title: Constants.APP_NAME,
             application: application,
             app: application,
-            border_width: 0,
-            resizable: false,
-            window_position: Gtk.WindowPosition.CENTER
+            //  border_width: 0,
+            resizable: false
         );
     }
 
@@ -55,36 +49,37 @@ public class Warble.MainWindow : Gtk.ApplicationWindow {
         action_manager = new Warble.ActionManager (app, this);
 
         main_layout = new Warble.MainLayout (this);
-        add (main_layout);
+        //  add (main_layout);
+        content = main_layout;
 
-        move (Warble.Application.settings.get_int ("pos-x"), Warble.Application.settings.get_int ("pos-y"));
+        //  move (Warble.Application.settings.get_int ("pos-x"), Warble.Application.settings.get_int ("pos-y"));
 
-        this.key_press_event.connect ((event_key) => {
-            if (event_key.keyval == Gdk.Key.Escape) {
-                set_focus (null);
-            }
-            if (event_key.keyval == Gdk.Key.Return) {
-                main_layout.return_pressed ();
-                return false;
-            }
-            if (event_key.keyval == Gdk.Key.BackSpace) {
-                set_focus (null);
-                main_layout.backspace_pressed ();
-                return false;
-            }
-            char letter = event_key.str.up ()[0];
-            if (alphabet.contains (letter)) {
-                set_focus (null);
-                main_layout.letter_key_pressed (letter);
-                return false;
-            }
-        });
+        //  this.key_press_event.connect ((event_key) => {
+        //      if (event_key.keyval == Gdk.Key.Escape) {
+        //          set_focus (null);
+        //      }
+        //      if (event_key.keyval == Gdk.Key.Return) {
+        //          main_layout.return_pressed ();
+        //          return false;
+        //      }
+        //      if (event_key.keyval == Gdk.Key.BackSpace) {
+        //          set_focus (null);
+        //          main_layout.backspace_pressed ();
+        //          return false;
+        //      }
+        //      char letter = event_key.str.up ()[0];
+        //      if (alphabet.contains (letter)) {
+        //          set_focus (null);
+        //          main_layout.letter_key_pressed (letter);
+        //          return false;
+        //      }
+        //  });
 
-        this.destroy.connect (() => {
-            // Do stuff before closing the application
-            GLib.Process.exit (0);
-        });
-        this.delete_event.connect (before_destroy);
+        //  this.destroy.connect (() => {
+        //      // Do stuff before closing the application
+        //      GLib.Process.exit (0);
+        //  });
+        //  this.delete_event.connect (before_destroy);
 
         show_app ();
 
@@ -92,15 +87,15 @@ public class Warble.MainWindow : Gtk.ApplicationWindow {
     }
 
     public void show_app () {
-        show ();
+        //  show ();
         present ();
     }
 
-    public bool before_destroy () {
-        update_position_settings ();
-        destroy ();
-        return true;
-    }
+    //  public bool before_destroy () {
+    //      //  update_position_settings ();
+    //      destroy ();
+    //      return true;
+    //  }
 
     public void show_rules () {
         main_layout.show_rules ();
@@ -110,11 +105,11 @@ public class Warble.MainWindow : Gtk.ApplicationWindow {
         main_layout.new_game ();
     }
 
-    private void update_position_settings () {
-        int x, y;
-        get_position (out x, out y);
-        Warble.Application.settings.set_int ("pos-x", x);
-        Warble.Application.settings.set_int ("pos-y", y);
-    }
+    //  private void update_position_settings () {
+    //      int x, y;
+    //      get_position (out x, out y);
+    //      Warble.Application.settings.set_int ("pos-x", x);
+    //      Warble.Application.settings.set_int ("pos-y", y);
+    //  }
 
 }

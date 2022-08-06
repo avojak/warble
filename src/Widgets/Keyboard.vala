@@ -29,10 +29,14 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
 
     public Keyboard () {
         Object (
-            expand: true,
+            hexpand: true,
+            vexpand: true,
             orientation: Gtk.Orientation.VERTICAL,
             halign: Gtk.Align.CENTER,
-            margin: 8
+            margin_start: 8,
+            margin_end: 8,
+            margin_top: 8,
+            margin_bottom: 8
         );
     }
 
@@ -48,17 +52,17 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
 
     private Gtk.Grid create_row (char[] letters, bool include_control_keys = false) {
         var row_grid = new Gtk.Grid () {
-            orientation = Gtk.Orientation.HORIZONTAL,
             halign = Gtk.Align.CENTER,
             valign = Gtk.Align.END,
             hexpand = true
         };
+        int col = 0;
         if (include_control_keys) {
             Warble.Widgets.ControlKey return_key = new Warble.Widgets.ControlKey.with_text ("Enter");
             return_key.clicked.connect (() => {
                 return_key_clicked ();
             });
-            row_grid.add (return_key);
+            row_grid.attach (return_key, col++, 0);
         }
         foreach (char letter in letters) {
             Warble.Widgets.Key key = new Warble.Widgets.Key (letter);
@@ -66,14 +70,14 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
                 key_clicked (letter);
             });
             keys.set (letter, key);
-            row_grid.add (key);
+            row_grid.attach (key, col++, 0);
         }
         if (include_control_keys) {
             Warble.Widgets.ControlKey backspace_key = new Warble.Widgets.ControlKey.with_icon ("edit-clear-symbolic");
             backspace_key.clicked.connect (() => {
                 backspace_key_clicked ();
             });
-            row_grid.add (backspace_key);
+            row_grid.attach (backspace_key, col++, 0);
         }
         return row_grid;
     }

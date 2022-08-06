@@ -44,10 +44,14 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
     public GameArea () {
         Object (
-            expand: true,
+            hexpand: true,
+            vexpand: true,
             orientation: Gtk.Orientation.VERTICAL,
             halign: Gtk.Align.CENTER,
-            margin: 8
+            margin_start: 8,
+            margin_end: 8,
+            margin_top: 8,
+            margin_bottom: 8
         );
     }
 
@@ -100,7 +104,10 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
     private void setup_ui () {
         status_grid = new Gtk.Grid () {
-            margin = 8,
+            margin_top = 8,
+            margin_bottom = 8,
+            margin_start = 8,
+            margin_end = 8,
             halign = Gtk.Align.CENTER
         };
         status_label = new Gtk.Label ("");
@@ -113,13 +120,18 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
         endgame_revealer = new Gtk.Revealer () {
             transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN,
-            expand = true
+            hexpand = true,
+            vexpand = true
         };
-        endgame_revealer.add (status_grid);
+        endgame_revealer.child = status_grid;
 
         square_grid = new Gtk.Grid () {
-            margin = 8,
-            expand = true
+            margin_top = 8,
+            margin_bottom = 8,
+            margin_start = 8,
+            margin_end = 8,
+            hexpand = true,
+            vexpand = true
         };
         rows = new Gee.ArrayList<Gee.List<Warble.Widgets.Square>> ();
         for (int i = 0; i < num_rows; i++) {

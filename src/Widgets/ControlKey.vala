@@ -21,26 +21,41 @@
 
 public class Warble.Widgets.ControlKey : Gtk.Box {
 
-    private class KeyImage : Gtk.Image {
+    private class KeyImage : Gtk.Box {
 
         private const int WIDTH = 48;
         private const int HEIGHT = 32;
 
         public string? text { get; construct; }
         public int y_offset { get; set; }
+        public Gtk.Image image;
 
         public KeyImage (string? text) {
             Object (
-                gicon: new ThemedIcon (Constants.APP_ID + ".control-key"),
                 text: text,
-                y_offset: 0,
-                expand: false,
-                halign: Gtk.Align.CENTER
+                y_offset: 0
             );
         }
 
-        protected override bool draw (Cairo.Context ctx) {
-            base.draw (ctx);
+        construct {
+            image = new Gtk.Image () {
+                gicon = new ThemedIcon (Constants.APP_ID + ".control-key"),
+                hexpand = false,
+                vexpand = false,
+                halign = Gtk.Align.CENTER
+            };
+            append (image);
+        }
+
+        public override void snapshot (Gtk.Snapshot snapshot) {
+            Graphene.Rect bounds;
+            this.compute_bounds (this, out bounds);
+            Cairo.Context ctx = snapshot.append_cairo (bounds);
+            draw (ctx);
+        }
+
+        protected bool draw (Cairo.Context ctx) {
+            //  base.draw (ctx);
             ctx.save ();
             if (text != null) {
                 draw_text (ctx);
@@ -50,8 +65,9 @@ public class Warble.Widgets.ControlKey : Gtk.Box {
         }
 
         private void draw_text (Cairo.Context ctx) {
-            var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
-            ctx.set_source_rgb (color.R, color.G, color.B);
+            var color = Gdk.RGBA ();
+            color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+            ctx.set_source_rgb (color.red, color.green, color.blue);
 
             ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
             ctx.set_font_size (13);
@@ -97,7 +113,7 @@ public class Warble.Widgets.ControlKey : Gtk.Box {
     construct {
         var overlay = new Gtk.Overlay ();
         key = new Warble.Widgets.ControlKey.KeyImage (text);
-        overlay.add (key);
+        overlay.child = key;
         if (icon_name != null) {
             overlay_icon = new Gtk.Image () {
                 gicon = new GLib.ThemedIcon (icon_name)
@@ -107,40 +123,70 @@ public class Warble.Widgets.ControlKey : Gtk.Box {
             style_context.add_provider (provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
             overlay.add_overlay (overlay_icon);
         }
-        this.child = overlay;
+        append (overlay);
 
         // I *think* this will work for touchscreens, but I don't have a device to test on :(
-        add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.TOUCH_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
-        this.button_press_event.connect ((event) => {
-            // Don't respond to double or triple-clicks!
-            if (event.type != Gdk.EventType.BUTTON_PRESS) {
-                return false;
-            }
-            is_pressed = true;
-            key.y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
-            if (overlay_icon != null) {
-                overlay_icon.margin_top = 2;
-            }
-            update_icon ();
-            clicked ();
-        });
-        this.button_release_event.connect (() => {
-            is_pressed = false;
-            key.y_offset = 0;
-            if (overlay_icon != null) {
-                overlay_icon.margin_top = 0;
-            }
-            update_icon ();
-        });
-        this.touch_event.connect (() => {
-            // TODO: Need a way to do this for touchscreens. Not sure how to do this with a single event and
-            //       without a device to test touch events on.
-            clicked ();
-        });
+        //  add_events (Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.TOUCH_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
+        //  this.button_press_event.connect ((event) => {
+        //      // Don't respond to double or triple-clicks!
+        //      if (event.type != Gdk.EventType.BUTTON_PRESS) {
+        //          return false;
+        //      }
+        //      is_pressed = true;
+        //      key.y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
+        //      if (overlay_icon != null) {
+        //          overlay_icon.margin_top = 2;
+        //      }
+        //      update_icon ();
+        //      clicked ();
+        //  });
+        //  this.button_release_event.connect (() => {
+        //      is_pressed = false;
+        //      key.y_offset = 0;
+        //      if (overlay_icon != null) {
+        //          overlay_icon.margin_top = 0;
+        //      }
+        //      update_icon ();
+        //  });
+        //  this.touch_event.connect (() => {
+        //      // TODO: Need a way to do this for touchscreens. Not sure how to do this with a single event and
+        //      //       without a device to test touch events on.
+        //      clicked ();
+        //  });
+
+        var gesture_event_controller = new Gtk.GestureClick ();
+        gesture_event_controller.pressed.connect (on_press_event);
+        gesture_event_controller.released.connect (on_release_event);
+        this.add_controller (gesture_event_controller);
+    }
+
+    private void on_press_event (int n_press, double x, double y) {
+        if (n_press != 1) {
+            return;
+        }
+        is_pressed = true;
+        key.y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
+        if (overlay_icon != null) {
+            overlay_icon.margin_top = 2;
+        }
+        update_icon ();
+        clicked ();
+    }
+
+    private void on_release_event (int n_press, double x, double y) {
+        if (n_press != 1) {
+            return;
+        }
+        is_pressed = false;
+        key.y_offset = 0;
+        if (overlay_icon != null) {
+            overlay_icon.margin_top = 0;
+        }
+        update_icon ();
     }
 
     private void update_icon () {
-        key.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".control-key-pressed" : ".control-key"));
+        key.image.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".control-key-pressed" : ".control-key"));
     }
 
     public signal void clicked ();

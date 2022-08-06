@@ -26,7 +26,10 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
             orientation: Gtk.Orientation.VERTICAL,
             halign: Gtk.Align.CENTER,
             hexpand: true,
-            margin: 8,
+            margin_start: 8,
+            margin_end: 8,
+            margin_top: 8,
+            margin_bottom: 8,
             row_spacing: 8,
             column_spacing: 8
         );
@@ -45,7 +48,10 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
         var stats_grid = new Gtk.Grid () {
             orientation = Gtk.Orientation.VERTICAL,
             halign = Gtk.Align.CENTER,
-            margin = 8,
+            margin_top = 8,
+            margin_bottom = 8,
+            margin_start = 8,
+            margin_end = 8,
             row_spacing = 8,
             column_spacing = 8
         };
@@ -131,7 +137,7 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
             int val = int.parse (guess_distribution[i].split (":")[1]);
 
             var label = new Gtk.Label (@"<b>$key</b>") {
-                margin_right = 4,
+                margin_end = 4,
                 use_markup = true
             };
             guess_distribution_grid.attach (label, 0, i + 1, 1, 1);
@@ -145,7 +151,7 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
             guess_distribution_grid.attach (level_bar, 1, i + 1, 1, 1);
 
             var guess_count = new Gtk.Label (val > 0 ? "<small>%s</small>".printf (val.to_string ()) : "") {
-                margin_left = 4,
+                margin_end = 4,
                 use_markup = true
             };
             guess_distribution_grid.attach (guess_count, 2, i + 1, 1, 1);

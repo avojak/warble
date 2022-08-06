@@ -19,7 +19,7 @@
  * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.Square : Gtk.Image {
+public class Warble.Widgets.Square : Gtk.Box {
 
     private const int SIZE = 64;
 
@@ -35,14 +35,21 @@ public class Warble.Widgets.Square : Gtk.Image {
         set { this._state = value; update_icon (); }
     }
 
+    public Gtk.Image image;
+
     public Square () {
         Object (
-            gicon: new ThemedIcon (Constants.APP_ID + ".square-blank"),
-            pixel_size: SIZE
+            
         );
     }
 
     construct {
+        image = new Gtk.Image () {
+            gicon = new ThemedIcon (Constants.APP_ID + ".square-blank"),
+            pixel_size = SIZE
+        };
+        append (image);
+
         Warble.Application.settings.changed.connect ((key) => {
             if (key == "high-contrast-mode") {
                 update_icon ();
@@ -50,8 +57,15 @@ public class Warble.Widgets.Square : Gtk.Image {
         });
     }
 
-    protected override bool draw (Cairo.Context ctx) {
-        base.draw (ctx);
+    public override void snapshot (Gtk.Snapshot snapshot) {
+        Graphene.Rect bounds;
+        this.compute_bounds (this, out bounds);
+        Cairo.Context ctx = snapshot.append_cairo (bounds);
+        draw (ctx);
+    }
+
+    protected bool draw (Cairo.Context ctx) {
+        //  base.draw (ctx);
         ctx.save ();
         draw_letter (ctx);
         ctx.restore ();
@@ -59,8 +73,11 @@ public class Warble.Widgets.Square : Gtk.Image {
     }
 
     private void draw_letter (Cairo.Context ctx) {
-        var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
-        ctx.set_source_rgb (color.R, color.G, color.B);
+        //  var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
+        //  ctx.set_source_rgb (color.R, color.G, color.B);
+        var color = Gdk.RGBA ();
+        color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+        ctx.set_source_rgb (color.red, color.green, color.blue);
 
         ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
         ctx.set_font_size (30);
@@ -77,16 +94,16 @@ public class Warble.Widgets.Square : Gtk.Image {
         bool high_contrast_mode = Warble.Application.settings.get_boolean ("high-contrast-mode");
         switch (state) {
             case BLANK:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-blank");
+                image.gicon = new ThemedIcon (Constants.APP_ID + ".square-blank");
                 break;
             case INCORRECT:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-incorrect");
+                image.gicon = new ThemedIcon (Constants.APP_ID + ".square-incorrect");
                 break;
             case CLOSE:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-close" + (high_contrast_mode ? "-high-contrast" : ""));
+                image.gicon = new ThemedIcon (Constants.APP_ID + ".square-close" + (high_contrast_mode ? "-high-contrast" : ""));
                 break;
             case CORRECT:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-correct" + (high_contrast_mode ? "-high-contrast" : ""));
+                image.gicon = new ThemedIcon (Constants.APP_ID + ".square-correct" + (high_contrast_mode ? "-high-contrast" : ""));
                 break;
             default:
                 assert_not_reached ();

@@ -49,7 +49,7 @@ public class Warble.Widgets.Dialogs.DefeatDialog : Granite.Dialog {
         header_title.halign = Gtk.Align.CENTER;
         header_title.hexpand = true;
         header_title.margin_end = 10;
-        header_title.set_line_wrap (true);
+        header_title.wrap = true;
 
         header_grid.attach (header_title, 0, 0);
 
@@ -72,8 +72,8 @@ public class Warble.Widgets.Dialogs.DefeatDialog : Granite.Dialog {
             margin_bottom = 10
         }, 0, 2);
 
-        body.add (header_grid);
-        body.add (body_grid);
+        body.append (header_grid);
+        body.append (body_grid);
 
         // Add action buttons
         var not_now_button = new Gtk.Button.with_label (_("Not Now"));
