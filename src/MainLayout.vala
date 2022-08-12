@@ -1,33 +1,12 @@
 /*
- * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
 public class Warble.MainLayout : Gtk.Grid {
 
     private const int NUM_ROWS = 6;
     private const int NUM_COLS = 5;
-
-    private static Gee.List<char> alphabet = new Gee.ArrayList<char>.wrap ({
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-    });
 
     public unowned Warble.MainWindow window { get; construct; }
 
@@ -48,9 +27,9 @@ public class Warble.MainLayout : Gtk.Grid {
 
     public MainLayout (Warble.MainWindow window) {
         Object (
-            window: window,
-            width_request: 450,
-            height_request: 625
+            window: window
+            //  width_request: 450,
+            //  height_request: 625
         );
     }
 
@@ -66,7 +45,7 @@ public class Warble.MainLayout : Gtk.Grid {
         insufficient_letters_toast = new Granite.Toast (_("Not enough letters!"));
         invalid_word_toast = new Granite.Toast (_("That's not a word!"));
         must_use_clues_toast = new Granite.Toast ("");
-        submit_guess_toast = new Granite.Toast ("Press \"Enter\" to submit your guess!");
+        submit_guess_toast = new Granite.Toast (_("Press \"Enter\" to submit your guess!"));
 
         game_area = new Warble.Widgets.GameArea ();
         game_area.insufficient_letters.connect (() => {
@@ -89,18 +68,18 @@ public class Warble.MainLayout : Gtk.Grid {
             submit_guess_toast.send_notification ();
         });
 
-        overlay.add_overlay (game_area);
+        overlay.child = game_area;
         overlay.add_overlay (insufficient_letters_toast);
         overlay.add_overlay (invalid_word_toast);
         overlay.add_overlay (must_use_clues_toast);
         overlay.add_overlay (submit_guess_toast);
 
         attach (header_bar, 0, 0);
-        //  attach (overlay, 0, 1);
+        attach (overlay, 0, 1);
 
-        var key_event_controller = new Gtk.EventControllerKey ();
-        key_event_controller.key_pressed.connect (on_key_pressed_event);
-        this.add_controller (key_event_controller);
+        //  var key_event_controller = new Gtk.EventControllerKey ();
+        //  key_event_controller.key_pressed.connect (on_key_pressed_event);
+        //  this.add_controller (key_event_controller);
 
         // When the user changes the difficulty, prompt them if in the middle of the game,
         // because changing the difficulty starts a new game and will register as a loss
@@ -146,7 +125,7 @@ public class Warble.MainLayout : Gtk.Grid {
         title_widget.get_style_context ().add_class (Granite.STYLE_CLASS_TITLE_LABEL);
         var header_bar = new Adw.HeaderBar () {
             title_widget = title_widget,
-            decoration_layout = Gtk.Settings.get_default ().gtk_decoration_layout.replace ("maximize", "").replace ("minimize", ""),
+            //  decoration_layout = Gtk.Settings.get_default ().gtk_decoration_layout.replace ("maximize", "").replace ("minimize", ""),
             hexpand = true
         };
 
@@ -165,22 +144,30 @@ public class Warble.MainLayout : Gtk.Grid {
         //  difficulty_button.append_text (Warble.Models.Difficulty.HARD.get_display_string ());
         //  Warble.Application.settings.bind ("difficulty", difficulty_button, "selected", GLib.SettingsBindFlags.DEFAULT);
 
-        var difficulty_button = new Gtk.ToggleButton () {
+        var difficulty_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
             margin_top = 12,
             margin_bottom = 12,
             margin_start = 12,
-            margin_end = 12
+            margin_end = 12,
+            homogeneous = true
         };
+        difficulty_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
 
         var easy_button = new Gtk.ToggleButton.with_label (Warble.Models.Difficulty.EASY.get_display_string ()) {
-            group = difficulty_button
+            tooltip_markup = Warble.Models.Difficulty.EASY.get_details_markup ()
         };
         var normal_button = new Gtk.ToggleButton.with_label (Warble.Models.Difficulty.NORMAL.get_display_string ()) {
-            group = difficulty_button
+            tooltip_markup = Warble.Models.Difficulty.NORMAL.get_details_markup (),
+            group = easy_button
         };
         var hard_button = new Gtk.ToggleButton.with_label (Warble.Models.Difficulty.HARD.get_display_string ()) {
-            group = difficulty_button
+            tooltip_markup = Warble.Models.Difficulty.HARD.get_details_markup (),
+            group = easy_button
         };
+
+        difficulty_button_box.append (easy_button);
+        difficulty_button_box.append (normal_button);
+        difficulty_button_box.append (hard_button);
 
         var new_game_accellabel = new Granite.AccelLabel.from_action_name (
             _("New Game"),
@@ -224,7 +211,7 @@ public class Warble.MainLayout : Gtk.Grid {
         menu_popover_grid.margin_bottom = 3;
         menu_popover_grid.orientation = Gtk.Orientation.VERTICAL;
         menu_popover_grid.width_request = 200;
-        menu_popover_grid.attach (difficulty_button, 0, 0, 3, 1);
+        menu_popover_grid.attach (difficulty_button_box, 0, 0, 3, 1);
         menu_popover_grid.attach (new_game_menu_item, 0, 1, 1, 1);
         menu_popover_grid.attach (create_menu_separator (), 0, 2, 1, 1);
         menu_popover_grid.attach (gameplay_stats_menu_item, 0, 3, 1, 1);
@@ -268,7 +255,7 @@ public class Warble.MainLayout : Gtk.Grid {
         return menu_separator;
     }
 
-    private bool on_key_pressed_event (Gtk.EventControllerKey controller, uint keyval, uint keycode, Gdk.ModifierType state) {
+    public bool on_key_pressed_event (Gtk.EventControllerKey controller, uint keyval, uint keycode, Gdk.ModifierType state) {
         if (keyval == Gdk.Key.Escape) {
             //  set_focus (null);
         }
@@ -286,7 +273,7 @@ public class Warble.MainLayout : Gtk.Grid {
         //  var event = controller.get_current_event () as Gdk.KeyEvent;
         char letter = ((char) Gdk.keyval_to_unicode (keyval)).toupper ();
         //  char letter = event_key.str.up ()[0];
-        if (alphabet.contains (letter)) {
+        if (Warble.Application.alphabet.contains (letter)) {
             //  set_focus (null);
             letter_key_pressed (letter);
             return false;

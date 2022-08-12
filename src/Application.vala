@@ -1,28 +1,19 @@
 /*
- * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
 public class Warble.Application : Gtk.Application {
 
+    public static Gee.List<char> alphabet = new Gee.ArrayList<char>.wrap ({
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+    });
+
     public static GLib.Settings settings;
     public static Warble.Models.Dictionary dictionary;
+
+    private static Gtk.CssProvider provider;
 
     //  private Warble.MainWindow? main_window;
 
@@ -36,6 +27,9 @@ public class Warble.Application : Gtk.Application {
     static construct {
         info ("%s version: %s", Constants.APP_ID, Constants.VERSION);
         info ("Kernel version: %s", Posix.utsname ().release);
+
+        provider = new Gtk.CssProvider ();
+        //  provider.load_from_resource (Constants.APP_ID.replace (".", "/") + "/warble-default.css");
     }
 
     construct {
@@ -55,16 +49,36 @@ public class Warble.Application : Gtk.Application {
     }
 
     protected override void activate () {
+        Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
         force_elementary_style ();
         // Respect the system color scheme preference
         var granite_settings = Granite.Settings.get_default ();
         var gtk_settings = Gtk.Settings.get_default ();
         gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
+        load_stylesheet ();
         granite_settings.notify["prefers-color-scheme"].connect (() => {
             gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
+            load_stylesheet ();
         });
 
         this.add_new_window ();
+    }
+
+    private void load_stylesheet () {
+        var gtk_settings = Gtk.Settings.get_default ();
+        bool dark_mode = gtk_settings.gtk_application_prefer_dark_theme;
+        bool high_contrast_mode = settings.get_boolean ("high-contrast-mode");
+        
+        if (dark_mode && high_contrast_mode) {
+            provider.load_from_resource (Constants.APP_ID.replace (".", "/") + "/warble-dark-hicontrast.css");
+        } else if (dark_mode && !high_contrast_mode) {
+            provider.load_from_resource (Constants.APP_ID.replace (".", "/") + "/warble-dark.css");
+        } else if (!dark_mode && high_contrast_mode) {
+            provider.load_from_resource (Constants.APP_ID.replace (".", "/") + "/warble-light-hicontrast.css");
+        } else {
+            provider.load_from_resource (Constants.APP_ID.replace (".", "/") + "/warble-light.css");
+        }
     }
 
     /**

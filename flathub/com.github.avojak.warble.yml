@@ -19,8 +19,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/elementary/stylesheet.git
-        tag: 6.1.1
-        commit: d590af0633bb1a311fee3756fcd7b5fdafa9c491
+        tag: 7.0.0
+        commit: 15363725675baf2e8284a48c4d82022624c24969
     modules:
       - name: sassc
         cleanup:
@@ -28,8 +28,8 @@ modules:
         sources:
           - type: git
             url: https://github.com/sass/sassc.git
-            tag: 3.6.1
-            commit: 46748216ba0b60545e814c07846ca10c9fefc5b6
+            tag: 3.6.2
+            commit: 66f0ef37e7f0ad3a65d2f481eff09d09408f42d0
           - type: script
             dest-filename: autogen.sh
             commands:
@@ -41,8 +41,8 @@ modules:
             sources:
               - type: git
                 url: https://github.com/sass/libsass.git
-                tag: 3.6.4
-                commit: 8d312a1c91bb7dd22883ebdfc829003f75a82396
+                tag: 3.6.5
+                commit: f6afdbb9288d20d1257122e71d88e53348a53af3
               - type: script
                 dest-filename: autogen.sh
                 commands:
@@ -55,8 +55,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/elementary/icons.git
-        tag: 6.1.0
-        commit: c6cf4636ea0de92c3512242dbf4ec6fb33456b13
+        tag: 7.0.0
+        commit: c52a16f4c5bb7b756db6ae965fe4b3d03b1003f6
     modules:
       - name: xcursorgen
         cleanup:
@@ -66,13 +66,13 @@ modules:
             url: https://gitlab.freedesktop.org/xorg/app/xcursorgen/-/archive/xcursorgen-1.0.7/xcursorgen-xcursorgen-1.0.7.tar.gz
             sha256: 7fb30a052b63e3ed02c9e43bd70fe1bf8189f2f3d702ab43b5b0726a2dbafccd
 
-  - name: granite
+  - name: granite-7
     buildsystem: meson
     sources:
       - type: git
         url: https://github.com/elementary/granite.git
-        tag: 6.2.0
-        commit: 4ab145c28bb3db6372fe519e8bd79c645edfcda3
+        tag: 7.0.0
+        commit: 41020886ee56f0a489b977a389da10a6ba0cd131
 
   - name: warble
     buildsystem: meson

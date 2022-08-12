@@ -28,25 +28,34 @@ K := $(foreach exec,$(EXECUTABLES),\
 .PHONY: all
 all: translations flatpak
 
+# Fetch the Flatpak dependencies for building for AppCenter
 .PHONY: flatpak-init
 flatpak-init:
 	flatpak remote-add --if-not-exists --user $(ELEMENTARY_FLATPAK_REMOTE_NAME) $(ELEMENTARY_FLATPAK_REMOTE_URL)
 	flatpak install -y --user $(ELEMENTARY_FLATPAK_REMOTE_NAME) io.elementary.Platform//$(ELEMENTARY_PLATFORM_VERSION) 
 	flatpak install -y --user $(ELEMENTARY_FLATPAK_REMOTE_NAME) io.elementary.Sdk//$(ELEMENTARY_PLATFORM_VERSION)
 
-.PHONY: init
-init: flatpak-init
+# Fetch the dependencies locally so that the IDE will be able to locate packages outside of Flatpak
+.PHONY: dev-init
+dev-init:
+	sudo apt install -y libadwaita-1-dev libgranite-7-dev sassc
 
+.PHONY: init
+init: flatpak-init dev-init
+
+# Builds the Flatpak application for AppCenter
 .PHONY: flatpak
 flatpak:
 	flatpak-builder build $(APP_ID).yml $(FLATPAK_BUILDER_FLAGS)
 
+# Fetch the Flatpak dependencies for building for Flathub
 .PHONY: flathub-init
 flathub-init:
 	flatpak remote-add --if-not-exists --user $(FLATHUB_FLATPAK_REMOTE_NAME) $(FLATHUB_FLATPAK_REMOTE_URL)
 	flatpak install -y --user $(FLATHUB_FLATPAK_REMOTE_NAME) org.gnome.Platform//$(FLATHUB_PLATFORM_VERSION)
 	flatpak install -y --user $(FLATHUB_FLATPAK_REMOTE_NAME) org.gnome.Sdk//$(FLATHUB_PLATFORM_VERSION)
 
+# Builds the Flatpak application for Flathub
 .PHONY: flathub
 flathub:
 	flatpak-builder build flathub/$(APP_ID).yml --user --install --force-clean

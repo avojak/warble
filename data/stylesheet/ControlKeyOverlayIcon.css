@@ -1,0 +1,10 @@
+/*
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
+ */
+
+image.control-key-overlay-icon {
+    /* Force the icon to be dark, even when the system changes to dark style
+    because the image that the icon is overlayed on is light. */
+    color: rgb(51, 51, 51);
+}

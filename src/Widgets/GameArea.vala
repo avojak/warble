@@ -1,22 +1,6 @@
 /*
- * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
 public class Warble.Widgets.GameArea : Gtk.Grid {
@@ -131,7 +115,11 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             margin_start = 8,
             margin_end = 8,
             hexpand = true,
-            vexpand = true
+            vexpand = true,
+            row_homogeneous = true,
+            column_homogeneous = true,
+            row_spacing = 8,
+            column_spacing = 8
         };
         rows = new Gee.ArrayList<Gee.List<Warble.Widgets.Square>> ();
         for (int i = 0; i < num_rows; i++) {
@@ -149,7 +137,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         keyboard.return_key_clicked.connect (return_pressed);
         keyboard.backspace_key_clicked.connect (backspace_pressed);
 
-        attach (endgame_revealer, 0, 0);
+        //  attach (endgame_revealer, 0, 0);
         attach (square_grid, 0, 1);
         attach (keyboard, 0, 2);
     }

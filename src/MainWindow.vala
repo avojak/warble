@@ -1,22 +1,6 @@
 /*
- * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
 public class Warble.MainWindow : Adw.ApplicationWindow {
@@ -35,7 +19,7 @@ public class Warble.MainWindow : Adw.ApplicationWindow {
             application: application,
             app: application,
             //  border_width: 0,
-            resizable: false
+            resizable: true
         );
     }
 
@@ -81,6 +65,11 @@ public class Warble.MainWindow : Adw.ApplicationWindow {
         //  });
         //  this.delete_event.connect (before_destroy);
 
+        var key_event_controller = new Gtk.EventControllerKey ();
+        key_event_controller.key_pressed.connect (main_layout.on_key_pressed_event);
+        key_event_controller.key_pressed.connect (on_key_pressed_event);
+        ((Gtk.Widget) this).add_controller (key_event_controller);
+
         show_app ();
 
         set_focus (null);
@@ -96,6 +85,18 @@ public class Warble.MainWindow : Adw.ApplicationWindow {
     //      destroy ();
     //      return true;
     //  }
+
+    private bool on_key_pressed_event (Gtk.EventControllerKey controller, uint keyval, uint keycode, Gdk.ModifierType state) {
+        if (keyval == Gdk.Key.Escape || keyval == Gdk.Key.BackSpace) {
+            set_focus (null);
+            return true;
+        }
+        char letter = ((char) Gdk.keyval_to_unicode (keyval)).toupper ();
+        if (Warble.Application.alphabet.contains (letter)) {
+            set_focus (null);
+        }
+        return true;
+    }
 
     public void show_rules () {
         main_layout.show_rules ();
