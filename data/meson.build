@@ -74,33 +74,9 @@ i18n.merge_file(
     install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
 
-# sass_command = [
-#     sass,
-#     '@INPUT@',
-#     '@OUTPUT@'
-# ]
-
-# stylesheet_light = custom_target(
-#     'theme-warble-light',
-#     input: './styles/warble-light.scss',
-#     output: 'warble-light.css',
-#     command: sass_command,
-#     build_by_default: true
-# )
-
-# stylesheet_dark = custom_target(
-#     'theme-warble-dark',
-#     input: './styles/warble-dark.scss',
-#     output: 'warble-dark.css',
-#     command: sass_command,
-#     build_by_default: true
-# )
-
 # Use GResource
 css_gresource = gnome.compile_resources(
     'gresource_css',
     meson.project_name() + '.gresource.xml',
-    source_dir: 'stylesheet',
-    # c_name: 'as2',
-    # dependencies: [ stylesheet_light, stylesheet_dark ]
+    source_dir: 'stylesheet'
 )

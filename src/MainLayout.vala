@@ -28,17 +28,11 @@ public class Warble.MainLayout : Gtk.Grid {
     public MainLayout (Warble.MainWindow window) {
         Object (
             window: window
-            //  width_request: 450,
-            //  height_request: 625
         );
     }
 
     construct {
         header_bar = create_header_bar ();
-        //  header_bar.get_style_context ().add_class ("default-decoration");
-        //  header_bar.gameplay_statistics_menu_item_clicked.connect (() => {
-        //      show_gameplay_statistics_dialog ();
-        //  });
 
         overlay = new Gtk.Overlay ();
 
@@ -76,10 +70,6 @@ public class Warble.MainLayout : Gtk.Grid {
 
         attach (header_bar, 0, 0);
         attach (overlay, 0, 1);
-
-        //  var key_event_controller = new Gtk.EventControllerKey ();
-        //  key_event_controller.key_pressed.connect (on_key_pressed_event);
-        //  this.add_controller (key_event_controller);
 
         // When the user changes the difficulty, prompt them if in the middle of the game,
         // because changing the difficulty starts a new game and will register as a loss
@@ -125,7 +115,6 @@ public class Warble.MainLayout : Gtk.Grid {
         title_widget.get_style_context ().add_class (Granite.STYLE_CLASS_TITLE_LABEL);
         var header_bar = new Adw.HeaderBar () {
             title_widget = title_widget,
-            //  decoration_layout = Gtk.Settings.get_default ().gtk_decoration_layout.replace ("maximize", "").replace ("minimize", ""),
             hexpand = true
         };
 
@@ -256,25 +245,16 @@ public class Warble.MainLayout : Gtk.Grid {
     }
 
     public bool on_key_pressed_event (Gtk.EventControllerKey controller, uint keyval, uint keycode, Gdk.ModifierType state) {
-        if (keyval == Gdk.Key.Escape) {
-            //  set_focus (null);
-        }
         if (keyval == Gdk.Key.Return) {
             return_pressed ();
             return false;
         }
         if (keyval == Gdk.Key.BackSpace) {
-            //  set_focus (null);
             backspace_pressed ();
             return false;
         }
-        //  Gdk.keyval_name (keyval);
-        //  Gdk.Display.get_default ().get_default_seat ().get_keyboard ();
-        //  var event = controller.get_current_event () as Gdk.KeyEvent;
         char letter = ((char) Gdk.keyval_to_unicode (keyval)).toupper ();
-        //  char letter = event_key.str.up ()[0];
         if (Warble.Application.alphabet.contains (letter)) {
-            //  set_focus (null);
             letter_key_pressed (letter);
             return false;
         }
@@ -409,8 +389,6 @@ public class Warble.MainLayout : Gtk.Grid {
                 return false;
             });
         });
-        //  int result = dialog.run ();
-        //  dialog.close ();
     }
 
 }
