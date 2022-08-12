@@ -135,7 +135,15 @@ public class Warble.Widgets.Key : Gtk.DrawingArea {
 
     private void draw_func (Gtk.DrawingArea drawing_area, Cairo.Context ctx, int width, int height) {
         var color = Gdk.RGBA ();
-        color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+        if (state == Warble.Models.State.BLANK) {
+            if (Gtk.Settings.get_default ().gtk_application_prefer_dark_theme) {
+                color.parse ("#fafafa"); // TODO: Don't hardcode this
+            } else {
+                color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+            }
+        } else {
+            color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+        }
         ctx.set_source_rgb (color.red, color.green, color.blue);
 
         ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
@@ -174,6 +182,8 @@ public class Warble.Widgets.Key : Gtk.DrawingArea {
         switch (state) {
             case BLANK:
                 //  key.image.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".key-pressed-blank" : ".key-blank"));
+                break;
+            case ACTIVE:
                 break;
             case INCORRECT:
                 get_style_context ().add_class ("guess-incorrect");

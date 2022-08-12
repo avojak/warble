@@ -61,6 +61,9 @@ public class Warble.Application : Gtk.Application {
             gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
             load_stylesheet ();
         });
+        settings.changed["high-contrast-mode"].connect (() => {
+            load_stylesheet ();
+        });
 
         this.add_new_window ();
     }

@@ -83,6 +83,9 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             current_row = 0;
             current_col = 0;
         }
+        if (current_row < num_rows && current_col < num_cols) {
+            rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
+        }
         is_game_in_progress = true;
     }
 
@@ -158,10 +161,14 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             return;
         }
         // Update the square
+        rows.get (current_row).get (current_col).state = Warble.Models.State.BLANK;
         rows.get (current_row).get (current_col).letter = letter;
         rows.get (current_row).get (current_col).queue_draw ();
         // Increment the column
         current_col++;
+        if (current_col < num_cols) {
+            rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
+        }
         // Update the saved state
         write_state ();
         // Check if row is full
@@ -182,7 +189,11 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         // Cancel the timer (if present)
         stop_guess_timer ();
         // Decrement the column
+        if (current_col < num_cols) {
+            rows.get (current_row).get (current_col).state = Warble.Models.State.BLANK;
+        }
         current_col--;
+        rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
         // Clear the square
         rows.get (current_row).get (current_col).letter = ' ';
         // Update the saved state
@@ -218,6 +229,9 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         // Increment the row and reset the column
         current_row++;
         current_col = 0;
+        if (current_row < num_rows) {
+            rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
+        }
         // Check if game lost
         if (current_row == num_rows) {
             on_game_lost ();

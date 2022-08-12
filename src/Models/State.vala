@@ -6,6 +6,7 @@
 public enum Warble.Models.State {
 
     BLANK,
+    ACTIVE,
     CORRECT,
     INCORRECT,
     CLOSE;
@@ -14,6 +15,8 @@ public enum Warble.Models.State {
         switch (this) {
             case BLANK:
                 return "BLANK";
+            case ACTIVE:
+                return "ACTIVE";
             case CORRECT:
                 return "CORRECT";
             case INCORRECT:
@@ -29,6 +32,8 @@ public enum Warble.Models.State {
         switch (short_name) {
             case "BLANK":
                 return BLANK;
+            case "ACTIVE":
+                return ACTIVE;
             case "CORRECT":
                 return CORRECT;
             case "INCORRECT":

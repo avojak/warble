@@ -50,7 +50,15 @@ public class Warble.Widgets.Square : Gtk.DrawingArea {
 
     private void draw_func (Gtk.DrawingArea drawing_area, Cairo.Context ctx, int width, int height) {
         var color = Gdk.RGBA ();
-        color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+        if (state == Warble.Models.State.ACTIVE || state == Warble.Models.State.BLANK) {
+            if (Gtk.Settings.get_default ().gtk_application_prefer_dark_theme) {
+                color.parse ("#fafafa"); // TODO: Don't hardcode this
+            } else {
+                color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+            }
+        } else {
+            color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
+        }
         ctx.set_source_rgb (color.red, color.green, color.blue);
 
         ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
@@ -71,31 +79,30 @@ public class Warble.Widgets.Square : Gtk.DrawingArea {
     //      draw (ctx);
     //  }
 
-    protected bool draw (Cairo.Context ctx) {
-        //  base.draw (ctx);
-        ctx.save ();
-        draw_letter (ctx);
-        ctx.restore ();
-        return false;
-    }
+    //  protected bool draw (Cairo.Context ctx) {
+    //      //  base.draw (ctx);
+    //      ctx.save ();
+    //      draw_letter (ctx);
+    //      ctx.restore ();
+    //      return false;
+    //  }
 
-    private void draw_letter (Cairo.Context ctx) {
-        //  var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
-        //  ctx.set_source_rgb (color.R, color.G, color.B);
-        var color = Gdk.RGBA ();
-        color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
-        ctx.set_source_rgb (color.red, color.green, color.blue);
+    //  private void draw_letter (Cairo.Context ctx) {
+    //      //  var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
+    //      //  ctx.set_source_rgb (color.R, color.G, color.B);
+    //      var color = Gdk.RGBA ();
+    //      ctx.set_source_rgb (color.red, color.green, color.blue);
 
-        ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
-        ctx.set_font_size (30);
+    //      ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
+    //      ctx.set_font_size (30);
 
-        Cairo.TextExtents extents;
-        ctx.text_extents (letter.to_string (), out extents);
-        double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
-        double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing);
-        ctx.move_to (x, y);
-        ctx.show_text (letter.to_string ());
-    }
+    //      Cairo.TextExtents extents;
+    //      ctx.text_extents (letter.to_string (), out extents);
+    //      double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
+    //      double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing);
+    //      ctx.move_to (x, y);
+    //      ctx.show_text (letter.to_string ());
+    //  }
 
     public void update_style () {
         clear_style_classes ();
@@ -103,6 +110,9 @@ public class Warble.Widgets.Square : Gtk.DrawingArea {
         switch (state) {
             case BLANK:
                 //  image.gicon = new ThemedIcon (Constants.APP_ID + ".square-blank");
+                break;
+            case ACTIVE:
+                get_style_context ().add_class ("tile-active");
                 break;
             case INCORRECT:
                 get_style_context ().add_class ("guess-incorrect");
