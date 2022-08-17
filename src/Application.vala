@@ -15,7 +15,7 @@ public class Warble.Application : Gtk.Application {
 
     private static Gtk.CssProvider provider;
 
-    //  private Warble.MainWindow? main_window;
+    private Warble.MainWindow? main_window;
 
     public Application () {
         Object (
@@ -29,7 +29,6 @@ public class Warble.Application : Gtk.Application {
         info ("Kernel version: %s", Posix.utsname ().release);
 
         provider = new Gtk.CssProvider ();
-        //  provider.load_from_resource (Constants.APP_ID.replace (".", "/") + "/warble-default.css");
     }
 
     construct {
@@ -38,18 +37,15 @@ public class Warble.Application : Gtk.Application {
     }
 
     private void add_new_window () {
-        //  if (main_window == null) {
-        //      main_window = new Warble.MainWindow (this);
-        //      main_window.destroy.connect (() => {
-        //          main_window = null;
-        //      });
-        //      add_window (main_window);
-        //  }
-        add_window (new Warble.MainWindow (this));
+        if (main_window == null) {
+            main_window = new Warble.MainWindow (this);
+            add_window (main_window);
+        }
     }
 
     protected override void activate () {
-        Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), 
+            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         force_elementary_style ();
         // Respect the system color scheme preference
@@ -72,7 +68,7 @@ public class Warble.Application : Gtk.Application {
         var gtk_settings = Gtk.Settings.get_default ();
         bool dark_mode = gtk_settings.gtk_application_prefer_dark_theme;
         bool high_contrast_mode = settings.get_boolean ("high-contrast-mode");
-        
+
         if (dark_mode && high_contrast_mode) {
             provider.load_from_resource (Constants.APP_ID.replace (".", "/") + "/warble-dark-hicontrast.css");
         } else if (dark_mode && !high_contrast_mode) {

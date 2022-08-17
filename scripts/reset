@@ -25,6 +25,9 @@ set_setting () {
 echo
 echo "Resetting GSettings..."
 
+set_setting window-width 475
+set_setting window-height 675
+set_setting window-is-maximized false
 set_setting first-launch true
 set_setting difficulty 0
 set_setting num-games-won 0

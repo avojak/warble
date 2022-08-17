@@ -122,17 +122,6 @@ public class Warble.MainLayout : Gtk.Grid {
         header_bar.get_style_context ().add_class (Granite.STYLE_CLASS_FLAT);
         header_bar.get_style_context ().add_class (Granite.STYLE_CLASS_DEFAULT_DECORATION);
 
-        //  var difficulty_button = new Granite.Widgets.ModeButton () {
-        //      margin = 12
-        //  };
-        //  difficulty_button.mode_added.connect ((index, widget) => {
-        //      widget.set_tooltip_markup (((Warble.Models.Difficulty) index).get_details_markup ());
-        //  });
-        //  difficulty_button.append_text (Warble.Models.Difficulty.EASY.get_display_string ());
-        //  difficulty_button.append_text (Warble.Models.Difficulty.NORMAL.get_display_string ());
-        //  difficulty_button.append_text (Warble.Models.Difficulty.HARD.get_display_string ());
-        //  Warble.Application.settings.bind ("difficulty", difficulty_button, "selected", GLib.SettingsBindFlags.DEFAULT);
-
         var difficulty_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
             margin_top = 12,
             margin_bottom = 12,
@@ -163,14 +152,16 @@ public class Warble.MainLayout : Gtk.Grid {
             Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_NEW_GAME
         );
 
-        var new_game_menu_item = new Gtk.Button ();
+        var new_game_menu_item = new Gtk.Button () {
+            action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_NEW_GAME,
+            child = new_game_accellabel
+        };
         new_game_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
-        new_game_menu_item.action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_NEW_GAME;
-        new_game_menu_item.child = new_game_accellabel;
 
-        var gameplay_stats_menu_item = new Gtk.Button ();
+        var gameplay_stats_menu_item = new Gtk.Button () {
+            child = new Granite.AccelLabel (_("Gameplay Statistics…"))
+        };
         gameplay_stats_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
-        gameplay_stats_menu_item.child = new Granite.AccelLabel (_("Gameplay Statistics…"));
 
         var high_contrast_button = new Granite.SwitchModelButton (_("High Contrast Mode"));
         high_contrast_button.add_css_class (Granite.STYLE_CLASS_MENUITEM);
@@ -180,26 +171,36 @@ public class Warble.MainLayout : Gtk.Grid {
             Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_HELP
         );
 
-        var help_menu_item = new Gtk.Button ();
+        var help_menu_item = new Gtk.Button () {
+            action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_HELP,
+            child = help_accellabel
+        };
         help_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
-        help_menu_item.action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_HELP;
-        help_menu_item.child = help_accellabel;
+
+        var about_accellabel = new Granite.AccelLabel ("About…", null);
+        var about_menu_item = new Gtk.Button () {
+            action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_ABOUT,
+            child = about_accellabel
+        };
+        about_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
 
         var quit_accellabel = new Granite.AccelLabel.from_action_name (
             _("Quit"),
             Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_QUIT
         );
 
-        var quit_menu_item = new Gtk.Button ();
+        var quit_menu_item = new Gtk.Button () {
+            action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_QUIT,
+            child = quit_accellabel
+        };
         quit_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
-        quit_menu_item.action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_QUIT;
-        quit_menu_item.child = quit_accellabel;
 
-        var menu_popover_grid = new Gtk.Grid ();
-        menu_popover_grid.margin_top = 3;
-        menu_popover_grid.margin_bottom = 3;
-        menu_popover_grid.orientation = Gtk.Orientation.VERTICAL;
-        menu_popover_grid.width_request = 200;
+        var menu_popover_grid = new Gtk.Grid () {
+            margin_top = 3,
+            margin_bottom = 3,
+            orientation = Gtk.Orientation.VERTICAL,
+            width_request = 200
+        };
         menu_popover_grid.attach (difficulty_button_box, 0, 0, 3, 1);
         menu_popover_grid.attach (new_game_menu_item, 0, 1, 1, 1);
         menu_popover_grid.attach (create_menu_separator (), 0, 2, 1, 1);
@@ -207,19 +208,22 @@ public class Warble.MainLayout : Gtk.Grid {
         menu_popover_grid.attach (high_contrast_button, 0, 4, 1, 1);
         menu_popover_grid.attach (help_menu_item, 0, 5, 1, 1);
         menu_popover_grid.attach (create_menu_separator (), 0, 6, 1, 1);
-        menu_popover_grid.attach (quit_menu_item, 0, 7, 1, 1);
+        menu_popover_grid.attach (about_menu_item, 0, 7, 1, 1);
+        menu_popover_grid.attach (quit_menu_item, 0, 8, 1, 1);
 
         var menu_popover = new Gtk.Popover () {
-            autohide = true
+            autohide = true,
+            child = menu_popover_grid
         };
-        menu_popover.child = menu_popover_grid;
+        //  menu_popover.add_css_class (Granite.STYLE_CLASS_MENU);
 
-        var menu_button = new Gtk.MenuButton ();
-        menu_button.icon_name = "open-menu-symbolic";
-        menu_button.tooltip_text = _("Menu");
-        menu_button.has_frame = false;
-        menu_button.valign = Gtk.Align.CENTER;
-        menu_button.popover = menu_popover;
+        var menu_button = new Gtk.MenuButton () {
+            icon_name = "open-menu-symbolic",
+            tooltip_text = _("Menu"),
+            has_frame = false,
+            valign = Gtk.Align.CENTER,
+            popover = menu_popover
+        };
 
         header_bar.pack_end (menu_button);
 
@@ -238,9 +242,10 @@ public class Warble.MainLayout : Gtk.Grid {
     }
 
     private Gtk.Separator create_menu_separator () {
-        var menu_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-        menu_separator.margin_top = 3;
-        menu_separator.margin_bottom = 3;
+        var menu_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
+            margin_top = 3,
+            margin_bottom = 3
+        };
         return menu_separator;
     }
 
@@ -389,6 +394,27 @@ public class Warble.MainLayout : Gtk.Grid {
                 return false;
             });
         });
+    }
+
+    public void show_about_dialog () {
+        var about_dialog = new Gtk.AboutDialog () {
+            authors = new string[] { "Andrew Vojak", null },
+            copyright = "\xc2\xa9 2022 Andrew Vojak",
+            license_type = Gtk.License.GPL_3_0,
+            logo_icon_name = Constants.APP_ID,
+            program_name = Constants.APP_NAME,
+            version = Constants.VERSION,
+            website = "https://github.com/avojak/warble",
+            website_label = "Website",
+            modal = true,
+            transient_for = window
+        };
+        about_dialog.close_request.connect (() =>{
+            about_dialog.close ();
+            return false;
+        });
+        about_dialog.present ();
+        about_dialog.set_focus (null);
     }
 
 }

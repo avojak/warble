@@ -36,9 +36,26 @@ public class Warble.MainWindow : Adw.ApplicationWindow {
         key_event_controller.key_pressed.connect (on_key_pressed_event);
         ((Gtk.Widget) this).add_controller (key_event_controller);
 
+        set_default_size (Warble.Application.settings.get_int ("window-width"), Warble.Application.settings.get_int ("window-height"));
+        if (Warble.Application.settings.get_boolean ("window-is-maximized")) {
+            maximize ();
+        }
+
         present ();
 
         set_focus (null);
+    }
+
+    protected override bool close_request () {
+        // Save the window size
+        Warble.Application.settings.set_boolean ("window-is-maximized", is_maximized ());
+        if (!is_maximized ()) {
+            Warble.Application.settings.set_int ("window-width", get_width ());
+            Warble.Application.settings.set_int ("window-height", get_height ());
+        }
+
+        this.dispose ();
+        return true;
     }
 
     private bool on_key_pressed_event (Gtk.EventControllerKey controller, uint keyval, uint keycode, Gdk.ModifierType state) {
@@ -59,6 +76,10 @@ public class Warble.MainWindow : Adw.ApplicationWindow {
 
     public void new_game () {
         main_layout.new_game ();
+    }
+
+    public void show_about_dialog () {
+        main_layout.show_about_dialog ();
     }
 
 }

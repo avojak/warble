@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.ControlKey : Gtk.DrawingArea {
+public class Warble.Widgets.ControlKey : Gtk.Box {
 
     private const int WIDTH = 48;
     private const int HEIGHT = 32;
@@ -11,6 +11,7 @@ public class Warble.Widgets.ControlKey : Gtk.DrawingArea {
     public string? text { get; construct; }
     public string? icon_name { get; construct; }
 
+    private Gtk.DrawingArea drawing_area;
     private Gtk.Image? overlay_icon;
     private bool is_pressed = false;
     private uint y_offset = 0;
@@ -41,21 +42,23 @@ public class Warble.Widgets.ControlKey : Gtk.DrawingArea {
         get_style_context ().add_class (Granite.STYLE_CLASS_CARD);
         get_style_context ().add_class (Granite.STYLE_CLASS_ROUNDED);
 
-        var overlay = new Gtk.Overlay ();
-        //  key = new Warble.Widgets.ControlKey.KeyImage (text);
-        //  overlay.child = key;
+        drawing_area = new Gtk.DrawingArea () {
+            hexpand = true,
+            vexpand = true
+        };
+        drawing_area.set_draw_func (draw_func);
+
+        var overlay = new Gtk.Overlay () {
+            child = drawing_area
+        };
         if (icon_name != null) {
             overlay_icon = new Gtk.Image () {
                 gicon = new GLib.ThemedIcon (icon_name)
             };
-            //  unowned Gtk.StyleContext style_context = overlay_icon.get_style_context ();
-            //  style_context.add_class ("control-key-overlay-icon");
-            //  style_context.add_provider (provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            //  overlay.add_overlay (overlay_icon);
+            overlay.add_overlay (overlay_icon);
         }
-        //  append (overlay);
 
-        set_draw_func (draw_func);
+        append (overlay);
 
         var gesture_event_controller = new Gtk.GestureClick ();
         gesture_event_controller.pressed.connect (on_press_event);
@@ -66,11 +69,7 @@ public class Warble.Widgets.ControlKey : Gtk.DrawingArea {
     private void draw_func (Gtk.DrawingArea drawing_area, Cairo.Context ctx, int width, int height) {
         if (text != null) {
             var color = Gdk.RGBA ();
-            if (Gtk.Settings.get_default ().gtk_application_prefer_dark_theme) {
-                color.parse ("#fafafa"); // TODO: Don't hardcode this
-            } else {
-                color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
-            }
+            color.parse (Warble.ColorPalette.get_text_color ());
             ctx.set_source_rgb (color.red, color.green, color.blue);
 
             ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
@@ -82,9 +81,6 @@ public class Warble.Widgets.ControlKey : Gtk.DrawingArea {
             double y = (HEIGHT / 2) - (extents.height / 2 + extents.y_bearing) + y_offset;
             ctx.move_to (x, y);
             ctx.show_text (text.to_string ());
-        } else {
-            //  ctx.set_source (Cairo.Pattern source)
-            //  overlay_icon.d
         }
     }
 

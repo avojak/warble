@@ -48,15 +48,7 @@ public class Warble.Widgets.Key : Gtk.DrawingArea {
 
     private void draw_func (Gtk.DrawingArea drawing_area, Cairo.Context ctx, int width, int height) {
         var color = Gdk.RGBA ();
-        if (state == Warble.Models.State.BLANK) {
-            if (Gtk.Settings.get_default ().gtk_application_prefer_dark_theme) {
-                color.parse ("#fafafa"); // TODO: Don't hardcode this
-            } else {
-                color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
-            }
-        } else {
-            color.parse (Warble.ColorPalette.TEXT_COLOR.get_value ());
-        }
+        color.parse (Warble.ColorPalette.get_text_color (state));
         ctx.set_source_rgb (color.red, color.green, color.blue);
 
         ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
@@ -64,8 +56,8 @@ public class Warble.Widgets.Key : Gtk.DrawingArea {
 
         Cairo.TextExtents extents;
         ctx.text_extents (letter.to_string (), out extents);
-        double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
-        double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing) + y_offset;
+        double x = (width / 2) - (extents.width / 2 + extents.x_bearing);
+        double y = (height / 2) - (extents.height / 2 + extents.y_bearing) + y_offset;
         ctx.move_to (x, y);
         ctx.show_text (letter.to_string ());
     }

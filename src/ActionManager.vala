@@ -8,11 +8,13 @@ public class Warble.ActionManager : GLib.Object {
     public const string ACTION_PREFIX = "win.";
     public const string ACTION_NEW_GAME = "action_new_game";
     public const string ACTION_HELP = "action_help";
+    public const string ACTION_ABOUT = "action_about";
     public const string ACTION_QUIT = "action_quit";
 
     private const GLib.ActionEntry[] ACTION_ENTRIES = {
         { ACTION_NEW_GAME, action_new_game },
         { ACTION_HELP, action_help },
+        { ACTION_ABOUT, action_about },
         { ACTION_QUIT, action_quit }
     };
 
@@ -59,6 +61,10 @@ public class Warble.ActionManager : GLib.Object {
 
     private void action_help () {
         window.show_rules ();
+    }
+
+    private void action_about () {
+        window.show_about_dialog ();
     }
 
     private void action_quit () {
