@@ -5,7 +5,7 @@
    height="128"
    id="svg13986"
    sodipodi:docname="com.github.avojak.warble.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -23,16 +23,18 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="6.8203125"
-     inkscape:cx="-0.73310424"
-     inkscape:cy="52.270332"
-     inkscape:window-width="1792"
-     inkscape:window-height="1059"
+     inkscape:zoom="9.6453784"
+     inkscape:cx="3.5768426"
+     inkscape:cy="48.572485"
+     inkscape:window-width="3008"
+     inkscape:window-height="1631"
      inkscape:window-x="0"
      inkscape:window-y="30"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg13986"
-     width="128px" />
+     width="128px"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
   <defs
      id="defs13988">
     <linearGradient
@@ -239,7 +241,7 @@
   <g
      aria-label="W"
      id="text9155-7"
-     style="font-size:64px;line-height:1.25;fill:#ffffff">
+     style="font-size:64px;line-height:1.25;display:none;fill:#ffffff">
     <path
        d="m 80.546875,82.343498 h -5.25 l -9.21875,-30.59375 q -0.65625,-2.03125 -1.46875,-5.125 -0.8125,-3.09375 -0.84375,-3.71875 -0.6875,4.125 -2.1875,9.03125 l -8.9375,30.40625 h -5.25 l -12.15625,-45.6875 h 5.625 l 7.21875,28.21875 q 1.5,5.9375 2.1875,10.75 0.84375,-5.71875 2.5,-11.1875 l 8.1875,-27.78125 h 5.625 l 8.59375,28.03125 q 1.5,4.84375 2.53125,10.9375 0.59375,-4.4375 2.25,-10.8125 l 7.1875,-28.15625 h 5.625 z"
        style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans'"
@@ -248,10 +250,28 @@
   <g
      aria-label="W"
      id="text9155"
-     style="font-size:64px;line-height:1.25;opacity:0.7;fill:#555761">
+     style="font-size:64px;line-height:1.25;display:none;opacity:0.7;fill:#555761">
     <path
        d="m 80.546875,80.84375 h -5.25 L 66.078125,50.25 q -0.65625,-2.03125 -1.46875,-5.125 -0.8125,-3.09375 -0.84375,-3.71875 -0.6875,4.125 -2.1875,9.03125 l -8.9375,30.40625 h -5.25 l -12.15625,-45.6875 h 5.625 l 7.21875,28.21875 q 1.5,5.9375 2.1875,10.75 0.84375,-5.71875 2.5,-11.1875 l 8.1875,-27.78125 h 5.625 l 8.59375,28.03125 q 1.5,4.84375 2.53125,10.9375 0.59375,-4.4375 2.25,-10.8125 l 7.1875,-28.15625 h 5.625 z"
-       style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans'"
+       style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';display:none"
        id="path861" />
+  </g>
+  <g
+     aria-label="W"
+     id="text941-3"
+     style="display:inline;opacity:1;fill:#ffffff;stroke-width:1.1">
+    <path
+       d="M 83.3125,82.337502 H 72.28125 l -6.1875,-24 q -0.34375,-1.28125 -1.1875,-5.28125 -0.8125,-4.03125 -0.9375,-5.40625 -0.1875,1.6875 -0.9375,5.4375 -0.75,3.71875 -1.15625,5.3125 l -6.15625,23.9375 h -11 L 33.0625,36.650002 h 9.53125 l 5.84375,24.9375 q 1.53125,6.90625 2.21875,11.96875 0.1875,-1.78125 0.84375,-5.5 0.6875,-3.75 1.28125,-5.8125 l 6.65625,-25.59375 h 9.15625 L 75.25,62.243752 q 0.4375,1.71875 1.09375,5.25 0.65625,3.53125 1,6.0625 0.3125,-2.4375 1,-6.0625 0.6875,-3.65625 1.25,-5.90625 l 5.8125,-24.9375 h 9.53125 z"
+       style="font-weight:bold;font-size:64px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold'"
+       id="path1029" />
+  </g>
+  <g
+     aria-label="W"
+     id="text941"
+     style="display:inline;opacity:0.7;fill:#555761;stroke-width:1.1">
+    <path
+       d="M 83.3125,80.84375 H 72.28125 l -6.1875,-24 Q 65.75,55.5625 64.90625,51.5625 q -0.8125,-4.03125 -0.9375,-5.40625 -0.1875,1.6875 -0.9375,5.4375 -0.75,3.71875 -1.15625,5.3125 l -6.15625,23.9375 h -11 L 33.0625,35.15625 h 9.53125 l 5.84375,24.9375 Q 49.96875,67 50.65625,72.0625 q 0.1875,-1.78125 0.84375,-5.5 0.6875,-3.75 1.28125,-5.8125 L 59.4375,35.15625 h 9.15625 L 75.25,60.75 q 0.4375,1.71875 1.09375,5.25 0.65625,3.53125 1,6.0625 0.3125,-2.4375 1,-6.0625 0.6875,-3.65625 1.25,-5.90625 l 5.8125,-24.9375 h 9.53125 z"
+       style="font-weight:bold;font-size:64px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold'"
+       id="path1026" />
   </g>
 </svg>
