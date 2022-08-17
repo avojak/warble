@@ -44,7 +44,7 @@ public class Warble.Application : Gtk.Application {
     }
 
     protected override void activate () {
-        Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), 
+        Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         force_elementary_style ();
