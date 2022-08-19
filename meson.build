@@ -3,7 +3,6 @@ project('com.github.avojak.warble', 'vala', 'c', version: '2.0.0')
 
 i18n = import('i18n')
 gnome = import('gnome')
-sass = find_program('sassc')
 
 vala_args = ['--pkg', 'posix']
 

@@ -12,32 +12,6 @@ finish-args:
   - '--socket=wayland'
 
 modules:
-  - name: sassc
-    cleanup:
-      - "*"
-    sources:
-      - type: git
-        url: https://github.com/sass/sassc.git
-        tag: 3.6.2
-        commit: 66f0ef37e7f0ad3a65d2f481eff09d09408f42d0
-      - type: script
-        dest-filename: autogen.sh
-        commands:
-          - autoreconf -si
-    modules:
-      - name: libsass
-        cleanup:
-          - "*"
-        sources:
-          - type: git
-            url: https://github.com/sass/libsass.git
-            tag: 3.6.5
-            commit: f6afdbb9288d20d1257122e71d88e53348a53af3
-          - type: script
-            dest-filename: autogen.sh
-            commands:
-              - autoreconf -si
-
   - name: warble
     buildsystem: meson
     sources:
