@@ -10,12 +10,12 @@ public class Warble.MainLayout : Gtk.Grid {
 
     public unowned Warble.MainWindow window { get; construct; }
 
-    private Warble.Widgets.Dialogs.WelcomeDialog? welcome_dialog = null;
-    private Warble.Widgets.Dialogs.RulesDialog? rules_dialog = null;
-    private Warble.Widgets.Dialogs.VictoryDialog? victory_dialog = null;
-    private Warble.Widgets.Dialogs.DefeatDialog? defeat_dialog = null;
-    private Warble.Widgets.Dialogs.NewGameConfirmationDialog? new_game_confirmation_dialog = null;
-    private Warble.Widgets.Dialogs.GameplayStatisticsDialog? gameplay_statistics_dialog = null;
+    //  private Warble.Widgets.Dialogs.WelcomeDialog? welcome_dialog = null;
+    //  private Warble.Widgets.Dialogs.RulesDialog? rules_dialog = null;
+    //  private Warble.Widgets.Dialogs.VictoryDialog? victory_dialog = null;
+    //  private Warble.Widgets.Dialogs.DefeatDialog? defeat_dialog = null;
+    //  private Warble.Widgets.Dialogs.NewGameConfirmationDialog? new_game_confirmation_dialog = null;
+    //  private Warble.Widgets.Dialogs.GameplayStatisticsDialog? gameplay_statistics_dialog = null;
 
     private Adw.HeaderBar header_bar;
     private Gtk.Overlay overlay;
@@ -270,7 +270,7 @@ public class Warble.MainLayout : Gtk.Grid {
         // Show the rules dialog on the first launch of the game
         if (Warble.Application.settings.get_boolean ("first-launch")) {
             Idle.add (() => {
-                show_welcome_dialog ();
+                new Warble.Widgets.Dialogs.WelcomeDialog (window).present ();
                 return false;
             });
             Warble.Application.settings.set_boolean ("first-launch", false);
@@ -290,97 +290,53 @@ public class Warble.MainLayout : Gtk.Grid {
     }
 
     public void show_rules () {
-        show_rules_dialog ();
+        new Warble.Widgets.Dialogs.RulesDialog (window).present ();
     }
 
     public void new_game () {
-        // Don't do anything if these other dialogs are open
-        if (rules_dialog != null || victory_dialog != null || defeat_dialog != null) {
-            return;
-        }
         // If we can safely start a new game, don't need to prompt the user
         if (game_area.can_safely_start_new_game ()) {
             game_area.new_game ();
             return;
         }
-        if (new_game_confirmation_dialog == null) {
-            new_game_confirmation_dialog = new Warble.Widgets.Dialogs.NewGameConfirmationDialog (window);
-            new_game_confirmation_dialog.response.connect ((response_id) => {
-                if (response_id == Gtk.ResponseType.OK) {
-                    game_area.new_game (true);
-                }
-                new_game_confirmation_dialog.close ();
-            });
-            new_game_confirmation_dialog.close.connect (() => {
-                new_game_confirmation_dialog = null;
-            });
-        }
+        var new_game_confirmation_dialog = new Warble.Widgets.Dialogs.NewGameConfirmationDialog (window);
+        new_game_confirmation_dialog.response.connect ((response_id) => {
+            if (response_id == Gtk.ResponseType.OK) {
+                game_area.new_game (true);
+            }
+            new_game_confirmation_dialog.close ();
+        });
         new_game_confirmation_dialog.present ();
     }
 
-    private void show_welcome_dialog () {
-        if (welcome_dialog == null) {
-            welcome_dialog = new Warble.Widgets.Dialogs.WelcomeDialog (window);
-            welcome_dialog.close.connect (() => {
-                welcome_dialog = null;
-            });
-        }
-        welcome_dialog.present ();
-    }
-
-    private void show_rules_dialog () {
-        if (rules_dialog == null) {
-            rules_dialog = new Warble.Widgets.Dialogs.RulesDialog (window);
-            rules_dialog.close.connect (() => {
-                rules_dialog = null;
-            });
-        }
-        rules_dialog.present ();
-    }
-
     private void show_victory_dialog () {
-        if (victory_dialog == null) {
-            victory_dialog = new Warble.Widgets.Dialogs.VictoryDialog (window);
-            victory_dialog.play_again_button_clicked.connect (() => {
-                victory_dialog.close ();
-                game_area.new_game ();
-            });
-            victory_dialog.close.connect (() => {
-                victory_dialog = null;
-            });
-        }
-        victory_dialog.present ();
+        var dialog = new Warble.Widgets.Dialogs.VictoryDialog (window);
+        dialog.play_again_button_clicked.connect (() => {
+            dialog.close ();
+            game_area.new_game ();
+        });
+        dialog.present ();
     }
 
     private void show_defeat_dialog (string answer) {
-        if (defeat_dialog == null) {
-            defeat_dialog = new Warble.Widgets.Dialogs.DefeatDialog (window, answer);
-            defeat_dialog.play_again_button_clicked.connect (() => {
-                defeat_dialog.close ();
-                game_area.new_game ();
-            });
-            defeat_dialog.close.connect (() => {
-                defeat_dialog = null;
-            });
-        }
-        defeat_dialog.present ();
+        var dialog = new Warble.Widgets.Dialogs.DefeatDialog (window, answer);
+        dialog.play_again_button_clicked.connect (() => {
+            dialog.close ();
+            game_area.new_game ();
+        });
+        dialog.present ();
     }
 
     private void show_gameplay_statistics_dialog () {
-        if (gameplay_statistics_dialog == null) {
-            gameplay_statistics_dialog = new Warble.Widgets.Dialogs.GameplayStatisticsDialog (window);
-            gameplay_statistics_dialog.reset_button_clicked.connect (() => {
-                gameplay_statistics_dialog.close ();
-                Idle.add (() => {
-                    show_reset_gameplay_statistics_warning_dialog ();
-                    return false;
-                });
+        var dialog = new Warble.Widgets.Dialogs.GameplayStatisticsDialog (window);
+        dialog.reset_button_clicked.connect (() => {
+            dialog.close ();
+            Idle.add (() => {
+                show_reset_gameplay_statistics_warning_dialog ();
+                return false;
             });
-            gameplay_statistics_dialog.close.connect (() => {
-                gameplay_statistics_dialog = null;
-            });
-        }
-        gameplay_statistics_dialog.present ();
+        });
+        dialog.present ();
     }
 
     private void show_reset_gameplay_statistics_warning_dialog () {

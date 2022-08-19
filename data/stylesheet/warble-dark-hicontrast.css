@@ -8,11 +8,6 @@
     border: 1px solid @ORANGE_900;
 }
 
-.guess-incorrect {
-    background-color: @SILVER_500;
-    border: 1px solid @SILVER_900;
-}
-
 .guess-close {
     background-color: @BLUEBERRY_500;
     border: 1px solid @BLUEBERRY_900;

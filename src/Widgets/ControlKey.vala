@@ -7,14 +7,13 @@ public class Warble.Widgets.ControlKey : Gtk.Box {
 
     private const int WIDTH = 48;
     private const int HEIGHT = 32;
+    private const int FONT_SIZE = 13;
 
     public string? text { get; construct; }
     public string? icon_name { get; construct; }
 
     private Gtk.DrawingArea drawing_area;
     private Gtk.Image? overlay_icon;
-    private bool is_pressed = false;
-    private uint y_offset = 0;
 
     public ControlKey.with_text (string text) {
         Object (
@@ -73,12 +72,12 @@ public class Warble.Widgets.ControlKey : Gtk.Box {
             ctx.set_source_rgb (color.red, color.green, color.blue);
 
             ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
-            ctx.set_font_size (13);
+            ctx.set_font_size (FONT_SIZE);
 
             Cairo.TextExtents extents;
             ctx.text_extents (text.to_string (), out extents);
             double x = (WIDTH / 2) - (extents.width / 2 + extents.x_bearing);
-            double y = (HEIGHT / 2) - (extents.height / 2 + extents.y_bearing) + y_offset;
+            double y = (HEIGHT / 2) - (extents.height / 2 + extents.y_bearing);
             ctx.move_to (x, y);
             ctx.show_text (text.to_string ());
         }
@@ -88,12 +87,7 @@ public class Warble.Widgets.ControlKey : Gtk.Box {
         if (n_press != 1) {
             return;
         }
-        is_pressed = true;
-        y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
-        if (overlay_icon != null) {
-            overlay_icon.margin_top = 2;
-        }
-        update_icon ();
+        get_style_context ().add_class ("key-pressed");
         clicked ();
     }
 
@@ -101,16 +95,7 @@ public class Warble.Widgets.ControlKey : Gtk.Box {
         if (n_press != 1) {
             return;
         }
-        is_pressed = false;
-        y_offset = 0;
-        if (overlay_icon != null) {
-            overlay_icon.margin_top = 0;
-        }
-        update_icon ();
-    }
-
-    private void update_icon () {
-        //  key.image.gicon = new ThemedIcon (Constants.APP_ID + (is_pressed ? ".control-key-pressed" : ".control-key"));
+        get_style_context ().remove_class ("key-pressed");
     }
 
     public signal void clicked ();

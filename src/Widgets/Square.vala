@@ -5,7 +5,9 @@
 
 public class Warble.Widgets.Square : Gtk.DrawingArea {
 
-    private const int SIZE = 64;
+    private const int WIDTH = 64;
+    private const int HEIGHT = 70; // Yes I know this isn't technically a square now
+    private const int FONT_SIZE = 30;
 
     private char _letter = ' ';
     public char letter {
@@ -23,8 +25,8 @@ public class Warble.Widgets.Square : Gtk.DrawingArea {
         Object (
             hexpand: false,
             vexpand: false,
-            width_request: 64,
-            height_request: 64
+            width_request: WIDTH,
+            height_request: HEIGHT
         );
     }
 
@@ -47,7 +49,7 @@ public class Warble.Widgets.Square : Gtk.DrawingArea {
         ctx.set_source_rgb (color.red, color.green, color.blue);
 
         ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
-        ctx.set_font_size (30);
+        ctx.set_font_size (FONT_SIZE);
 
         Cairo.TextExtents extents;
         ctx.text_extents (letter.to_string (), out extents);

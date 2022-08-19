@@ -27,9 +27,9 @@ public enum Warble.Models.Difficulty {
             case EASY:
                 return _("%s Difficulty: 5-letter words".printf (get_display_string ()));
             case NORMAL:
-                return _("%s Difficulty: 5-letter words\n<small>All green and yellow letters must be used in subsequent guesses</small>".printf (get_display_string ()));
+                return _("%s Difficulty: 5-letter words\n<small>All discovered letters must be used in subsequent guesses</small>".printf (get_display_string ()));
             case HARD:
-                return _("%s Difficulty: 6-letter words\n<small>All green and yellow letters must be used in subsequent guesses</small>".printf (get_display_string ()));
+                return _("%s Difficulty: 6-letter words\n<small>All discovered letters must be used in subsequent guesses</small>".printf (get_display_string ()));
             default:
                 assert_not_reached ();
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
     <gresource prefix="/com/github/avojak/warble">
+        <file alias="warble-default.css" compressed="true">warble-default.css</file>
         <file alias="warble-light.css" compressed="true">warble-light.css</file>
         <file alias="warble-light-hicontrast.css" compressed="true">warble-light-hicontrast.css</file>
         <file alias="warble-dark.css" compressed="true">warble-dark.css</file>

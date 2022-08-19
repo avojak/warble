@@ -6,6 +6,7 @@
 public class Warble.Widgets.Key : Gtk.DrawingArea {
 
     private const int SIZE = 32;
+    private const int FONT_SIZE = 15;
 
     public char letter { get; construct; }
 
@@ -14,9 +15,6 @@ public class Warble.Widgets.Key : Gtk.DrawingArea {
         get { return this._state; }
         set { this._state = value; update_style (); }
     }
-
-    private bool is_pressed = false;
-    private uint y_offset = 0;
 
     public Key (char letter) {
         Object (
@@ -52,12 +50,12 @@ public class Warble.Widgets.Key : Gtk.DrawingArea {
         ctx.set_source_rgb (color.red, color.green, color.blue);
 
         ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
-        ctx.set_font_size (15);
+        ctx.set_font_size (FONT_SIZE);
 
         Cairo.TextExtents extents;
         ctx.text_extents (letter.to_string (), out extents);
         double x = (width / 2) - (extents.width / 2 + extents.x_bearing);
-        double y = (height / 2) - (extents.height / 2 + extents.y_bearing) + y_offset;
+        double y = (height / 2) - (extents.height / 2 + extents.y_bearing);
         ctx.move_to (x, y);
         ctx.show_text (letter.to_string ());
     }
@@ -66,9 +64,7 @@ public class Warble.Widgets.Key : Gtk.DrawingArea {
         if (n_press != 1) {
             return;
         }
-        is_pressed = true;
-        y_offset = 2; // Pixels in the icon are shifted down 2 pixels to simulate being pressed
-        update_style ();
+        get_style_context ().add_class ("key-pressed");
         clicked (letter);
     }
 
@@ -76,9 +72,7 @@ public class Warble.Widgets.Key : Gtk.DrawingArea {
         if (n_press != 1) {
             return;
         }
-        is_pressed = false;
-        y_offset = 0;
-        update_style ();
+        get_style_context ().remove_class ("key-pressed");
     }
 
     private void update_style () {

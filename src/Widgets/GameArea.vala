@@ -117,10 +117,11 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             margin_bottom = 8,
             margin_start = 8,
             margin_end = 8,
-            hexpand = true,
+            hexpand = false,
             vexpand = true,
             row_homogeneous = true,
             column_homogeneous = true,
+            valign = Gtk.Align.CENTER,
             row_spacing = 8,
             column_spacing = 8
         };
@@ -146,9 +147,9 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     }
 
     private void dispose_ui () {
-        status_grid.dispose ();
-        square_grid.dispose ();
-        keyboard.dispose ();
+        //  remove (endgame_revealer);
+        remove (square_grid);
+        remove (keyboard);
     }
 
     public void letter_key_pressed (char letter) {
@@ -156,21 +157,26 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (!is_game_in_progress) {
             return;
         }
+
         // Make sure we're inbounds
         if (current_col >= num_cols || current_row >= num_rows) {
             return;
         }
+
         // Update the square
         rows.get (current_row).get (current_col).state = Warble.Models.State.BLANK;
         rows.get (current_row).get (current_col).letter = letter;
         rows.get (current_row).get (current_col).queue_draw ();
+
         // Increment the column
         current_col++;
         if (current_col < num_cols) {
             rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
         }
+
         // Update the saved state
         write_state ();
+
         // Check if row is full
         if (current_col == num_cols && Warble.Application.settings.get_boolean ("should-prompt-to-submit")) {
             start_guess_timer ();
@@ -182,20 +188,25 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (!is_game_in_progress) {
             return;
         }
+
         // Make sure we're inbounds
         if (current_col == 0) {
             return;
         }
+
         // Cancel the timer (if present)
         stop_guess_timer ();
+
         // Decrement the column
         if (current_col < num_cols) {
             rows.get (current_row).get (current_col).state = Warble.Models.State.BLANK;
         }
         current_col--;
         rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
+
         // Clear the square
         rows.get (current_row).get (current_col).letter = ' ';
+
         // Update the saved state
         write_state ();
     }
@@ -205,37 +216,45 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (!is_game_in_progress) {
             return;
         }
+
         // Make sure we're inbounds
         if (current_row >= num_rows) {
             return;
         }
+
         // Cancel the timer (if present)
         stop_guess_timer (true);
+
         // Get the current guess
         GLib.StringBuilder sb = new GLib.StringBuilder ();
         foreach (var square in rows.get (current_row)) {
             sb.append_c (square.letter);
         }
         string current_guess = sb.str.strip ();
+
         // Validate the guess
         if (!validate_guess (current_guess)) {
             return;
         }
+
         // Update the square and key states
         if (update_states (current_row, current_guess)) {
             on_game_won (current_row + 1);
             return;
         }
+
         // Increment the row and reset the column
         current_row++;
         current_col = 0;
         if (current_row < num_rows) {
             rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
         }
+
         // Check if game lost
         if (current_row == num_rows) {
             on_game_lost ();
         }
+
         // Update the saved state
         write_state ();
     }
@@ -279,11 +298,13 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             insufficient_letters ();
             return false;
         }
+
         // Check if the guessed word is actually a word
         if (!Warble.Application.dictionary.is_word_in_dictionary (current_guess)) {
             invalid_word ();
             return false;
         }
+
         // Check if all clues were used (depending on difficulty setting)
         if (must_use_clues && current_row > 0) {
             Gee.Map<char, int> close_guessed_letters = new Gee.HashMap<char, int> ();
@@ -291,6 +312,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             for (int col_index = 0; col_index < num_cols; col_index++) {
                 var prior_square = rows.get (current_row - 1).get (col_index);
                 var current_square = rows.get (current_row).get (col_index);
+
                 // If letter was previously found to be correct, it must be used in the same place again
                 if (prior_square.state == Warble.Models.State.CORRECT) {
                     if (prior_square.letter != current_square.letter) {
@@ -300,6 +322,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
                         correct_indices.add (col_index);
                     }
                 }
+
                 // If the letter was close, save it for the second pass
                 if (prior_square.state == Warble.Models.State.CLOSE) {
                     if (!close_guessed_letters.has_key (prior_square.letter)) {
@@ -308,6 +331,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
                     close_guessed_letters.set (prior_square.letter, close_guessed_letters.get (prior_square.letter) + 1);
                 }
             }
+
             // Update close_guessed_letters to find unused clues
             for (int col_index = 0; col_index < num_cols; col_index++) {
                 if (correct_indices.contains (col_index)) {

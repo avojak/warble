@@ -17,6 +17,7 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
             vexpand: true,
             orientation: Gtk.Orientation.VERTICAL,
             halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.START,
             margin_start: 8,
             margin_end: 8,
             margin_top: 8,

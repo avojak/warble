@@ -7,8 +7,8 @@ public class Warble.Widgets.Dialogs.NewGameConfirmationDialog : Granite.MessageD
 
     public NewGameConfirmationDialog (Gtk.Window window) {
         Object (
-            deletable: false,
-            resizable: false,
+            //  deletable: false,
+            //  resizable: false,
             transient_for: window,
             modal: true
         );
