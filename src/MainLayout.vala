@@ -10,13 +10,6 @@ public class Warble.MainLayout : Gtk.Grid {
 
     public unowned Warble.MainWindow window { get; construct; }
 
-    //  private Warble.Widgets.Dialogs.WelcomeDialog? welcome_dialog = null;
-    //  private Warble.Widgets.Dialogs.RulesDialog? rules_dialog = null;
-    //  private Warble.Widgets.Dialogs.VictoryDialog? victory_dialog = null;
-    //  private Warble.Widgets.Dialogs.DefeatDialog? defeat_dialog = null;
-    //  private Warble.Widgets.Dialogs.NewGameConfirmationDialog? new_game_confirmation_dialog = null;
-    //  private Warble.Widgets.Dialogs.GameplayStatisticsDialog? gameplay_statistics_dialog = null;
-
     private Adw.HeaderBar header_bar;
     private Gtk.Overlay overlay;
     private Granite.Toast insufficient_letters_toast;
@@ -32,8 +25,6 @@ public class Warble.MainLayout : Gtk.Grid {
     }
 
     construct {
-        header_bar = create_header_bar ();
-
         overlay = new Gtk.Overlay ();
 
         insufficient_letters_toast = new Granite.Toast (_("Not enough letters!"));
@@ -68,44 +59,10 @@ public class Warble.MainLayout : Gtk.Grid {
         overlay.add_overlay (must_use_clues_toast);
         overlay.add_overlay (submit_guess_toast);
 
+        header_bar = create_header_bar ();
+
         attach (header_bar, 0, 0);
         attach (overlay, 0, 1);
-
-        // When the user changes the difficulty, prompt them if in the middle of the game,
-        // because changing the difficulty starts a new game and will register as a loss
-        // if they are in the middle of a game.
-        Warble.Application.settings.changed.connect ((key) => {
-            if (key == "difficulty") {
-                var current_difficulty = (int) game_area.difficulty;
-                var new_difficulty = Warble.Application.settings.get_int ("difficulty");
-                if (current_difficulty == new_difficulty) {
-                    return;
-                }
-                if (!game_area.can_safely_start_new_game ()) {
-                    Idle.add (() => {
-                        var dialog = new Warble.Widgets.Dialogs.DifficultyChangeWarningDialog (window);
-                        dialog.response.connect ((response_id) => {
-                            if (response_id == Gtk.ResponseType.OK) {
-                                game_area.new_game (true);
-                            } else {
-                                Warble.Application.settings.set_int ("difficulty", current_difficulty);
-                            }
-                        });
-                        //  int result = dialog.run ();
-                        //  dialog.close ();
-                        // Either start a new game, or revert the difficulty
-                        //  if (result == Gtk.ResponseType.OK) {
-                        //      game_area.new_game (true);
-                        //  } else {
-                        //      Warble.Application.settings.set_int ("difficulty", current_difficulty);
-                        //  }
-                        return false;
-                    });
-                } else {
-                    game_area.new_game ();
-                }
-            }
-        });
 
         check_first_launch ();
     }
@@ -122,30 +79,49 @@ public class Warble.MainLayout : Gtk.Grid {
         header_bar.get_style_context ().add_class (Granite.STYLE_CLASS_FLAT);
         header_bar.get_style_context ().add_class (Granite.STYLE_CLASS_DEFAULT_DECORATION);
 
-        var difficulty_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
-            margin_top = 12,
-            margin_bottom = 12,
-            margin_start = 12,
-            margin_end = 12,
-            homogeneous = true
+        var difficulty_button_group = new Warble.Widgets.CheckButtonGroup (Gtk.Orientation.VERTICAL, 12) {
+            margin_top = margin_bottom = margin_start = margin_end = 12
         };
-        difficulty_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+        difficulty_button_group.prepend (new Gtk.Label (_("<b>Difficulty</b>")) {
+            halign = Gtk.Align.START,
+            use_markup = true,
+            sensitive = false
+        });
+        difficulty_button_group.button_added.connect ((index, button) => {
+            button.set_tooltip_markup (((Warble.Models.Difficulty) index).get_details_markup ());
+            // When the user changes the difficulty, prompt them if in the middle of the game,
+            // because changing the difficulty starts a new game and will register as a loss
+            // if they are in the middle of a game.
+            button.notify["active"].connect (() => {
+                if (button.active) {
+                    var current_difficulty = (int) game_area.difficulty;
+                    var new_difficulty = index;
+                    if (current_difficulty == new_difficulty) {
+                        return;
+                    }
+                    if (!game_area.can_safely_start_new_game ()) {
+                        var dialog = new Warble.Widgets.Dialogs.DifficultyChangeWarningDialog (window);
+                        dialog.response.connect ((response_id) => {
+                            if (response_id == Gtk.ResponseType.DELETE_EVENT) {
+                                return;
+                            } else if (response_id == Gtk.ResponseType.OK) {
+                                Warble.Application.settings.set_int ("difficulty", new_difficulty);
+                                game_area.new_game (true);
+                            } else {
+                                difficulty_button_group.set_active (current_difficulty);
+                            }
+                            dialog.close ();
+                        });
+                        dialog.present ();
+                    }
+                }
+            });
+        });
+        difficulty_button_group.append_label (Warble.Models.Difficulty.EASY.get_display_string ());
+        difficulty_button_group.append_label (Warble.Models.Difficulty.NORMAL.get_display_string ());
+        difficulty_button_group.append_label (Warble.Models.Difficulty.HARD.get_display_string ());
 
-        var easy_button = new Gtk.ToggleButton.with_label (Warble.Models.Difficulty.EASY.get_display_string ()) {
-            tooltip_markup = Warble.Models.Difficulty.EASY.get_details_markup ()
-        };
-        var normal_button = new Gtk.ToggleButton.with_label (Warble.Models.Difficulty.NORMAL.get_display_string ()) {
-            tooltip_markup = Warble.Models.Difficulty.NORMAL.get_details_markup (),
-            group = easy_button
-        };
-        var hard_button = new Gtk.ToggleButton.with_label (Warble.Models.Difficulty.HARD.get_display_string ()) {
-            tooltip_markup = Warble.Models.Difficulty.HARD.get_details_markup (),
-            group = easy_button
-        };
-
-        difficulty_button_box.append (easy_button);
-        difficulty_button_box.append (normal_button);
-        difficulty_button_box.append (hard_button);
+        difficulty_button_group.set_active (Warble.Application.settings.get_int ("difficulty"));
 
         var new_game_accellabel = new Granite.AccelLabel.from_action_name (
             _("New Game"),
@@ -201,13 +177,13 @@ public class Warble.MainLayout : Gtk.Grid {
             orientation = Gtk.Orientation.VERTICAL,
             width_request = 200
         };
-        menu_popover_grid.attach (difficulty_button_box, 0, 0, 3, 1);
-        menu_popover_grid.attach (new_game_menu_item, 0, 1, 1, 1);
-        menu_popover_grid.attach (create_menu_separator (), 0, 2, 1, 1);
+        menu_popover_grid.attach (difficulty_button_group, 0, 0, 3, 1);
+        menu_popover_grid.attach (create_menu_separator (), 0, 1, 1, 1);
+        menu_popover_grid.attach (new_game_menu_item, 0, 2, 1, 1);
         menu_popover_grid.attach (gameplay_stats_menu_item, 0, 3, 1, 1);
         menu_popover_grid.attach (high_contrast_button, 0, 4, 1, 1);
-        menu_popover_grid.attach (help_menu_item, 0, 5, 1, 1);
-        menu_popover_grid.attach (create_menu_separator (), 0, 6, 1, 1);
+        menu_popover_grid.attach (create_menu_separator (), 0, 5, 1, 1);
+        menu_popover_grid.attach (help_menu_item, 0, 6, 1, 1);
         menu_popover_grid.attach (about_menu_item, 0, 7, 1, 1);
         menu_popover_grid.attach (quit_menu_item, 0, 8, 1, 1);
 
