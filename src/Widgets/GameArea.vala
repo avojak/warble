@@ -13,11 +13,10 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
     private Gee.List<Gee.List<Warble.Widgets.Square>> rows;
 
-    private Gtk.Revealer endgame_revealer;
-    private Gtk.Grid status_grid;
-    private Gtk.Label status_label;
-    private Gtk.Label answer_label;
-    private Gtk.Grid square_grid;
+    private Gtk.Grid base_grid;
+    //  private Gtk.Grid status_grid;
+    //  private Gtk.Label status_label;
+    //  private Gtk.Label answer_label;
     private Warble.Widgets.Keyboard keyboard;
 
     private int current_row;
@@ -90,37 +89,39 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     }
 
     private void setup_ui () {
-        status_grid = new Gtk.Grid () {
-            margin_top = 8,
-            margin_bottom = 8,
-            margin_start = 8,
-            margin_end = 8,
-            halign = Gtk.Align.CENTER
-        };
-        status_label = new Gtk.Label ("");
-        status_label.get_style_context ().add_class ("h2");
-        answer_label = new Gtk.Label ("") {
-            use_markup = true
-        };
-        status_grid.attach (status_label, 0, 0);
-        status_grid.attach (answer_label, 0, 1);
+        //  status_grid = new Gtk.Grid () {
+        //      margin_top = 8,
+        //      margin_bottom = 8,
+        //      margin_start = 8,
+        //      margin_end = 8,
+        //      halign = Gtk.Align.CENTER
+        //  };
+        //  status_label = new Gtk.Label ("");
+        //  status_label.get_style_context ().add_class ("h2");
+        //  answer_label = new Gtk.Label ("") {
+        //      use_markup = true
+        //  };
+        //  status_grid.attach (status_label, 0, 0);
+        //  status_grid.attach (answer_label, 0, 1);
 
-        endgame_revealer = new Gtk.Revealer () {
-            transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN,
-            hexpand = true,
-            vexpand = true
-        };
-        endgame_revealer.child = status_grid;
+        //  endgame_revealer = new Gtk.Revealer () {
+        //      transition_type = Gtk.RevealerTransitionType.CROSSFADE,
+        //      transition_duration = 500,
+        //      hexpand = true,
+        //      vexpand = true
+        //  };
+        //  endgame_revealer.child = status_grid;
 
-        square_grid = new Gtk.Grid () {
+        var square_grid = new Gtk.Grid () {
             margin_top = 8,
             margin_bottom = 8,
             margin_start = 8,
             margin_end = 8,
             hexpand = false,
             vexpand = true,
-            row_homogeneous = true,
-            column_homogeneous = true,
+            //  row_homogeneous = true,
+            //  column_homogeneous = true,
+            halign = Gtk.Align.CENTER,
             valign = Gtk.Align.CENTER,
             row_spacing = 8,
             column_spacing = 8
@@ -141,15 +142,19 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         keyboard.return_key_clicked.connect (return_pressed);
         keyboard.backspace_key_clicked.connect (backspace_pressed);
 
-        //  attach (endgame_revealer, 0, 0);
-        attach (square_grid, 0, 1);
-        attach (keyboard, 0, 2);
+        base_grid = new Gtk.Grid () {
+            hexpand = true,
+            vexpand = true,
+            halign = Gtk.Align.CENTER
+        };
+        base_grid.attach (square_grid, 0, 0);
+        base_grid.attach (keyboard, 0, 1);
+
+        attach (base_grid, 0, 0);
     }
 
     private void dispose_ui () {
-        //  remove (endgame_revealer);
-        remove (square_grid);
-        remove (keyboard);
+        remove (base_grid);
     }
 
     public void letter_key_pressed (char letter) {
@@ -475,8 +480,9 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         write_state ();
 
         // Update UI
-        status_label.set_text ("🎉️ You Win!");
-        endgame_revealer.set_reveal_child (true);
+        //  base_grid.get_style_context ().add_class ("faded");
+        //  status_label.set_text ("🎉️ You Win!");
+        //  endgame_revealer.set_reveal_child (true);
 
         // Update statistics
         increment_stat ("num-games-won");
@@ -487,7 +493,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         increment_guess_distribution (num_guesses);
 
         // Call signals
-        game_won (num_guesses);
+        game_won (answer, num_guesses);
     }
 
     private void on_game_lost () {
@@ -498,9 +504,10 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         write_state ();
 
         // Update UI
-        status_label.set_text ("Game Over");
-        answer_label.set_markup (@"Answer: <b>$answer</b>");
-        endgame_revealer.set_reveal_child (true);
+        //  base_grid.get_style_context ().add_class ("faded");
+        //  status_label.set_text ("Game Over");
+        //  answer_label.set_markup (@"Answer: <b>$answer</b>");
+        //  endgame_revealer.set_reveal_child (true);
 
         // Update statistics
         record_loss ();
@@ -627,7 +634,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     public signal void insufficient_letters ();
     public signal void invalid_word ();
     public signal void unused_clues (string message);
-    public signal void game_won (int num_guesses);
+    public signal void game_won (string answer, int num_guesses);
     public signal void game_lost (string answer);
     public signal void prompt_submit_guess ();
 

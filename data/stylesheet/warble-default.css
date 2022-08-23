@@ -11,3 +11,20 @@
 .key-pressed {
     transform: translateY(2px);
 }
+
+.faded {
+    transition-property: opacity, filter;
+    transition-duration: 0.5s;
+    filter: blur(5px);
+    opacity: 0.4;
+}
+
+.hidden {
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    opacity: 0;
+}
+
+.transparent {
+    background-color: rgba(255, 255, 255, 0.0);
+}

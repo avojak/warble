@@ -37,7 +37,7 @@ public class Warble.Widgets.Rules : Gtk.Grid {
         key_colors_grid.attach (new Gtk.Label ("The keys on the keyboard at the bottom of the screen will similarly change colors to help you keep track of which letters have been used.") {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
-            max_width_chars = 45,
+            //  max_width_chars = 45,
             wrap = true,
             wrap_mode = Pango.WrapMode.WORD
         }, 0, 0, 3, 1);
@@ -53,19 +53,20 @@ public class Warble.Widgets.Rules : Gtk.Grid {
         return new Gtk.Grid () {
             halign = Gtk.Align.CENTER,
             hexpand = true,
-            margin_start = 30,
-            margin_end = 30,
-            margin_bottom = 10,
-            row_spacing = 8,
-            column_spacing = 10
+            margin_start = 80,
+            margin_end = 80,
+            margin_bottom = 20,
+            row_spacing = 16,
+            column_spacing = 20
         };
     }
 
     private Gtk.Label create_label (string text) {
         return new Gtk.Label (text) {
-            justify = Gtk.Justification.CENTER,
-            halign = Gtk.Align.CENTER,
-            max_width_chars = 35,
+            //  justify = Gtk.Justification.LEFT,
+            halign = Gtk.Align.FILL,
+            xalign = 0.0f,
+            //  max_width_chars = 35,
             wrap = true,
             wrap_mode = Pango.WrapMode.WORD,
             hexpand = true

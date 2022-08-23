@@ -5,7 +5,7 @@
 
 public class Warble.Widgets.Square : Gtk.DrawingArea {
 
-    private const int WIDTH = 64;
+    private const int WIDTH = 70;
     private const int HEIGHT = 70; // Yes I know this isn't technically a square now
     private const int FONT_SIZE = 30;
 

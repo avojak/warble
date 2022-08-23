@@ -60,7 +60,7 @@ public class Warble.ActionManager : GLib.Object {
     }
 
     private void action_help () {
-        window.show_rules ();
+        window.toggle_rules ();
     }
 
     private void action_about () {
