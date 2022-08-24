@@ -21,7 +21,7 @@ public class Warble.View.GameplayStatisticsView : Gtk.Box {
             margin_bottom = 20,
             wrap = true
         };
-        header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
+        header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
 
         var reset_button = new Gtk.Button.with_label (_("Reset…"));
         reset_button.set_tooltip_text (_("Reset Gameplay Statistics"));

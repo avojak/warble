@@ -16,15 +16,22 @@
     transition-property: opacity, filter;
     transition-duration: 0.5s;
     filter: blur(5px);
-    opacity: 0.4;
+    opacity: 0.3;
 }
 
-.hidden {
-    transition-property: opacity;
-    transition-duration: 0.5s;
-    opacity: 0;
+/* Derived from https://codepen.io/dmytrous/pen/vgoWxY */
+.jiggle {
+    animation: jiggle-animation 3.72s ease infinite;
+    transform-origin: 50% 50%;
 }
 
-.transparent {
-    background-color: rgba(255, 255, 255, 0.0);
+@keyframes jiggle-animation {
+    0% { transform:rotate(0turn); }
+    1.78571% { transform:rotate(0.04turn); }
+    3.57143% { transform:rotate(0turn); }
+    5.35714% { transform:rotate(0.04turn); }
+    7.14286% { transform:rotate(0turn); }
+    8.92857% { transform:rotate(0.04turn); }
+    10.71429% { transform:rotate(0turn); }
+    100% { transform:rotate(0turn); }
 }

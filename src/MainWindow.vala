@@ -53,8 +53,8 @@ public class Warble.MainWindow : Adw.ApplicationWindow {
         return true;
     }
 
-    public void toggle_rules () {
-        main_layout.toggle_rules ();
+    public void show_rules () {
+        main_layout.show_rules ();
     }
 
     public void new_game () {

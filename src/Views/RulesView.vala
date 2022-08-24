@@ -14,14 +14,14 @@ public class Warble.View.RulesView : Gtk.Box {
     }
 
     construct {
-        var header_title = new Gtk.Label (_("How to Play %s").printf (Constants.APP_NAME)) {
+        var header_title = new Gtk.Label (_("How to Play")) {
             halign = Gtk.Align.CENTER,
             hexpand = true,
             margin_top = 20,
             margin_bottom = 20,
             wrap = true
         };
-        header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
+        header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
 
         var button = new Gtk.Button.with_label (_("Continue Game")) {
             margin_top = 20,

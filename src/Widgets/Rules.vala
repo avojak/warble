@@ -7,7 +7,9 @@ public class Warble.Widgets.Rules : Gtk.Grid {
 
     construct {
         var explanation_grid = create_grid ();
-        explanation_grid.attach (new Gtk.Label ("Figure out the word before your guesses run out!"), 0, 0);
+        var summary_label = new Gtk.Label ("Figure out the word before your guesses run out!");
+        summary_label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
+        explanation_grid.attach (summary_label, 0, 0);
         explanation_grid.attach (new Gtk.Label ("As you type, the squares on the board will be filled in."), 0, 1);
 
         // Explain the keys

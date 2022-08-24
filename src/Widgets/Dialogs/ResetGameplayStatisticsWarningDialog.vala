@@ -7,22 +7,19 @@ public class Warble.Widgets.Dialogs.ResetGameplayStatisticsWarningDialog : Grani
 
     public ResetGameplayStatisticsWarningDialog (Gtk.Window window) {
         Object (
-            deletable: false,
-            resizable: false,
+            image_icon: new ThemedIcon ("dialog-warning"),
+            primary_text: _("Reset gameplay statistics?"),
+            secondary_text: _("All gameplay history (including wins and losses) will be lost."),
             transient_for: window,
             modal: true
         );
     }
 
     construct {
-        image_icon = new ThemedIcon ("dialog-warning");
-        primary_text = _("Reset gameplay statistics?");
-        secondary_text = _("All gameplay history (including wins and losses) will be lost.");
-
-        add_button (_("Cancel"), Gtk.ResponseType.CANCEL);
-        var reset_button = add_button (_("Yes, Reset"), Gtk.ResponseType.OK);
-        unowned Gtk.StyleContext style_context = reset_button.get_style_context ();
-        style_context.add_class ("destructive-action");
+        add_action_widget (new Gtk.Button.with_label (_("Cancel")), Gtk.ResponseType.CANCEL);
+        var reset_button = new Gtk.Button.with_label (_("Yes, Reset"));
+        reset_button.get_style_context ().add_class ("destructive-action");
+        add_action_widget (reset_button, Gtk.ResponseType.OK);
 
         set_default_response (Gtk.ResponseType.CANCEL);
     }

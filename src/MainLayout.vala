@@ -8,12 +8,14 @@ public class Warble.MainLayout : Gtk.Grid {
     private const int NUM_ROWS = 6;
     private const int NUM_COLS = 5;
 
+    private const string STYLE_CLASS_TITLEBAR = "titlebar";
+    private const string STYLE_CLASS_FADED = "faded";
+
     public unowned Warble.MainWindow window { get; construct; }
 
     private Adw.HeaderBar header_bar;
-    private Gtk.Stack stack;
-    private Gtk.Overlay game_area_overlay;
-    //  private Gtk.Revealer rules_revealer;
+    private Gtk.Overlay overlay;
+    private Gtk.Revealer rules_revealer;
     private Gtk.Revealer endgame_revealer;
     private Gtk.Revealer statistics_revealer;
     private Granite.Toast insufficient_letters_toast;
@@ -29,30 +31,10 @@ public class Warble.MainLayout : Gtk.Grid {
     }
 
     construct {
-        //  rules_revealer = new Gtk.Revealer () {
-        //      transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN,
-        //      transition_duration = 500,
-        //      hexpand = true,
-        //      vexpand = true
-        //  };
-        //  rules_revealer.child = new Warble.Widgets.Rules ();
-        endgame_revealer = new Gtk.Revealer () {
-            transition_type = Gtk.RevealerTransitionType.CROSSFADE,
-            transition_duration = 500,
-            hexpand = true,
-            vexpand = true
-        };
-        //  endgame_revealer.visible = false;
-        //  endgame_revealer.hide ();
-
-        statistics_revealer = new Gtk.Revealer () {
-            transition_type = Gtk.RevealerTransitionType.CROSSFADE,
-            transition_duration = 500,
-            hexpand = true,
-            vexpand = true
-        };
-        //  statistics_revealer.visible = false;
-        //  statistics_revealer.hide ();
+        // Use multiple revealers so that transitions between them are smooth as well
+        rules_revealer = create_revealer ();
+        endgame_revealer = create_revealer ();
+        statistics_revealer = create_revealer ();
 
         insufficient_letters_toast = new Granite.Toast (_("Not enough letters!"));
         invalid_word_toast = new Granite.Toast (_("That's not a word!"));
@@ -80,33 +62,21 @@ public class Warble.MainLayout : Gtk.Grid {
             submit_guess_toast.send_notification ();
         });
 
-        game_area_overlay = new Gtk.Overlay ();
-        game_area_overlay.add_controller (new Gtk.GestureClick ());
-        game_area_overlay.child = game_area;
-        game_area_overlay.add_overlay (insufficient_letters_toast);
-        game_area_overlay.add_overlay (invalid_word_toast);
-        game_area_overlay.add_overlay (must_use_clues_toast);
-        game_area_overlay.add_overlay (submit_guess_toast);
-        //  overlay.add_overlay (rules_revealer);
-        //  game_area_overlay.add_overlay (endgame_revealer);
-        //  game_area_overlay.add_overlay (statistics_revealer);
-
-        var rules_view = new Warble.View.RulesView ();
-        rules_view.continue_game.connect (() => {
-            toggle_rules ();
-        });
-
-        stack = new Gtk.Stack () {
-            transition_type = Gtk.StackTransitionType.SLIDE_UP_DOWN
-        };
-        stack.add_named (rules_view, "rules");
-        stack.add_named (game_area_overlay, "game-area");
-        stack.set_visible_child_name ("game-area");
+        overlay = new Gtk.Overlay ();
+        overlay.add_controller (new Gtk.GestureClick ());
+        overlay.child = game_area;
+        overlay.add_overlay (insufficient_letters_toast);
+        overlay.add_overlay (invalid_word_toast);
+        overlay.add_overlay (must_use_clues_toast);
+        overlay.add_overlay (submit_guess_toast);
+        overlay.add_overlay (rules_revealer);
+        overlay.add_overlay (endgame_revealer);
+        overlay.add_overlay (statistics_revealer);
 
         header_bar = create_header_bar ();
 
         attach (header_bar, 0, 0);
-        attach (stack, 0, 1);
+        attach (overlay, 0, 1);
 
         check_first_launch ();
     }
@@ -119,9 +89,13 @@ public class Warble.MainLayout : Gtk.Grid {
             hexpand = true
         };
 
-        header_bar.get_style_context ().add_class ("titlebar");
+        header_bar.get_style_context ().add_class (STYLE_CLASS_TITLEBAR);
         header_bar.get_style_context ().add_class (Granite.STYLE_CLASS_FLAT);
         header_bar.get_style_context ().add_class (Granite.STYLE_CLASS_DEFAULT_DECORATION);
+
+        var menu_popover = new Gtk.Popover () {
+            autohide = true
+        };
 
         var difficulty_button_group = new Warble.Widgets.CheckButtonGroup (Gtk.Orientation.VERTICAL, 12) {
             margin_top = margin_bottom = margin_start = margin_end = 12
@@ -143,11 +117,13 @@ public class Warble.MainLayout : Gtk.Grid {
                     if (current_difficulty == new_difficulty) {
                         return;
                     }
+                    //  menu_popover.popdown ();
                     if (game_area.can_safely_start_new_game ()) {
                         Warble.Application.settings.set_int ("difficulty", new_difficulty);
                         game_area.new_game ();
                         return;
                     }
+                    menu_popover.popdown ();
                     var dialog = new Warble.Widgets.Dialogs.DifficultyChangeWarningDialog (window);
                     dialog.response.connect ((response_id) => {
                         if (response_id == Gtk.ResponseType.DELETE_EVENT) {
@@ -160,8 +136,7 @@ public class Warble.MainLayout : Gtk.Grid {
                         }
                         dialog.close ();
                     });
-                    dialog.present ();
-
+                    dialog.show ();
                 }
             });
         });
@@ -180,18 +155,24 @@ public class Warble.MainLayout : Gtk.Grid {
             action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_NEW_GAME,
             child = new_game_accellabel
         };
+        new_game_menu_item.clicked.connect (() => {
+            menu_popover.popdown ();
+        });
         new_game_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
 
         var gameplay_stats_menu_item = new Gtk.Button () {
-            child = new Granite.AccelLabel (_("Gameplay Statistics…"))
+            child = new Granite.AccelLabel (_("Gameplay Statistics"))
         };
+        gameplay_stats_menu_item.clicked.connect (() => {
+            menu_popover.popdown ();
+        });
         gameplay_stats_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
 
         var high_contrast_button = new Granite.SwitchModelButton (_("High Contrast Mode"));
         high_contrast_button.add_css_class (Granite.STYLE_CLASS_MENUITEM);
 
         var help_accellabel = new Granite.AccelLabel.from_action_name (
-            _("Show/Hide Rules"),
+            _("Help"),
             Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_HELP
         );
 
@@ -199,13 +180,19 @@ public class Warble.MainLayout : Gtk.Grid {
             action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_HELP,
             child = help_accellabel
         };
+        help_menu_item.clicked.connect (() => {
+            menu_popover.popdown ();
+        });
         help_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
 
-        var about_accellabel = new Granite.AccelLabel ("About…", null);
+        var about_accellabel = new Granite.AccelLabel (_("About…"), null);
         var about_menu_item = new Gtk.Button () {
             action_name = Warble.ActionManager.ACTION_PREFIX + Warble.ActionManager.ACTION_ABOUT,
             child = about_accellabel
         };
+        about_menu_item.clicked.connect (() => {
+            menu_popover.popdown ();
+        });
         about_menu_item.add_css_class (Granite.STYLE_CLASS_MENUITEM);
 
         var quit_accellabel = new Granite.AccelLabel.from_action_name (
@@ -234,12 +221,7 @@ public class Warble.MainLayout : Gtk.Grid {
         menu_popover_grid.attach (help_menu_item, 0, 6, 1, 1);
         menu_popover_grid.attach (about_menu_item, 0, 7, 1, 1);
         menu_popover_grid.attach (quit_menu_item, 0, 8, 1, 1);
-
-        var menu_popover = new Gtk.Popover () {
-            autohide = true,
-            child = menu_popover_grid
-        };
-        //  menu_popover.add_css_class (Granite.STYLE_CLASS_MENU);
+        menu_popover.child = menu_popover_grid;
 
         var menu_button = new Gtk.MenuButton () {
             icon_name = "open-menu-symbolic",
@@ -252,7 +234,7 @@ public class Warble.MainLayout : Gtk.Grid {
         header_bar.pack_end (menu_button);
 
         gameplay_stats_menu_item.clicked.connect (() => {
-            show_gameplay_statistics_dialog ();
+            show_gameplay_statistics ();
         });
 
         Warble.Application.settings.bind (
@@ -265,6 +247,16 @@ public class Warble.MainLayout : Gtk.Grid {
         return header_bar;
     }
 
+    private Gtk.Revealer create_revealer () {
+        return new Gtk.Revealer () {
+            transition_type = Gtk.RevealerTransitionType.CROSSFADE,
+            transition_duration = 500,
+            hexpand = true,
+            vexpand = true,
+            can_target = false
+        };
+    }
+
     private Gtk.Separator create_menu_separator () {
         var menu_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
             margin_top = 3,
@@ -274,7 +266,9 @@ public class Warble.MainLayout : Gtk.Grid {
     }
 
     public bool on_key_pressed_event (Gtk.EventControllerKey controller, uint keyval, uint keycode, Gdk.ModifierType state) {
-        if (stack.get_visible_child_name () != "game-area") {
+        if (rules_revealer.get_child_revealed ()
+            || statistics_revealer.get_child_revealed ()
+            || endgame_revealer.get_child_revealed ()) {
             return false;
         }
         if (keyval == Gdk.Key.Return) {
@@ -304,19 +298,18 @@ public class Warble.MainLayout : Gtk.Grid {
         }
     }
 
-    public void toggle_rules () {
-        if (stack.get_visible_child_name () == "rules") {
-            //  stack.set_transition_type (Gtk.StackTransitionType.SLIDE_UP);
-            stack.set_visible_child_name ("game-area");
-        } else {
-            //  stack.set_transition_type (Gtk.StackTransitionType.SLIDE_DOWN);
-            stack.set_visible_child_name ("rules");
-        }
+    public void show_rules () {
+        hide_revealers ();
+        game_area.get_style_context ().add_class (STYLE_CLASS_FADED);
+        var view = new Warble.View.RulesView ();
+        view.continue_game.connect (() => {
+            hide_revealers ();
+        });
+        show_revealer (rules_revealer, view);
     }
 
     public void new_game () {
         hide_revealers ();
-        stack.set_visible_child_name ("game-area");
         // If we can safely start a new game, don't need to prompt the user
         if (game_area.can_safely_start_new_game ()) {
             game_area.new_game ();
@@ -329,96 +322,78 @@ public class Warble.MainLayout : Gtk.Grid {
             }
             new_game_confirmation_dialog.close ();
         });
-        new_game_confirmation_dialog.present ();
+        new_game_confirmation_dialog.show ();
     }
 
     private void hide_revealers () {
         statistics_revealer.set_reveal_child (false);
         endgame_revealer.set_reveal_child (false);
+        rules_revealer.set_reveal_child (false);
 
-        game_area_overlay.remove_overlay (statistics_revealer);
-        game_area_overlay.remove_overlay (endgame_revealer);
+        statistics_revealer.can_target = false;
+        endgame_revealer.can_target = false;
+        rules_revealer.can_target = false;
 
-        game_area.get_style_context ().remove_class ("faded");
+        game_area.get_style_context ().remove_class (STYLE_CLASS_FADED);
+    }
+
+    private void show_revealer (Gtk.Revealer revealer, Gtk.Widget child) {
+        revealer.can_target = true;
+        revealer.child = child;
+        revealer.set_reveal_child (true);
     }
 
     private void show_victory_view (string answer) {
-        //  var dialog = new Warble.Widgets.Dialogs.VictoryDialog (window);
-        //  dialog.play_again_button_clicked.connect (() => {
-        //      dialog.close ();
-        //      game_area.new_game ();
-        //  });
-        //  dialog.present ();
-
-        game_area.get_style_context ().add_class ("faded");
-        var endgame_view = new Warble.View.EndgameView.for_victory (answer);
-        endgame_view.response.connect ((response_id) => {
-            endgame_revealer.set_reveal_child (false);
-            game_area.get_style_context ().remove_class ("faded");
-            if (response_id == Gtk.ResponseType.YES) {
-                game_area.new_game ();
-            }
-        });
-        game_area_overlay.add_overlay (endgame_revealer);
-        endgame_revealer.child = endgame_view;
-        endgame_revealer.set_reveal_child (true);
-        //  stack.add_named (new Warble.View.EndgameView.for_victory (answer), "endgame-view");
-        //  stack.set_visible_child_full ("endgame-view", Gtk.StackTransitionType.CROSSFADE);
+        show_endgame_view (new Warble.View.EndgameView.for_victory (answer));
     }
 
     private void show_defeat_view (string answer) {
-        //  var dialog = new Warble.Widgets.Dialogs.DefeatDialog (window, answer);
-        //  dialog.play_again_button_clicked.connect (() => {
-        //      dialog.close ();
-        //      game_area.new_game ();
-        //  });
-        //  dialog.present ();
+        show_endgame_view (new Warble.View.EndgameView.for_defeat (answer));
+    }
 
-        game_area.get_style_context ().add_class ("faded");
-        var endgame_view = new Warble.View.EndgameView.for_defeat (answer);
-        endgame_view.response.connect ((response_id) => {
+    private void show_endgame_view (Warble.View.EndgameView view) {
+        game_area.get_style_context ().add_class (STYLE_CLASS_FADED);
+        view.response.connect ((response_id) => {
             hide_revealers ();
             if (response_id == Gtk.ResponseType.YES) {
                 game_area.new_game ();
             }
         });
-        game_area_overlay.add_overlay (endgame_revealer);
-        endgame_revealer.child = endgame_view;
-        endgame_revealer.set_reveal_child (true);
+        show_revealer (endgame_revealer, view);
     }
 
-    private void show_gameplay_statistics_dialog () {
-        game_area.get_style_context ().add_class ("faded");
-        game_area_overlay.add_overlay (statistics_revealer);
-        statistics_revealer.child = new Warble.View.GameplayStatisticsView ();
-        statistics_revealer.set_reveal_child (true);
-        //  var dialog = new Warble.Widgets.Dialogs.GameplayStatisticsDialog (window);
-        //  dialog.reset_button_clicked.connect (() => {
-        //      dialog.close ();
-        //      Idle.add (() => {
-        //          show_reset_gameplay_statistics_warning_dialog ();
-        //          return false;
-        //      });
-        //  });
-        //  dialog.present ();
+    private void show_gameplay_statistics () {
+        hide_revealers ();
+        game_area.get_style_context ().add_class (STYLE_CLASS_FADED);
+        var view = new Warble.View.GameplayStatisticsView ();
+        view.reset_button_clicked.connect (() => {
+            show_reset_gameplay_statistics_warning_dialog ();
+        });
+        view.continue_game.connect (() => {
+            hide_revealers ();
+        });
+        show_revealer (statistics_revealer, view);
     }
 
     private void show_reset_gameplay_statistics_warning_dialog () {
         var dialog = new Warble.Widgets.Dialogs.ResetGameplayStatisticsWarningDialog (window);
         dialog.response.connect ((response_id) => {
+            dialog.close ();
             if (response_id == Gtk.ResponseType.OK) {
                 game_area.reset_gameplay_statistics ();
             }
             Idle.add (() => {
-                show_gameplay_statistics_dialog ();
+                show_gameplay_statistics ();
                 return false;
             });
         });
+        dialog.show ();
     }
 
     public void show_about_dialog () {
         var about_dialog = new Gtk.AboutDialog () {
             authors = new string[] { "Andrew Vojak", null },
+            comments = "The word-guessing game",
             copyright = "\xc2\xa9 2022 Andrew Vojak",
             license_type = Gtk.License.GPL_3_0,
             logo_icon_name = Constants.APP_ID,
@@ -429,11 +404,11 @@ public class Warble.MainLayout : Gtk.Grid {
             modal = true,
             transient_for = window
         };
-        about_dialog.close_request.connect (() =>{
+        about_dialog.close_request.connect (() => {
             about_dialog.close ();
             return false;
         });
-        about_dialog.present ();
+        about_dialog.show ();
         about_dialog.set_focus (null);
     }
 

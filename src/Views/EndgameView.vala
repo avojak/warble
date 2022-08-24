@@ -5,12 +5,14 @@
 
 public class Warble.View.EndgameView : Gtk.Box {
 
+    public string? emoji { get; construct; default = null; }
     public string title_str { get; construct; }
     public string correct_answer { get; construct; }
 
     public EndgameView.for_victory (string correct_answer) {
         Object (
-            title_str: "🎉️ You Win!",
+            emoji: "🎉️",
+            title_str: "You Win!",
             correct_answer: correct_answer,
             vexpand: true,
             hexpand: true,
@@ -30,15 +32,25 @@ public class Warble.View.EndgameView : Gtk.Box {
 
     construct {
         var header_title = new Gtk.Label (title_str) {
+            wrap = true
+        };
+        header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
+
+        var header_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6) {
             halign = Gtk.Align.CENTER,
             hexpand = true,
             margin_top = 20,
-            margin_bottom = 20,
-            wrap = true
+            margin_bottom = 20
         };
-        header_title.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
+        if (emoji != null) {
+            var emoji_label = new Gtk.Label (emoji);
+            emoji_label.get_style_context ().add_class ("jiggle");
+            emoji_label.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
+            header_box.append (emoji_label);
+        }
+        header_box.append (header_title);
 
-        append (header_title);
+        append (header_box);
         append (new Gtk.Label (@"The correct answer was: <b>$correct_answer</b>") {
             use_markup = true
         });
