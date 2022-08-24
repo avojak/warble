@@ -89,29 +89,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     }
 
     private void setup_ui () {
-        //  status_grid = new Gtk.Grid () {
-        //      margin_top = 8,
-        //      margin_bottom = 8,
-        //      margin_start = 8,
-        //      margin_end = 8,
-        //      halign = Gtk.Align.CENTER
-        //  };
-        //  status_label = new Gtk.Label ("");
-        //  status_label.get_style_context ().add_class ("h2");
-        //  answer_label = new Gtk.Label ("") {
-        //      use_markup = true
-        //  };
-        //  status_grid.attach (status_label, 0, 0);
-        //  status_grid.attach (answer_label, 0, 1);
-
-        //  endgame_revealer = new Gtk.Revealer () {
-        //      transition_type = Gtk.RevealerTransitionType.CROSSFADE,
-        //      transition_duration = 500,
-        //      hexpand = true,
-        //      vexpand = true
-        //  };
-        //  endgame_revealer.child = status_grid;
-
         var square_grid = new Gtk.Grid () {
             margin_top = 8,
             margin_bottom = 8,
@@ -119,8 +96,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             margin_end = 8,
             hexpand = false,
             vexpand = true,
-            //  row_homogeneous = true,
-            //  column_homogeneous = true,
             halign = Gtk.Align.CENTER,
             valign = Gtk.Align.CENTER,
             row_spacing = 8,
@@ -479,11 +454,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         // Update the saved state
         write_state ();
 
-        // Update UI
-        //  base_grid.get_style_context ().add_class ("faded");
-        //  status_label.set_text ("🎉️ You Win!");
-        //  endgame_revealer.set_reveal_child (true);
-
         // Update statistics
         increment_stat ("num-games-won");
         increment_stat ("win-streak");
@@ -502,12 +472,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
         // Update the saved state
         write_state ();
-
-        // Update UI
-        //  base_grid.get_style_context ().add_class ("faded");
-        //  status_label.set_text ("Game Over");
-        //  answer_label.set_markup (@"Answer: <b>$answer</b>");
-        //  endgame_revealer.set_reveal_child (true);
 
         // Update statistics
         record_loss ();
