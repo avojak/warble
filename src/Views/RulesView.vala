@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.View.RulesView : Gtk.Box {
+public class Warble.Views.RulesView : Gtk.Box {
 
     public RulesView () {
         Object (

@@ -7,7 +7,7 @@
       <description>The saved width of the window.</description>
     </key>
     <key name="window-height" type="i">
-      <default>675</default>
+      <default>700</default>
       <summary>The saved height of the window.</summary>
       <description>The saved height of the window.</description>
     </key>

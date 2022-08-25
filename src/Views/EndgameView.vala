@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.View.EndgameView : Gtk.Box {
+public class Warble.Views.EndgameView : Gtk.Box {
 
     public string? emoji { get; construct; default = null; }
     public string title_str { get; construct; }
@@ -12,7 +12,7 @@ public class Warble.View.EndgameView : Gtk.Box {
     public EndgameView.for_victory (string correct_answer) {
         Object (
             emoji: "🎉️",
-            title_str: "You Win!",
+            title_str: _("You Win!"),
             correct_answer: correct_answer,
             vexpand: true,
             hexpand: true,
@@ -22,7 +22,7 @@ public class Warble.View.EndgameView : Gtk.Box {
 
     public EndgameView.for_defeat (string correct_answer) {
         Object (
-            title_str: "Game Over",
+            title_str: _("Game Over"),
             correct_answer: correct_answer,
             vexpand: true,
             hexpand: true,
@@ -51,11 +51,11 @@ public class Warble.View.EndgameView : Gtk.Box {
         header_box.append (header_title);
 
         append (header_box);
-        append (new Gtk.Label (@"The correct answer was: <b>$correct_answer</b>") {
+        append (new Gtk.Label (_(@"The correct answer was: <b>$correct_answer</b>")) {
             use_markup = true
         });
         append (new Warble.Widgets.GameplayStatistics ());
-        append (new Gtk.Label ("Would you like to play again?") {
+        append (new Gtk.Label (_("Would you like to play again?")) {
             margin_top = 30,
             margin_bottom = 10
         });

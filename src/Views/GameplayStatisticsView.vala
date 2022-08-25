@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.View.GameplayStatisticsView : Gtk.Box {
+public class Warble.Views.GameplayStatisticsView : Gtk.Box {
 
     public GameplayStatisticsView () {
         Object (

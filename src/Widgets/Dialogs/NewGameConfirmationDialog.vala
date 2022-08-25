@@ -16,10 +16,13 @@ public class Warble.Widgets.Dialogs.NewGameConfirmationDialog : Granite.MessageD
     }
 
     construct {
-        add_action_widget (new Gtk.Button.with_label (_("Cancel")), Gtk.ResponseType.CANCEL);
-        var remove_button = new Gtk.Button.with_label (_("Yes, Start New Game"));
-        remove_button.get_style_context ().add_class ("destructive-action");
-        add_action_widget (remove_button, Gtk.ResponseType.OK);
+        // XXX: Fixed in Granite with https://github.com/elementary/granite/pull/616
+        // This can be removed once the fix is delivered in a Granite release
+        secondary_label.width_chars = secondary_label.max_width_chars;
+
+        add_button (_("Cancel"), Gtk.ResponseType.CANCEL);
+        add_button (_("Yes, Start New Game"), Gtk.ResponseType.OK)
+            .get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
 
         set_default_response (Gtk.ResponseType.CANCEL);
     }

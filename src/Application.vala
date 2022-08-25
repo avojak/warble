@@ -26,9 +26,6 @@ public class Warble.Application : Gtk.Application {
     }
 
     static construct {
-        info ("%s version: %s", Constants.APP_ID, Constants.VERSION);
-        info ("Kernel version: %s", Posix.utsname ().release);
-
         provider = new Gtk.CssProvider ();
         theme_provider = new Gtk.CssProvider ();
     }
@@ -72,10 +69,10 @@ public class Warble.Application : Gtk.Application {
         // Respect the system color scheme preference
         var granite_settings = Granite.Settings.get_default ();
         var gtk_settings = Gtk.Settings.get_default ();
-        gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
+        gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK; // vala-lint=line-length
         load_theme_stylesheet ();
         granite_settings.notify["prefers-color-scheme"].connect (() => {
-            gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
+            gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK; // vala-lint=line-length
             load_theme_stylesheet ();
         });
         settings.changed["high-contrast-mode"].connect (() => {

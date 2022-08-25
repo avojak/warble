@@ -42,8 +42,8 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
         var games_played_value = new Gtk.Label ("<b>%s</b>".printf (total_games.to_string ())) {
             use_markup = true
         };
-        games_played_value.get_style_context ().add_class ("h3");
-        var games_played_label = new Gtk.Label ("Number of Games Played") {
+        games_played_value.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
+        var games_played_label = new Gtk.Label (_("Number of Games Played")) {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
             valign = Gtk.Align.START,
@@ -54,8 +54,8 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
         var win_percent_value = new Gtk.Label ("<b>%d%%</b>".printf (win_percent)) {
             use_markup = true
         };
-        win_percent_value.get_style_context ().add_class ("h3");
-        var win_percent_label = new Gtk.Label ("Win Percent") {
+        win_percent_value.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
+        var win_percent_label = new Gtk.Label (_("Win Percent")) {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
             valign = Gtk.Align.START,
@@ -66,8 +66,8 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
         var win_streak_value = new Gtk.Label ("<b>%d</b>".printf (win_streak)) {
             use_markup = true
         };
-        win_streak_value.get_style_context ().add_class ("h3");
-        var win_streak_label = new Gtk.Label ("Current Win Streak") {
+        win_streak_value.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
+        var win_streak_label = new Gtk.Label (_("Current Win Streak")) {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
             valign = Gtk.Align.START,
@@ -78,8 +78,8 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
         var longest_win_streak_value = new Gtk.Label ("<b>%d</b>".printf (max_win_streak)) {
             use_markup = true
         };
-        longest_win_streak_value.get_style_context ().add_class ("h3");
-        var longest_win_streak_label = new Gtk.Label ("Longest Win Streak") {
+        longest_win_streak_value.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
+        var longest_win_streak_label = new Gtk.Label (_("Longest Win Streak")) {
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER,
             valign = Gtk.Align.START,
@@ -101,12 +101,12 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
             hexpand = true,
             row_spacing = 4
         };
-        var guess_distribution_label = new Gtk.Label ("Guess Distribution") {
+        var guess_distribution_label = new Gtk.Label (_("Guess Distribution")) {
             margin_bottom = 10,
             justify = Gtk.Justification.CENTER,
             halign = Gtk.Align.CENTER
         };
-        guess_distribution_label.get_style_context ().add_class ("h3");
+        guess_distribution_label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
         guess_distribution_grid.attach (guess_distribution_label, 0, 0, 3, 1);
 
         int max_guesses = 0;
@@ -135,7 +135,7 @@ public class Warble.Widgets.GameplayStatistics : Gtk.Grid {
             guess_distribution_grid.attach (level_bar, 1, i + 1, 1, 1);
 
             var guess_count = new Gtk.Label (val > 0 ? "<small>%s</small>".printf (val.to_string ()) : "") {
-                margin_end = 4,
+                margin_start = 4,
                 use_markup = true
             };
             guess_distribution_grid.attach (guess_count, 2, i + 1, 1, 1);

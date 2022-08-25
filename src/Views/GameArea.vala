@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.GameArea : Gtk.Grid {
+public class Warble.Views.GameArea : Gtk.Grid {
 
     public Warble.Models.Difficulty difficulty { get; set; }
 
@@ -14,9 +14,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     private Gee.List<Gee.List<Warble.Widgets.Square>> rows;
 
     private Gtk.Grid base_grid;
-    //  private Gtk.Grid status_grid;
-    //  private Gtk.Label status_label;
-    //  private Gtk.Label answer_label;
     private Warble.Widgets.Keyboard keyboard;
 
     private int current_row;
@@ -296,7 +293,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
                 // If letter was previously found to be correct, it must be used in the same place again
                 if (prior_square.state == Warble.Models.State.CORRECT) {
                     if (prior_square.letter != current_square.letter) {
-                        unused_clues ("The %s letter must be \"%s\"".printf (get_ordinal_string (col_index + 1), prior_square.letter.to_string ()));
+                        unused_clues (_("The %s letter must be \"%s\"").printf (get_ordinal_string (col_index + 1),
+                            prior_square.letter.to_string ()));
                         return false;
                     } else {
                         correct_indices.add (col_index);
@@ -308,7 +306,8 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
                     if (!close_guessed_letters.has_key (prior_square.letter)) {
                         close_guessed_letters.set (prior_square.letter, 0);
                     }
-                    close_guessed_letters.set (prior_square.letter, close_guessed_letters.get (prior_square.letter) + 1);
+                    close_guessed_letters.set (prior_square.letter,
+                        close_guessed_letters.get (prior_square.letter) + 1);
                 }
             }
 
@@ -325,7 +324,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             foreach (var entry in close_guessed_letters.entries) {
                 if (entry.value > 0) {
                     // entry.key must be a guessed letter
-                    unused_clues ("\"%s\" must be a guessed letter".printf (entry.key.to_string ()));
+                    unused_clues (_("\"%s\" must be a guessed letter").printf (entry.key.to_string ()));
                     return false;
                 }
             }
@@ -338,15 +337,15 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         var j = pos % 10;
         var k = pos % 100;
         if (j == 1 && k != 11) {
-            return "%dst".printf (pos);
+            return _("%dst").printf (pos);
         }
         if (j == 2 && k != 12) {
-            return "%dnd".printf (pos);
+            return _("%dnd").printf (pos);
         }
         if (j == 3 && k != 13) {
-            return "%drd".printf (pos);
+            return _("%drd").printf (pos);
         }
-        return "%dth".printf (pos);
+        return _("%dth").printf (pos);
     }
 
     private bool update_states (int current_row, string current_guess) {

@@ -41,7 +41,8 @@ public class Warble.MainWindow : Adw.ApplicationWindow {
         set_focus (null);
     }
 
-    private bool on_key_pressed_event (Gtk.EventControllerKey controller, uint keyval, uint keycode, Gdk.ModifierType state) {
+    private bool on_key_pressed_event (Gtk.EventControllerKey controller, uint keyval, uint keycode,
+            Gdk.ModifierType state) {
         if (keyval == Gdk.Key.Escape || keyval == Gdk.Key.BackSpace) {
             set_focus (null);
             return true;
