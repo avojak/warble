@@ -80,5 +80,5 @@ modules:
     sources:
       - type: git
         url: https://github.com/avojak/warble.git
-        tag: 1.5.0
-        commit: b69af4a9ea821f71fb2a3e5985bcd7a15f4ff18c
+        tag: 2.0.0
+        commit: 982b1c8451ac46ffeb8dff4cb637b41f72da3905
