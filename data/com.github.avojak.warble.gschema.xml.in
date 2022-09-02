@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
   <schema path="@schema-path@" id="@appid@">
-    <key name="pos-x" type="i">
-      <default>360</default>
-      <summary>The saved horizontal position of the window.</summary>
-      <description>The saved horizontal position of the window.</description>
+    <key name="window-width" type="i">
+      <default>475</default>
+      <summary>The saved width of the window.</summary>
+      <description>The saved width of the window.</description>
     </key>
-    <key name="pos-y" type="i">
-      <default>360</default>
-      <summary>The saved vertical position width of the window.</summary>
-      <description>The saved vertical position of the window.</description>
+    <key name="window-height" type="i">
+      <default>700</default>
+      <summary>The saved height of the window.</summary>
+      <description>The saved height of the window.</description>
+    </key>
+    <key name="window-is-maximized" type="b">
+      <default>false</default>
+      <summary>Whether or not the application window is maximized.</summary>
+      <description>Whether or not the application window is maximized.</description>
     </key>
     <key name="first-launch" type="b">
       <default>true</default>

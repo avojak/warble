@@ -1,25 +1,9 @@
 /*
- * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.GameArea : Gtk.Grid {
+public class Warble.Views.GameArea : Gtk.Grid {
 
     public Warble.Models.Difficulty difficulty { get; set; }
 
@@ -29,11 +13,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
     private Gee.List<Gee.List<Warble.Widgets.Square>> rows;
 
-    private Gtk.Revealer endgame_revealer;
-    private Gtk.Grid status_grid;
-    private Gtk.Label status_label;
-    private Gtk.Label answer_label;
-    private Gtk.Grid square_grid;
+    private Gtk.Grid base_grid;
     private Warble.Widgets.Keyboard keyboard;
 
     private int current_row;
@@ -44,10 +24,14 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
     public GameArea () {
         Object (
-            expand: true,
+            hexpand: true,
+            vexpand: true,
             orientation: Gtk.Orientation.VERTICAL,
             halign: Gtk.Align.CENTER,
-            margin: 8
+            margin_start: 8,
+            margin_end: 8,
+            margin_top: 8,
+            margin_bottom: 8
         );
     }
 
@@ -64,7 +48,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         }
         dispose_ui ();
         initialize ();
-        show_all ();
     }
 
     private void initialize () {
@@ -96,31 +79,24 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             current_row = 0;
             current_col = 0;
         }
+        if (current_row < num_rows && current_col < num_cols) {
+            rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
+        }
         is_game_in_progress = true;
     }
 
     private void setup_ui () {
-        status_grid = new Gtk.Grid () {
-            margin = 8,
-            halign = Gtk.Align.CENTER
-        };
-        status_label = new Gtk.Label ("");
-        status_label.get_style_context ().add_class ("h2");
-        answer_label = new Gtk.Label ("") {
-            use_markup = true
-        };
-        status_grid.attach (status_label, 0, 0);
-        status_grid.attach (answer_label, 0, 1);
-
-        endgame_revealer = new Gtk.Revealer () {
-            transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN,
-            expand = true
-        };
-        endgame_revealer.add (status_grid);
-
-        square_grid = new Gtk.Grid () {
-            margin = 8,
-            expand = true
+        var square_grid = new Gtk.Grid () {
+            margin_top = 8,
+            margin_bottom = 8,
+            margin_start = 8,
+            margin_end = 8,
+            hexpand = false,
+            vexpand = true,
+            halign = Gtk.Align.CENTER,
+            valign = Gtk.Align.CENTER,
+            row_spacing = 8,
+            column_spacing = 8
         };
         rows = new Gee.ArrayList<Gee.List<Warble.Widgets.Square>> ();
         for (int i = 0; i < num_rows; i++) {
@@ -138,15 +114,19 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         keyboard.return_key_clicked.connect (return_pressed);
         keyboard.backspace_key_clicked.connect (backspace_pressed);
 
-        attach (endgame_revealer, 0, 0);
-        attach (square_grid, 0, 1);
-        attach (keyboard, 0, 2);
+        base_grid = new Gtk.Grid () {
+            hexpand = true,
+            vexpand = true,
+            halign = Gtk.Align.CENTER
+        };
+        base_grid.attach (square_grid, 0, 0);
+        base_grid.attach (keyboard, 0, 1);
+
+        attach (base_grid, 0, 0);
     }
 
     private void dispose_ui () {
-        status_grid.dispose ();
-        square_grid.dispose ();
-        keyboard.dispose ();
+        remove (base_grid);
     }
 
     public void letter_key_pressed (char letter) {
@@ -154,17 +134,26 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (!is_game_in_progress) {
             return;
         }
+
         // Make sure we're inbounds
         if (current_col >= num_cols || current_row >= num_rows) {
             return;
         }
+
         // Update the square
+        rows.get (current_row).get (current_col).state = Warble.Models.State.BLANK;
         rows.get (current_row).get (current_col).letter = letter;
         rows.get (current_row).get (current_col).queue_draw ();
+
         // Increment the column
         current_col++;
+        if (current_col < num_cols) {
+            rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
+        }
+
         // Update the saved state
         write_state ();
+
         // Check if row is full
         if (current_col == num_cols && Warble.Application.settings.get_boolean ("should-prompt-to-submit")) {
             start_guess_timer ();
@@ -176,16 +165,25 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (!is_game_in_progress) {
             return;
         }
+
         // Make sure we're inbounds
         if (current_col == 0) {
             return;
         }
+
         // Cancel the timer (if present)
         stop_guess_timer ();
+
         // Decrement the column
+        if (current_col < num_cols) {
+            rows.get (current_row).get (current_col).state = Warble.Models.State.BLANK;
+        }
         current_col--;
+        rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
+
         // Clear the square
         rows.get (current_row).get (current_col).letter = ' ';
+
         // Update the saved state
         write_state ();
     }
@@ -195,34 +193,45 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         if (!is_game_in_progress) {
             return;
         }
+
         // Make sure we're inbounds
         if (current_row >= num_rows) {
             return;
         }
+
         // Cancel the timer (if present)
         stop_guess_timer (true);
+
         // Get the current guess
         GLib.StringBuilder sb = new GLib.StringBuilder ();
         foreach (var square in rows.get (current_row)) {
             sb.append_c (square.letter);
         }
         string current_guess = sb.str.strip ();
+
         // Validate the guess
         if (!validate_guess (current_guess)) {
             return;
         }
+
         // Update the square and key states
         if (update_states (current_row, current_guess)) {
             on_game_won (current_row + 1);
             return;
         }
+
         // Increment the row and reset the column
         current_row++;
         current_col = 0;
+        if (current_row < num_rows) {
+            rows.get (current_row).get (current_col).state = Warble.Models.State.ACTIVE;
+        }
+
         // Check if game lost
         if (current_row == num_rows) {
             on_game_lost ();
         }
+
         // Update the saved state
         write_state ();
     }
@@ -266,11 +275,13 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             insufficient_letters ();
             return false;
         }
+
         // Check if the guessed word is actually a word
         if (!Warble.Application.dictionary.is_word_in_dictionary (current_guess)) {
             invalid_word ();
             return false;
         }
+
         // Check if all clues were used (depending on difficulty setting)
         if (must_use_clues && current_row > 0) {
             Gee.Map<char, int> close_guessed_letters = new Gee.HashMap<char, int> ();
@@ -278,23 +289,28 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             for (int col_index = 0; col_index < num_cols; col_index++) {
                 var prior_square = rows.get (current_row - 1).get (col_index);
                 var current_square = rows.get (current_row).get (col_index);
+
                 // If letter was previously found to be correct, it must be used in the same place again
                 if (prior_square.state == Warble.Models.State.CORRECT) {
                     if (prior_square.letter != current_square.letter) {
-                        unused_clues ("The %s letter must be \"%s\"".printf (get_ordinal_string (col_index + 1), prior_square.letter.to_string ()));
+                        unused_clues (_("The %s letter must be \"%s\"").printf (get_ordinal_string (col_index + 1),
+                            prior_square.letter.to_string ()));
                         return false;
                     } else {
                         correct_indices.add (col_index);
                     }
                 }
+
                 // If the letter was close, save it for the second pass
                 if (prior_square.state == Warble.Models.State.CLOSE) {
                     if (!close_guessed_letters.has_key (prior_square.letter)) {
                         close_guessed_letters.set (prior_square.letter, 0);
                     }
-                    close_guessed_letters.set (prior_square.letter, close_guessed_letters.get (prior_square.letter) + 1);
+                    close_guessed_letters.set (prior_square.letter,
+                        close_guessed_letters.get (prior_square.letter) + 1);
                 }
             }
+
             // Update close_guessed_letters to find unused clues
             for (int col_index = 0; col_index < num_cols; col_index++) {
                 if (correct_indices.contains (col_index)) {
@@ -308,7 +324,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
             foreach (var entry in close_guessed_letters.entries) {
                 if (entry.value > 0) {
                     // entry.key must be a guessed letter
-                    unused_clues ("\"%s\" must be a guessed letter".printf (entry.key.to_string ()));
+                    unused_clues (_("\"%s\" must be a guessed letter").printf (entry.key.to_string ()));
                     return false;
                 }
             }
@@ -321,15 +337,15 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         var j = pos % 10;
         var k = pos % 100;
         if (j == 1 && k != 11) {
-            return "%dst".printf (pos);
+            return _("%dst").printf (pos);
         }
         if (j == 2 && k != 12) {
-            return "%dnd".printf (pos);
+            return _("%dnd").printf (pos);
         }
         if (j == 3 && k != 13) {
-            return "%drd".printf (pos);
+            return _("%drd").printf (pos);
         }
-        return "%dth".printf (pos);
+        return _("%dth").printf (pos);
     }
 
     private bool update_states (int current_row, string current_guess) {
@@ -437,10 +453,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         // Update the saved state
         write_state ();
 
-        // Update UI
-        status_label.set_text ("🎉️ You Win!");
-        endgame_revealer.set_reveal_child (true);
-
         // Update statistics
         increment_stat ("num-games-won");
         increment_stat ("win-streak");
@@ -450,7 +462,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
         increment_guess_distribution (num_guesses);
 
         // Call signals
-        game_won (num_guesses);
+        game_won (answer, num_guesses);
     }
 
     private void on_game_lost () {
@@ -459,11 +471,6 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
 
         // Update the saved state
         write_state ();
-
-        // Update UI
-        status_label.set_text ("Game Over");
-        answer_label.set_markup (@"Answer: <b>$answer</b>");
-        endgame_revealer.set_reveal_child (true);
 
         // Update statistics
         record_loss ();
@@ -590,7 +597,7 @@ public class Warble.Widgets.GameArea : Gtk.Grid {
     public signal void insufficient_letters ();
     public signal void invalid_word ();
     public signal void unused_clues (string message);
-    public signal void game_won (int num_guesses);
+    public signal void game_won (string answer, int num_guesses);
     public signal void game_lost (string answer);
     public signal void prompt_submit_guess ();
 

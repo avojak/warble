@@ -1,22 +1,6 @@
 /*
- * Copyright (c) 2020 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
 public class Warble.ActionManager : GLib.Object {
@@ -24,11 +8,13 @@ public class Warble.ActionManager : GLib.Object {
     public const string ACTION_PREFIX = "win.";
     public const string ACTION_NEW_GAME = "action_new_game";
     public const string ACTION_HELP = "action_help";
+    public const string ACTION_ABOUT = "action_about";
     public const string ACTION_QUIT = "action_quit";
 
     private const GLib.ActionEntry[] ACTION_ENTRIES = {
         { ACTION_NEW_GAME, action_new_game },
         { ACTION_HELP, action_help },
+        { ACTION_ABOUT, action_about },
         { ACTION_QUIT, action_quit }
     };
 
@@ -77,8 +63,12 @@ public class Warble.ActionManager : GLib.Object {
         window.show_rules ();
     }
 
+    private void action_about () {
+        window.show_about_dialog ();
+    }
+
     private void action_quit () {
-        window.before_destroy ();
+        window.destroy ();
     }
 
 }

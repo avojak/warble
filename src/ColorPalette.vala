@@ -1,37 +1,26 @@
 /*
- * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public enum Warble.ColorPalette {
+public class Warble.ColorPalette {
 
-    TEXT_COLOR;
+    private const string SILVER_100 = "#FAFAFA";
+    private const string BLACK_700 = "#1A1A1A";
 
-    private const string BLACK_700 = "#1a1a1a";
-
-    public string get_value () {
-        switch (this) {
-            case TEXT_COLOR:
+    public static string get_text_color (Warble.Models.State? background_state = null) {
+        bool dark_theme = Gtk.Settings.get_default ().gtk_application_prefer_dark_theme;
+        if (background_state == null
+            || background_state == Warble.Models.State.BLANK
+            || background_state == Warble.Models.State.ACTIVE
+        ) {
+            if (dark_theme) {
+                return SILVER_100;
+            } else {
                 return BLACK_700;
-            default:
-                assert_not_reached ();
+            }
         }
+        return BLACK_700;
     }
 
 }

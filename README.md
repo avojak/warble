@@ -12,8 +12,8 @@
   <a href='https://flathub.org/apps/details/com.github.avojak.warble'><img width='155' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 </p>
 
-| ![Screenshot](data/assets/screenshots/warble-screenshot-01.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-02.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-03.png) |
-|------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|
+| ![Screenshot](data/assets/screenshots/warble-screenshot-01.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-02.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-03.png) | ![Screenshot](data/assets/screenshots/warble-screenshot-04.png) |
+|------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|
 
 ## The word-guessing game
 

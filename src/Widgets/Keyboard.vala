@@ -1,22 +1,6 @@
 /*
- * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
 public class Warble.Widgets.Keyboard : Gtk.Grid {
@@ -29,10 +13,17 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
 
     public Keyboard () {
         Object (
-            expand: true,
+            hexpand: true,
+            vexpand: true,
             orientation: Gtk.Orientation.VERTICAL,
             halign: Gtk.Align.CENTER,
-            margin: 8
+            valign: Gtk.Align.START,
+            margin_start: 8,
+            margin_end: 8,
+            margin_top: 8,
+            margin_bottom: 8,
+            row_spacing: 8,
+            column_spacing: 8
         );
     }
 
@@ -48,17 +39,19 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
 
     private Gtk.Grid create_row (char[] letters, bool include_control_keys = false) {
         var row_grid = new Gtk.Grid () {
-            orientation = Gtk.Orientation.HORIZONTAL,
             halign = Gtk.Align.CENTER,
             valign = Gtk.Align.END,
-            hexpand = true
+            hexpand = true,
+            row_spacing = 8,
+            column_spacing = 8
         };
+        int col = 0;
         if (include_control_keys) {
             Warble.Widgets.ControlKey return_key = new Warble.Widgets.ControlKey.with_text ("Enter");
             return_key.clicked.connect (() => {
                 return_key_clicked ();
             });
-            row_grid.add (return_key);
+            row_grid.attach (return_key, col++, 0);
         }
         foreach (char letter in letters) {
             Warble.Widgets.Key key = new Warble.Widgets.Key (letter);
@@ -66,14 +59,14 @@ public class Warble.Widgets.Keyboard : Gtk.Grid {
                 key_clicked (letter);
             });
             keys.set (letter, key);
-            row_grid.add (key);
+            row_grid.attach (key, col++, 0);
         }
         if (include_control_keys) {
             Warble.Widgets.ControlKey backspace_key = new Warble.Widgets.ControlKey.with_icon ("edit-clear-symbolic");
             backspace_key.clicked.connect (() => {
                 backspace_key_clicked ();
             });
-            row_grid.add (backspace_key);
+            row_grid.attach (backspace_key, col++, 0);
         }
         return row_grid;
     }

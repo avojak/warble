@@ -1,27 +1,13 @@
 /*
- * Copyright (c) 2022 Andrew Vojak (https://avojak.com)
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * Authored by: Andrew Vojak <andrew.vojak@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
  */
 
-public class Warble.Widgets.Square : Gtk.Image {
+public class Warble.Widgets.Square : Gtk.DrawingArea {
 
-    private const int SIZE = 64;
+    private const int WIDTH = 70;
+    private const int HEIGHT = 70;
+    private const int FONT_SIZE = 30;
 
     private char _letter = ' ';
     public char letter {
@@ -32,65 +18,74 @@ public class Warble.Widgets.Square : Gtk.Image {
     private Warble.Models.State _state = Warble.Models.State.BLANK;
     public Warble.Models.State state {
         get { return this._state; }
-        set { this._state = value; update_icon (); }
+        set { this._state = value; update_style (); }
     }
 
     public Square () {
         Object (
-            gicon: new ThemedIcon (Constants.APP_ID + ".square-blank"),
-            pixel_size: SIZE
+            hexpand: false,
+            vexpand: false,
+            width_request: WIDTH,
+            height_request: HEIGHT
         );
     }
 
     construct {
+        get_style_context ().add_class (Granite.STYLE_CLASS_CARD);
+        get_style_context ().add_class (Granite.STYLE_CLASS_ROUNDED);
+
+        set_draw_func (draw_func);
+
         Warble.Application.settings.changed.connect ((key) => {
             if (key == "high-contrast-mode") {
-                update_icon ();
+                update_style ();
             }
         });
     }
 
-    protected override bool draw (Cairo.Context ctx) {
-        base.draw (ctx);
-        ctx.save ();
-        draw_letter (ctx);
-        ctx.restore ();
-        return false;
-    }
-
-    private void draw_letter (Cairo.Context ctx) {
-        var color = new Granite.Drawing.Color.from_string (Warble.ColorPalette.TEXT_COLOR.get_value ());
-        ctx.set_source_rgb (color.R, color.G, color.B);
+    private void draw_func (Gtk.DrawingArea drawing_area, Cairo.Context ctx, int width, int height) {
+        var color = Gdk.RGBA ();
+        color.parse (Warble.ColorPalette.get_text_color (state));
+        ctx.set_source_rgb (color.red, color.green, color.blue);
 
         ctx.select_font_face ("Inter", Cairo.FontSlant.NORMAL, Cairo.FontWeight.BOLD);
-        ctx.set_font_size (30);
+        ctx.set_font_size (FONT_SIZE);
 
         Cairo.TextExtents extents;
         ctx.text_extents (letter.to_string (), out extents);
-        double x = (SIZE / 2) - (extents.width / 2 + extents.x_bearing);
-        double y = (SIZE / 2) - (extents.height / 2 + extents.y_bearing);
+        double x = (width / 2) - (extents.width / 2 + extents.x_bearing);
+        double y = (height / 2) - (extents.height / 2 + extents.y_bearing);
         ctx.move_to (x, y);
         ctx.show_text (letter.to_string ());
     }
 
-    public void update_icon () {
-        bool high_contrast_mode = Warble.Application.settings.get_boolean ("high-contrast-mode");
+    public void update_style () {
+        clear_style_classes ();
         switch (state) {
             case BLANK:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-blank");
+                break;
+            case ACTIVE:
+                get_style_context ().add_class ("tile-active");
                 break;
             case INCORRECT:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-incorrect");
+                get_style_context ().add_class ("guess-incorrect");
                 break;
             case CLOSE:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-close" + (high_contrast_mode ? "-high-contrast" : ""));
+                get_style_context ().add_class ("guess-close");
                 break;
             case CORRECT:
-                gicon = new ThemedIcon (Constants.APP_ID + ".square-correct" + (high_contrast_mode ? "-high-contrast" : ""));
+                get_style_context ().add_class ("guess-correct");
                 break;
             default:
                 assert_not_reached ();
         }
+    }
+
+    private void clear_style_classes () {
+        get_style_context ().remove_class ("guess-correct");
+        get_style_context ().remove_class ("guess-incorrect");
+        get_style_context ().remove_class ("guess-close");
+        get_style_context ().remove_class ("tile-active");
     }
 
 }

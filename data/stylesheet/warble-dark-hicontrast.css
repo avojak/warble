@@ -1,0 +1,18 @@
+/*
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Andrew Vojak <andrew.vojak@gmail.com>
+ */
+
+.guess-correct {
+    background-color: @ORANGE_500;
+    border: 1px solid @ORANGE_900;
+}
+
+.guess-close {
+    background-color: @BLUEBERRY_500;
+    border: 1px solid @BLUEBERRY_900;
+}
+
+.tile-active {
+    border: 1px solid @SILVER_700;
+}

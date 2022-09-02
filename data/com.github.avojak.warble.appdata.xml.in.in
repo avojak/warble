@@ -105,6 +105,9 @@
     <screenshot>
       <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-03.png</image>
     </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-04.png</image>
+    </screenshot>
   </screenshots>
   <developer_name>Andrew Vojak</developer_name>
   <launchable type="desktop-id">@appid@.desktop</launchable>
