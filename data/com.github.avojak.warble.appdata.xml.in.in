@@ -106,15 +106,19 @@
   </releases>
   <screenshots>
     <screenshot type="default">
+      <caption>Game View</caption>
       <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-01.png</image>
     </screenshot>
     <screenshot>
+      <caption>Game View (Dark Mode)</caption>
       <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-02.png</image>
     </screenshot>
     <screenshot>
+      <caption>Victory Screen</caption>
       <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-03.png</image>
     </screenshot>
     <screenshot>
+      <caption>Hard Mode</caption>
       <image>https://raw.githubusercontent.com/avojak/warble/master/data/assets/screenshots/warble-screenshot-04.png</image>
     </screenshot>
   </screenshots>
