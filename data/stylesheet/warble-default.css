@@ -15,7 +15,7 @@
 .faded {
     transition-property: opacity, filter;
     transition-duration: 0.5s;
-    filter: blur(5px);
+    filter: blur(8px);
     opacity: 0.3;
 }
 
