@@ -18,6 +18,16 @@
     <binary>@appid@</binary>
   </provides>
   <releases>
+    <release version="2.0.1" date="2022-09-24">
+      <description>
+        <p>2.0.1 Release</p>
+        <ul>
+          <li>New icon based on updated keycap shape from elementary OS icon set (#40)</li>
+          <li>Increased blur for translucent overlays (#41)</li>
+          <li>Added captions for appdata screenshots (#42)</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.0.0" date="2022-09-02">
       <description>
         <p>2.0.0 Release</p>
