@@ -25,11 +25,11 @@ public enum Warble.Models.Difficulty {
     public string get_details_markup () {
         switch (this) {
             case EASY:
-                return _("%s Difficulty: 5-letter words".printf (get_display_string ()));
+                return _("%s Difficulty: 5-letter words").printf (get_display_string ());
             case NORMAL:
-                return _("%s Difficulty: 5-letter words\n<small>All correctly-guessed letters must be used in subsequent guesses</small>".printf (get_display_string ())); // vala-lint=line-length
+                return _("%s Difficulty: 5-letter words\n<small>All correctly-guessed letters must be used in subsequent guesses</small>").printf (get_display_string ()); // vala-lint=line-length
             case HARD:
-                return _("%s Difficulty: 6-letter words\n<small>All correctly-guessed letters must be used in subsequent guesses</small>".printf (get_display_string ())); // vala-lint=line-length
+                return _("%s Difficulty: 6-letter words\n<small>All correctly-guessed letters must be used in subsequent guesses</small>").printf (get_display_string ()); // vala-lint=line-length
             default:
                 assert_not_reached ();
         }
