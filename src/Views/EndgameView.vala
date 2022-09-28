@@ -51,7 +51,7 @@ public class Warble.Views.EndgameView : Gtk.Box {
         header_box.append (header_title);
 
         append (header_box);
-        append (new Gtk.Label (_(@"The correct answer was: <b>$correct_answer</b>")) {
+        append (new Gtk.Label (_("The correct answer was: <b>%s</b>").printf (correct_answer)) {
             use_markup = true
         });
         append (new Warble.Widgets.GameplayStatistics ());

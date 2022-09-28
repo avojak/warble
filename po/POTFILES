@@ -1,0 +1,12 @@
+src/MainLayout.vala
+src/Models/Difficulty.vala
+src/Views/EndgameView.vala
+src/Views/GameArea.vala
+src/Views/GameplayStatisticsView.vala
+src/Views/RulesView.vala
+src/Views/WelcomeView.vala
+src/Widgets/GameplayStatistics.vala
+src/Widgets/Rules.vala
+src/Widgets/Dialogs/DifficultyChangeWarningDialog.vala
+src/Widgets/Dialogs/NewGameConfirmationDialog.vala
+src/Widgets/Dialogs/ResetGameplayStatisticsWarningDialog.vala
