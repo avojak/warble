@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.avojak.warble\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-28 12:09+0900\n"
+"POT-Creation-Date: 2022-09-28 22:42+0900\n"
 "PO-Revision-Date: 2022-09-28 12:12+0900\n"
 "Last-Translator: lenemter <lenemter@gmail.com>\n"
 "Language-Team: none\n"
@@ -24,7 +24,7 @@ msgstr "Недостаточно букв!"
 
 #: src/MainLayout.vala:42
 msgid "That's not a word!"
-msgstr "Такого слова нет!"
+msgstr "Нет такого слова!"
 
 #: src/MainLayout.vala:44
 msgid "Press \"Enter\" to submit your guess!"
@@ -85,9 +85,10 @@ msgid ""
 "%s Difficulty: 5-letter words\n"
 "<small>All correctly-guessed letters must be used in subsequent guesses</"
 "small>"
-msgstr "%s режим: 5-буквенные слова\n"
-"<small>Все правильно угаданные буквы должны быть в последующих предположениях"
-"</small>"
+msgstr ""
+"%s режим: 5-буквенные слова\n"
+"<small>Все правильно угаданные буквы должны быть в последующих "
+"предположениях</small>"
 
 #: src/Models/Difficulty.vala:32
 #, c-format
@@ -95,9 +96,10 @@ msgid ""
 "%s Difficulty: 6-letter words\n"
 "<small>All correctly-guessed letters must be used in subsequent guesses</"
 "small>"
-msgstr "%s режим: 6-буквенные слова\n"
-"<small>Все правильно угаданные буквы должны быть в последующих предположениях"
-"</small>"
+msgstr ""
+"%s режим: 6-буквенные слова\n"
+"<small>Все правильно угаданные буквы должны быть в последующих "
+"предположениях</small>"
 
 #: src/Views/EndgameView.vala:15
 msgid "You Win!"
@@ -203,38 +205,39 @@ msgstr "Распределение побед"
 msgid "Figure out the word before your guesses run out!"
 msgstr "Подберите слово, прежде чем ваши попытки закончатся!"
 
-#: src/Widgets/Rules.vala:13
+#: src/Widgets/Rules.vala:18
 msgid "As you type, the squares on the board will be filled in."
 msgstr "Квадратики на доске будут заполнятся по мере ввода."
 
-#: src/Widgets/Rules.vala:17
+#: src/Widgets/Rules.vala:22
 msgid "Undo a typed letter"
 msgstr "Удалить напечатанную букву"
 
-#: src/Widgets/Rules.vala:18
+#: src/Widgets/Rules.vala:23
 msgid "Submit your guess"
 msgstr "Отправить своё предложение"
 
-#: src/Widgets/Rules.vala:22
+#: src/Widgets/Rules.vala:27
 msgid "The letter is in the correct position."
 msgstr "Эта буква в правильном положении."
 
-#: src/Widgets/Rules.vala:27
+#: src/Widgets/Rules.vala:32
 msgid "The letter does not appear anywhere in the answer."
 msgstr "Этой буквы нет в ответе."
 
-#: src/Widgets/Rules.vala:33
+#: src/Widgets/Rules.vala:38
 msgid ""
 "The letter appears in the answer, but not in the position that you have "
 "guessed."
 msgstr "Эта буква есть в ответе, но в другой позиции."
 
-#: src/Widgets/Rules.vala:41
+#: src/Widgets/Rules.vala:46
 msgid ""
 "The keys on the keyboard at the bottom of the screen will similarly change "
 "colors to help you keep track of which letters have been used."
-msgstr "Буквы на клавиатуре внизу будут менять свой цвет, "
-"чтобы помочь вам следить за использованными буквами."
+msgstr ""
+"Буквы на клавиатуре внизу будут менять свой цвет, чтобы помочь вам следить "
+"за использованными буквами."
 
 #: src/Widgets/Dialogs/DifficultyChangeWarningDialog.vala:11
 #: src/Widgets/Dialogs/NewGameConfirmationDialog.vala:11
@@ -245,8 +248,9 @@ msgstr "Начать новую игру?"
 msgid ""
 "To change the difficulty you must start a new game. All progress on the "
 "current game will be lost, and the current game will be recorded as a loss."
-msgstr "Чтобы изменить сложность, вы должны начать новую игру. "
-"Весь прогресс в текущей игре будет утерян, а сама игра будет засчитана за поражение."
+msgstr ""
+"Чтобы изменить сложность, вы должны начать новую игру. Весь прогресс в "
+"текущей игре будет утерян, а сама игра будет засчитана за поражение."
 
 #: src/Widgets/Dialogs/DifficultyChangeWarningDialog.vala:23
 #: src/Widgets/Dialogs/NewGameConfirmationDialog.vala:23
@@ -262,7 +266,8 @@ msgstr "Да, начать новую игру"
 #: src/Widgets/Dialogs/NewGameConfirmationDialog.vala:12
 msgid ""
 "All progress will be lost, and the current game will be recorded as a loss."
-msgstr "Весь прогресс будет потерян, а текущая игра будет засчитана за поражение."
+msgstr ""
+"Весь прогресс будет потерян, а текущая игра будет засчитана за поражение."
 
 #: src/Widgets/Dialogs/ResetGameplayStatisticsWarningDialog.vala:11
 msgid "Reset gameplay statistics?"
@@ -270,7 +275,7 @@ msgstr "Сбросить статистику игры?"
 
 #: src/Widgets/Dialogs/ResetGameplayStatisticsWarningDialog.vala:12
 msgid "All gameplay history (including wins and losses) will be lost."
-msgstr "Вся статистика игры (включая и победы, и поражения) будет удалена"
+msgstr "Вся статистика игры (включая и победы, и поражения) будет удалена."
 
 #: src/Widgets/Dialogs/ResetGameplayStatisticsWarningDialog.vala:24
 msgid "Yes, Reset"
