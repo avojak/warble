@@ -7,7 +7,12 @@ public class Warble.Widgets.Rules : Gtk.Grid {
 
     construct {
         var explanation_grid = create_grid ();
-        var summary_label = new Gtk.Label (_("Figure out the word before your guesses run out!"));
+        var summary_label = new Gtk.Label (_("Figure out the word before your guesses run out!")) {
+            justify = Gtk.Justification.CENTER,
+            halign = Gtk.Align.CENTER,
+            wrap = true,
+            wrap_mode = Pango.WrapMode.WORD
+        };
         summary_label.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
         explanation_grid.attach (summary_label, 0, 0);
         explanation_grid.attach (new Gtk.Label (_("As you type, the squares on the board will be filled in.")), 0, 1);

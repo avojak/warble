@@ -1,0 +1,282 @@
+# Russian translation for com.github.avojak.warble
+# Copyright (C) 2022 THE com.github.avojak.warble'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.avojak.warble package.
+# lenemter <lenemter@gmail.com>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.avojak.warble\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-28 22:42+0900\n"
+"PO-Revision-Date: 2022-09-28 12:12+0900\n"
+"Last-Translator: lenemter <lenemter@gmail.com>\n"
+"Language-Team: none\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#: src/MainLayout.vala:41
+msgid "Not enough letters!"
+msgstr "Недостаточно букв!"
+
+#: src/MainLayout.vala:42
+msgid "That's not a word!"
+msgstr "Нет такого слова!"
+
+#: src/MainLayout.vala:44
+msgid "Press \"Enter\" to submit your guess!"
+msgstr "Нажмите «Enter», чтобы отправить ваше предположение!"
+
+#: src/MainLayout.vala:106
+msgid "<b>Difficulty</b>"
+msgstr "<b>Режим</b>"
+
+#: src/MainLayout.vala:152
+msgid "New Game"
+msgstr "Новая игра"
+
+#: src/MainLayout.vala:158 src/Views/GameplayStatisticsView.vala:17
+msgid "Gameplay Statistics"
+msgstr "Статистика игры"
+
+#: src/MainLayout.vala:163 src/Views/WelcomeView.vala:41
+msgid "High Contrast Mode"
+msgstr "Высокий контраст"
+
+#: src/MainLayout.vala:166
+msgid "Help"
+msgstr "Помощь"
+
+#: src/MainLayout.vala:172
+msgid "About…"
+msgstr "О приложении…"
+
+#: src/MainLayout.vala:178
+msgid "Quit"
+msgstr "Выйти"
+
+#: src/MainLayout.vala:200
+msgid "Menu"
+msgstr "Меню"
+
+#: src/Models/Difficulty.vala:15
+msgid "Easy"
+msgstr "Простой"
+
+#: src/Models/Difficulty.vala:17
+msgid "Normal"
+msgstr "Нормальный"
+
+#: src/Models/Difficulty.vala:19
+msgid "Hard"
+msgstr "Сложный"
+
+#: src/Models/Difficulty.vala:28
+#, c-format
+msgid "%s Difficulty: 5-letter words"
+msgstr "%s режим: 5-буквенные слова"
+
+#: src/Models/Difficulty.vala:30
+#, c-format
+msgid ""
+"%s Difficulty: 5-letter words\n"
+"<small>All correctly-guessed letters must be used in subsequent guesses</"
+"small>"
+msgstr ""
+"%s режим: 5-буквенные слова\n"
+"<small>Все правильно угаданные буквы должны быть в последующих "
+"предположениях</small>"
+
+#: src/Models/Difficulty.vala:32
+#, c-format
+msgid ""
+"%s Difficulty: 6-letter words\n"
+"<small>All correctly-guessed letters must be used in subsequent guesses</"
+"small>"
+msgstr ""
+"%s режим: 6-буквенные слова\n"
+"<small>Все правильно угаданные буквы должны быть в последующих "
+"предположениях</small>"
+
+#: src/Views/EndgameView.vala:15
+msgid "You Win!"
+msgstr "Вы победили!"
+
+#: src/Views/EndgameView.vala:25
+msgid "Game Over"
+msgstr "Игра окончена"
+
+#: src/Views/EndgameView.vala:54
+#, c-format
+msgid "The correct answer was: <b>%s</b>"
+msgstr "Правильным ответом было: <b>%s</b>"
+
+#: src/Views/EndgameView.vala:58
+msgid "Would you like to play again?"
+msgstr "Хотите сыграть ещё раз?"
+
+#: src/Views/EndgameView.vala:64
+msgid "Not Now"
+msgstr "Не сейчас"
+
+#: src/Views/EndgameView.vala:69
+msgid "Play Again"
+msgstr "Играть снова"
+
+#: src/Views/GameArea.vala:296
+#, c-format
+msgid "The %s letter must be \"%s\""
+msgstr "%s буквой должна быть «%s»"
+
+#: src/Views/GameArea.vala:327
+#, c-format
+msgid "\"%s\" must be a guessed letter"
+msgstr "Предположение должно содержать букву «%s»"
+
+#: src/Views/GameArea.vala:340
+#, c-format
+msgid "%dst"
+msgstr "%d-й"
+
+#: src/Views/GameArea.vala:343
+#, c-format
+msgid "%dnd"
+msgstr "%d-й"
+
+#: src/Views/GameArea.vala:346
+#, c-format
+msgid "%drd"
+msgstr "%d-й"
+
+#: src/Views/GameArea.vala:348
+#, c-format
+msgid "%dth"
+msgstr "%d-й"
+
+#: src/Views/GameplayStatisticsView.vala:26
+msgid "Reset…"
+msgstr "Сбросить…"
+
+#: src/Views/GameplayStatisticsView.vala:27
+msgid "Reset Gameplay Statistics"
+msgstr "Сбросить статистику игры"
+
+#: src/Views/GameplayStatisticsView.vala:33 src/Views/RulesView.vala:26
+msgid "Continue Game"
+msgstr "Продолжить играть"
+
+#: src/Views/RulesView.vala:17
+msgid "How to Play"
+msgstr "Как играть"
+
+#: src/Views/WelcomeView.vala:17
+#, c-format
+msgid "Welcome to %s!"
+msgstr "Добро пожаловать в %s!"
+
+#: src/Views/WelcomeView.vala:44
+msgid "Let's Get Started!"
+msgstr "Давайте начнём!"
+
+#: src/Widgets/GameplayStatistics.vala:46
+msgid "Number of Games Played"
+msgstr "Количество сыгранных игр"
+
+#: src/Widgets/GameplayStatistics.vala:58
+msgid "Win Percent"
+msgstr "Процент побед"
+
+#: src/Widgets/GameplayStatistics.vala:70
+msgid "Current Win Streak"
+msgstr "Текущая серия побед"
+
+#: src/Widgets/GameplayStatistics.vala:82
+msgid "Longest Win Streak"
+msgstr "Самая длинная серия побед"
+
+#: src/Widgets/GameplayStatistics.vala:104
+msgid "Guess Distribution"
+msgstr "Распределение побед"
+
+#: src/Widgets/Rules.vala:10
+msgid "Figure out the word before your guesses run out!"
+msgstr "Подберите слово, прежде чем ваши попытки закончатся!"
+
+#: src/Widgets/Rules.vala:18
+msgid "As you type, the squares on the board will be filled in."
+msgstr "Квадратики на доске будут заполнятся по мере ввода."
+
+#: src/Widgets/Rules.vala:22
+msgid "Undo a typed letter"
+msgstr "Удалить напечатанную букву"
+
+#: src/Widgets/Rules.vala:23
+msgid "Submit your guess"
+msgstr "Отправить своё предложение"
+
+#: src/Widgets/Rules.vala:27
+msgid "The letter is in the correct position."
+msgstr "Эта буква в правильном положении."
+
+#: src/Widgets/Rules.vala:32
+msgid "The letter does not appear anywhere in the answer."
+msgstr "Этой буквы нет в ответе."
+
+#: src/Widgets/Rules.vala:38
+msgid ""
+"The letter appears in the answer, but not in the position that you have "
+"guessed."
+msgstr "Эта буква есть в ответе, но в другой позиции."
+
+#: src/Widgets/Rules.vala:46
+msgid ""
+"The keys on the keyboard at the bottom of the screen will similarly change "
+"colors to help you keep track of which letters have been used."
+msgstr ""
+"Буквы на клавиатуре внизу будут менять свой цвет, чтобы помочь вам следить "
+"за использованными буквами."
+
+#: src/Widgets/Dialogs/DifficultyChangeWarningDialog.vala:11
+#: src/Widgets/Dialogs/NewGameConfirmationDialog.vala:11
+msgid "Start a new game?"
+msgstr "Начать новую игру?"
+
+#: src/Widgets/Dialogs/DifficultyChangeWarningDialog.vala:12
+msgid ""
+"To change the difficulty you must start a new game. All progress on the "
+"current game will be lost, and the current game will be recorded as a loss."
+msgstr ""
+"Чтобы изменить сложность, вы должны начать новую игру. Весь прогресс в "
+"текущей игре будет утерян, а сама игра будет засчитана за поражение."
+
+#: src/Widgets/Dialogs/DifficultyChangeWarningDialog.vala:23
+#: src/Widgets/Dialogs/NewGameConfirmationDialog.vala:23
+#: src/Widgets/Dialogs/ResetGameplayStatisticsWarningDialog.vala:23
+msgid "Cancel"
+msgstr "Отменить"
+
+#: src/Widgets/Dialogs/DifficultyChangeWarningDialog.vala:24
+#: src/Widgets/Dialogs/NewGameConfirmationDialog.vala:24
+msgid "Yes, Start New Game"
+msgstr "Да, начать новую игру"
+
+#: src/Widgets/Dialogs/NewGameConfirmationDialog.vala:12
+msgid ""
+"All progress will be lost, and the current game will be recorded as a loss."
+msgstr ""
+"Весь прогресс будет потерян, а текущая игра будет засчитана за поражение."
+
+#: src/Widgets/Dialogs/ResetGameplayStatisticsWarningDialog.vala:11
+msgid "Reset gameplay statistics?"
+msgstr "Сбросить статистику игры?"
+
+#: src/Widgets/Dialogs/ResetGameplayStatisticsWarningDialog.vala:12
+msgid "All gameplay history (including wins and losses) will be lost."
+msgstr "Вся статистика игры (включая и победы, и поражения) будет удалена."
+
+#: src/Widgets/Dialogs/ResetGameplayStatisticsWarningDialog.vala:24
+msgid "Yes, Reset"
+msgstr "Да, сбросить"
