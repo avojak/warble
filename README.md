@@ -45,6 +45,7 @@ The officially supported method of installing Warble is via the flatpak, however
 | Snapcraft | `stable` | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/stable"></img></a> |
 | | `edge` | <a href="https://snapcraft.io/warble"><img src="https://badgennet-git-fork-vladimyr-snapcraft-badgen.vercel.app/snapcraft/v/warble/arm64/edge"></img></a> |
 | Fedora | `rawhide` | [![Fedora Rawhide](https://repology.org/badge/version-for-repo/fedora_rawhide/warble.svg?header=Fedora%20Rawhide)](https://repology.org/project/warble/versions) |
+|  | `f37` | [![Fedora 37](https://repology.org/badge/version-for-repo/fedora_37/warble.svg?header=Fedora%2037)](https://repology.org/project/warble/versions) |
 |  | `f36` | [![Fedora 36](https://repology.org/badge/version-for-repo/fedora_36/warble.svg?header=Fedora%2036)](https://repology.org/project/warble/versions) |
 |  | `f35` | [![Fedora 35](https://repology.org/badge/version-for-repo/fedora_35/warble.svg?header=Fedora%2035)](https://repology.org/project/warble/versions) |
 | AUR |  | [![AUR package](https://repology.org/badge/version-for-repo/aur/warble.svg?header=AUR)](https://repology.org/project/warble/versions) |
