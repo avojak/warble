@@ -1,18 +1,9 @@
-icon_sizes = ['24', '32', '48', '64', '128']
-
-# Install the icons
-foreach i : icon_sizes
-    install_data(
-        join_paths('assets', 'icons', i + 'x' + i, meson.project_name() + '.svg'),
-        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', i + 'x' + i, 'apps'),
-        rename: '@0@.svg'.format(application_id)
-    )
-    install_data(
-        join_paths('assets', 'icons', i + 'x' + i, meson.project_name() + '.svg'),
-        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', i + 'x' + i + '@2', 'apps'),
-        rename: '@0@.svg'.format(application_id)
-    )
-endforeach
+# Install the icon
+install_data(
+    join_paths('assets', 'icons', meson.project_name() + '.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'scalable', 'apps'),
+    rename: '@0@.svg'.format(application_id)
+)
 
 # Install the dictionary and candidate words files
 install_data(
